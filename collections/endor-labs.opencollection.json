@@ -1,0 +1,263 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Endor Labs REST API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Authentication",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Exchange an API key and secret for an access token.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.endorlabs.com/v1/auth/api-key",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"key\": \"<string>\",\n  \"secret\": \"<string>\"\n}"
+            }
+          },
+          "docs": "Exchange an Endor Labs API key and secret for a bearer access token."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Projects",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Project resources in a namespace.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.endorlabs.com/v1/namespaces/{{namespace}}/projects"
+          },
+          "docs": "List Project resources in a namespace."
+        },
+        {
+          "info": {
+            "name": "Create a Project resource in a namespace.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.endorlabs.com/v1/namespaces/{{namespace}}/projects",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a Project resource in a namespace."
+        },
+        {
+          "info": {
+            "name": "Get a Project resource by UUID.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.endorlabs.com/v1/namespaces/{{namespace}}/projects/{{uuid}}"
+          },
+          "docs": "Get a Project resource by UUID."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Packages",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List PackageVersion resources in a namespace.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.endorlabs.com/v1/namespaces/{{namespace}}/package-versions"
+          },
+          "docs": "List PackageVersion resources in a namespace."
+        },
+        {
+          "info": {
+            "name": "Get a PackageVersion resource by UUID.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.endorlabs.com/v1/namespaces/{{namespace}}/package-versions/{{uuid}}"
+          },
+          "docs": "Get a PackageVersion resource by UUID."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Findings",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Finding resources in a namespace.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.endorlabs.com/v1/namespaces/{{namespace}}/findings"
+          },
+          "docs": "List Finding resources in a namespace."
+        },
+        {
+          "info": {
+            "name": "Get a Finding resource by UUID.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.endorlabs.com/v1/namespaces/{{namespace}}/findings/{{uuid}}"
+          },
+          "docs": "Get a Finding resource by UUID."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Policies",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Policy resources in a namespace.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.endorlabs.com/v1/namespaces/{{namespace}}/policies"
+          },
+          "docs": "List Policy resources in a namespace."
+        },
+        {
+          "info": {
+            "name": "Create a Policy resource in a namespace.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.endorlabs.com/v1/namespaces/{{namespace}}/policies",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a Policy resource in a namespace."
+        },
+        {
+          "info": {
+            "name": "Get a Policy resource by UUID.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.endorlabs.com/v1/namespaces/{{namespace}}/policies/{{uuid}}"
+          },
+          "docs": "Get a Policy resource by UUID."
+        },
+        {
+          "info": {
+            "name": "Update a Policy resource by UUID.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.endorlabs.com/v1/namespaces/{{namespace}}/policies/{{uuid}}",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a Policy resource by UUID."
+        },
+        {
+          "info": {
+            "name": "Delete a Policy resource by UUID.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.endorlabs.com/v1/namespaces/{{namespace}}/policies/{{uuid}}"
+          },
+          "docs": "Delete a Policy resource by UUID."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Scan Results",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List ScanResult resources in a namespace.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.endorlabs.com/v1/namespaces/{{namespace}}/scan-results"
+          },
+          "docs": "List ScanResult resources in a namespace."
+        },
+        {
+          "info": {
+            "name": "Get a ScanResult resource by UUID.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.endorlabs.com/v1/namespaces/{{namespace}}/scan-results/{{uuid}}"
+          },
+          "docs": "Get a ScanResult resource by UUID."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Namespaces",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List child namespaces under a namespace.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.endorlabs.com/v1/namespaces/{{namespace}}/namespaces"
+          },
+          "docs": "List child namespaces under a namespace."
+        }
+      ]
+    }
+  ]
+}

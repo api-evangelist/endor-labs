@@ -1,0 +1,426 @@
+{
+  "info": {
+    "_postman_id": "a1f4c2e0-3b6d-4c1a-9f2e-endor00000001",
+    "name": "Endor Labs REST API",
+    "description": "Uniform resource API over namespaces at https://api.endorlabs.com/v1. Resources (Project, PackageVersion, Finding, Policy, ScanResult, Namespace) follow list (GET), get (GET /{uuid}), create (POST), update (PATCH /{uuid}), and delete (DELETE /{uuid}) semantics. Bearer access token obtained from POST /v1/auth/api-key.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.endorlabs.com/v1"
+    },
+    {
+      "key": "namespace",
+      "value": ""
+    },
+    {
+      "key": "uuid",
+      "value": ""
+    },
+    {
+      "key": "bearerToken",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Exchange an API key and secret for an access token.",
+          "request": {
+            "method": "POST",
+            "auth": {
+              "type": "noauth"
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/api-key",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "api-key"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"key\": \"<string>\",\n  \"secret\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Projects",
+      "item": [
+        {
+          "name": "List Project resources in a namespace.",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/namespaces/{{namespace}}/projects",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "namespaces",
+                "{{namespace}}",
+                "projects"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create a Project resource in a namespace.",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/namespaces/{{namespace}}/projects",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "namespaces",
+                "{{namespace}}",
+                "projects"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get a Project resource by UUID.",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/namespaces/{{namespace}}/projects/{{uuid}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "namespaces",
+                "{{namespace}}",
+                "projects",
+                "{{uuid}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Packages",
+      "item": [
+        {
+          "name": "List PackageVersion resources in a namespace.",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/namespaces/{{namespace}}/package-versions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "namespaces",
+                "{{namespace}}",
+                "package-versions"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get a PackageVersion resource by UUID.",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/namespaces/{{namespace}}/package-versions/{{uuid}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "namespaces",
+                "{{namespace}}",
+                "package-versions",
+                "{{uuid}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Findings",
+      "item": [
+        {
+          "name": "List Finding resources in a namespace.",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/namespaces/{{namespace}}/findings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "namespaces",
+                "{{namespace}}",
+                "findings"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get a Finding resource by UUID.",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/namespaces/{{namespace}}/findings/{{uuid}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "namespaces",
+                "{{namespace}}",
+                "findings",
+                "{{uuid}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Policies",
+      "item": [
+        {
+          "name": "List Policy resources in a namespace.",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/namespaces/{{namespace}}/policies",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "namespaces",
+                "{{namespace}}",
+                "policies"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create a Policy resource in a namespace.",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/namespaces/{{namespace}}/policies",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "namespaces",
+                "{{namespace}}",
+                "policies"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get a Policy resource by UUID.",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/namespaces/{{namespace}}/policies/{{uuid}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "namespaces",
+                "{{namespace}}",
+                "policies",
+                "{{uuid}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update a Policy resource by UUID.",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/namespaces/{{namespace}}/policies/{{uuid}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "namespaces",
+                "{{namespace}}",
+                "policies",
+                "{{uuid}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete a Policy resource by UUID.",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/namespaces/{{namespace}}/policies/{{uuid}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "namespaces",
+                "{{namespace}}",
+                "policies",
+                "{{uuid}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Scan Results",
+      "item": [
+        {
+          "name": "List ScanResult resources in a namespace.",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/namespaces/{{namespace}}/scan-results",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "namespaces",
+                "{{namespace}}",
+                "scan-results"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get a ScanResult resource by UUID.",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/namespaces/{{namespace}}/scan-results/{{uuid}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "namespaces",
+                "{{namespace}}",
+                "scan-results",
+                "{{uuid}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Namespaces",
+      "item": [
+        {
+          "name": "List child namespaces under a namespace.",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/namespaces/{{namespace}}/namespaces",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "namespaces",
+                "{{namespace}}",
+                "namespaces"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

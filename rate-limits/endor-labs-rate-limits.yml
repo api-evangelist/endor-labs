@@ -1,0 +1,57 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Endor Labs
+providerId: endor-labs
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: false
+tags:
+- Security
+- Software Supply Chain
+- SCA
+- Reachability
+- AppSec
+- AI Security
+- Rate Limiting
+- Quotas
+- Throttling
+description: >-
+  The Endor Labs REST API applies per-tenant request throttling and enforces
+  pagination on list endpoints to protect the platform. List responses are
+  paged via list_parameters.page_size and page_token, and large result sets
+  must be retrieved page by page. Specific numeric request-per-minute or
+  request-per-second limits are not published; throttled requests are expected
+  to return HTTP 429. Per-tenant values are governed by the customer
+  agreement and are visible to administrators.
+notes: >-
+  Numeric rate-limit values are not publicly documented. Verify per-tenant
+  request limits, burst behavior, and pagination caps with Endor Labs during
+  reconciliation.
+sources:
+- https://docs.endorlabs.com/rest-api/using-the-rest-api/getting-started/
+- https://docs.endorlabs.com/rest-api/using-the-rest-api/troubleshooting/
+- https://docs.endorlabs.com/rest-api/
+responseCodes:
+  throttled: 429
+limits:
+- name: Requests Per Tenant
+  scope: tenant
+  metric: requests
+  limit: see provider documentation
+  notes: Per-tenant request throttling; specific numeric value not published.
+- name: List Page Size
+  scope: request
+  metric: objects
+  limit: see provider documentation
+  notes: List endpoints paginate via list_parameters.page_size and page_token.
+policies:
+- name: Pagination
+  description: Use list_parameters.page_size and list_parameters.page_token to page through large result sets rather than requesting all objects at once.
+- name: Backoff Strategy
+  description: Clients should implement exponential backoff with jitter on HTTP 429 and honor any Retry-After header.
+- name: Field Masking
+  description: Use list_parameters.mask to request only needed fields and reduce response size and load.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

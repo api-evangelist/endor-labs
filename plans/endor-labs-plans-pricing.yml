@@ -1,0 +1,87 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Endor Labs
+providerId: endor-labs
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: false
+tags:
+- Security
+- Software Supply Chain
+- SCA
+- Reachability
+- AppSec
+- AI Security
+- Plans
+description: >-
+  Endor Labs sells its software supply chain and application security platform
+  through a sales-led, contact-sales model. Pricing is not published as
+  transparent per-unit rates; packaging is negotiated per organization and
+  generally scales by the number of developers, repositories, or applications
+  scanned, with platform capabilities (reachability-based SCA, SBOM/VEX,
+  secrets, SAST, CI/CD discovery, and AI security) bundled by tier. A free
+  trial and limited free open-source scanning tooling (endorctl and OSS
+  utilities) are available, but commercial production use is quoted by sales.
+notes: >-
+  Pricing is not publicly listed. Specific tiers, units, and prices are not
+  reconciled in this artifact; confirm packaging and commercial terms directly
+  with Endor Labs sales during reconciliation.
+sources:
+- https://www.endorlabs.com/pricing
+- https://www.endorlabs.com
+- https://docs.endorlabs.com/rest-api/
+plans:
+- id: endor-labs-free-trial
+  name: Free Trial / OSS Tooling
+  type: free
+  description: >-
+    Time-limited free trial of the Endor Labs platform plus freely available
+    open-source command-line tooling (endorctl) and OSS utilities for
+    evaluation and individual use.
+  entries:
+  - label: Free Trial
+    name: free_trial
+    type: free
+    metric: trial
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: free trial - contact Endor Labs
+    userMultiplied: false
+  elements:
+  - name: Reachability-based SCA (trial)
+  - name: endorctl CLI
+  - name: REST API access
+- id: endor-labs-enterprise
+  name: Enterprise
+  type: enterprise
+  description: >-
+    Sales-led commercial subscription to the full Endor Labs platform.
+    Packaging is negotiated per organization and typically scales by
+    developers, repositories, or applications, with capabilities bundled and
+    SSO, RBAC, namespaces, and support included. Contact Endor Labs sales.
+  entries:
+  - label: Enterprise Agreement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Reachability-based SCA
+  - name: SBOM and VEX
+  - name: Secrets Scanning
+  - name: SAST
+  - name: CI/CD Discovery
+  - name: AI Security
+  - name: Policy and Governance
+  - name: REST API and Namespaces
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -1,0 +1,75 @@
+aid: endor-labs
+name: Endor Labs
+review:
+  question: Does Endor Labs expose a documented public streaming (WebSocket or SSE) API?
+  answer: false
+  date: '2026-06-20'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was created. The Endor Labs REST API is a uniform
+    request/response resource API over namespaces. No WebSocket (ws/wss) and no
+    HTTP Server-Sent Events (SSE) streaming surface is documented for any
+    resource kind, so there is no event-driven transport to model under the
+    2026-05-29 AsyncAPI/SSE scope.
+findings:
+  summary: |
+    Endor Labs publishes a single public REST (HTTPS) API at
+    https://api.endorlabs.com/v1 built on a uniform resource pattern:
+    /v1/namespaces/{namespace}/{resource} with consistent list (GET), get
+    (GET /{uuid}), create (POST), update (PATCH /{uuid}), and delete
+    (DELETE /{uuid}) semantics across resource kinds such as Project,
+    PackageVersion, DependencyMetadata, Finding, Policy, ScanResult, Metric,
+    and Namespace. Authentication exchanges an API key and secret at
+    POST /v1/auth/api-key for a bearer access token. List endpoints share
+    common list_parameters (filter, mask, page_size, page_token, sort, count,
+    group). No realtime, bidirectional, or streaming endpoint is documented.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.endorlabs.com/v1
+      documented: true
+    - protocol: SSE
+      scheme: https
+      documented: false
+      note: No Server-Sent Events streaming endpoint is documented.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented in the Endor Labs REST API reference.
+  endpointsConfirmedRest:
+    - POST https://api.endorlabs.com/v1/auth/api-key
+    - GET  https://api.endorlabs.com/v1/namespaces/{namespace}/projects
+    - POST https://api.endorlabs.com/v1/namespaces/{namespace}/projects
+    - GET  https://api.endorlabs.com/v1/namespaces/{namespace}/projects/{uuid}
+    - GET  https://api.endorlabs.com/v1/namespaces/{namespace}/package-versions
+    - GET  https://api.endorlabs.com/v1/namespaces/{namespace}/findings
+    - GET  https://api.endorlabs.com/v1/namespaces/{namespace}/findings/{uuid}
+    - GET  https://api.endorlabs.com/v1/namespaces/{namespace}/policies
+    - POST https://api.endorlabs.com/v1/namespaces/{namespace}/policies
+    - PATCH https://api.endorlabs.com/v1/namespaces/{namespace}/policies/{uuid}
+    - DELETE https://api.endorlabs.com/v1/namespaces/{namespace}/policies/{uuid}
+    - GET  https://api.endorlabs.com/v1/namespaces/{namespace}/scan-results
+    - GET  https://api.endorlabs.com/v1/namespaces/{namespace}/namespaces
+sources:
+  - url: https://docs.endorlabs.com/rest-api/
+    type: Documentation
+    note: REST API overview; uniform namespaced resource API over HTTPS, no streaming mentioned.
+  - url: https://docs.endorlabs.com/rest-api/using-the-rest-api/getting-started/
+    type: Documentation
+    note: Base URL https://api.endorlabs.com, namespaced resource paths, list/get/create/update/delete via GET/POST/PATCH/DELETE.
+  - url: https://docs.endorlabs.com/rest-api/authentication/
+    type: Documentation
+    note: Bearer token obtained by POSTing API key and secret to /v1/auth/api-key.
+  - url: https://docs.endorlabs.com/rest-api/using-the-rest-api/data-model/resource-kinds/
+    type: Documentation
+    note: Resource kinds - Project, Repository, PackageVersion, DependencyMetadata, Finding, Policy, ScanResult, Metric, LinterResult.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket or SSE protocol surface exists, so no AsyncAPI document was
+    authored. The catalog models the documented REST resource API only.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

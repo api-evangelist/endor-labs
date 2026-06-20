@@ -1,0 +1,166 @@
+aid: endor-labs
+url: https://raw.githubusercontent.com/api-evangelist/endor-labs/refs/heads/main/apis.yml
+name: Endor Labs
+kind: company
+description: Endor Labs is a software supply chain security and application security
+  platform built around reachability-based Software Composition Analysis (SCA),
+  SBOM/VEX, secrets and SAST scanning, CI/CD discovery, and AI security. Its public
+  REST API at https://api.endorlabs.com/v1 is a uniform resource API over namespaces,
+  exposing projects, packages, findings, policies, scan results, and more, driven by
+  the endorctl CLI.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Security
+- Software Supply Chain
+- SCA
+- Reachability
+- AppSec
+- AI Security
+created: '2026-06-20'
+modified: '2026-06-20'
+specificationVersion: '0.19'
+apis:
+- aid: endor-labs:endor-labs-projects-api
+  name: Endor Labs Projects API
+  tags:
+  - Projects
+  - Repositories
+  - Inventory
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.endorlabs.com/rest-api/
+  baseURL: https://api.endorlabs.com/v1
+  properties:
+  - url: https://docs.endorlabs.com/rest-api/using-the-rest-api/getting-started/
+    type: Documentation
+  - url: https://docs.endorlabs.com/api/
+    type: APIReference
+  - url: openapi/endor-labs-openapi.yml
+    type: OpenAPI
+  - url: collections/endor-labs.postman_collection.json
+    type: PostmanCollection
+  description: List, get, and create Project resources - the logical root of all
+    scanned source code, repositories, and package manager references - under a
+    namespace via /v1/namespaces/{namespace}/projects.
+- aid: endor-labs:endor-labs-dependencies-api
+  name: Endor Labs Dependencies & Packages API
+  tags:
+  - Packages
+  - Dependencies
+  - SCA
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.endorlabs.com/rest-api/using-the-rest-api/data-model/resource-kinds/
+  baseURL: https://api.endorlabs.com/v1
+  properties:
+  - url: https://docs.endorlabs.com/rest-api/using-the-rest-api/data-model/resource-kinds/
+    type: Documentation
+  - url: https://docs.endorlabs.com/api/
+    type: APIReference
+  - url: openapi/endor-labs-openapi.yml
+    type: OpenAPI
+  - url: collections/endor-labs.postman_collection.json
+    type: PostmanCollection
+  description: Query PackageVersion and DependencyMetadata resources - ecosystem,
+    package name, version, and importer/dependency relationships - powering
+    reachability-based Software Composition Analysis.
+- aid: endor-labs:endor-labs-findings-api
+  name: Endor Labs Findings API
+  tags:
+  - Findings
+  - Vulnerabilities
+  - Reachability
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.endorlabs.com/rest-api/using-the-rest-api/use-cases/
+  baseURL: https://api.endorlabs.com/v1
+  properties:
+  - url: https://docs.endorlabs.com/rest-api/using-the-rest-api/use-cases/
+    type: Documentation
+  - url: https://docs.endorlabs.com/api/
+    type: APIReference
+  - url: openapi/endor-labs-openapi.yml
+    type: OpenAPI
+  - url: collections/endor-labs.postman_collection.json
+    type: PostmanCollection
+  description: List and get Finding resources - detected problems requiring
+    remediation including reachable vulnerabilities, license risks, malware, secrets,
+    and SAST results - filtered and field-masked under a namespace.
+- aid: endor-labs:endor-labs-policies-api
+  name: Endor Labs Policies API
+  tags:
+  - Policies
+  - Governance
+  - Guardrails
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.endorlabs.com/rest-api/
+  baseURL: https://api.endorlabs.com/v1
+  properties:
+  - url: https://docs.endorlabs.com/rest-api/
+    type: Documentation
+  - url: https://docs.endorlabs.com/api/
+    type: APIReference
+  - url: openapi/endor-labs-openapi.yml
+    type: OpenAPI
+  - url: collections/endor-labs.postman_collection.json
+    type: PostmanCollection
+  description: Create, list, get, update, and delete Policy resources that define
+    rules, queries, and target resource kinds for governing findings, releases,
+    and remediation across namespaces.
+- aid: endor-labs:endor-labs-scan-results-api
+  name: Endor Labs Scan Results API
+  tags:
+  - Scan Results
+  - Metrics
+  - Diagnostics
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.endorlabs.com/rest-api/using-the-rest-api/data-model/resource-kinds/
+  baseURL: https://api.endorlabs.com/v1
+  properties:
+  - url: https://docs.endorlabs.com/rest-api/using-the-rest-api/data-model/resource-kinds/
+    type: Documentation
+  - url: https://docs.endorlabs.com/api/
+    type: APIReference
+  - url: openapi/endor-labs-openapi.yml
+    type: OpenAPI
+  - url: collections/endor-labs.postman_collection.json
+    type: PostmanCollection
+  description: Retrieve ScanResult and Metric resources capturing scan execution
+    configuration, findings produced, triggered policies, and diagnostics for a
+    project under a namespace.
+- aid: endor-labs:endor-labs-auth-namespaces-api
+  name: Endor Labs Auth & Namespaces API
+  tags:
+  - Authentication
+  - Namespaces
+  - Tenancy
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.endorlabs.com/rest-api/authentication/
+  baseURL: https://api.endorlabs.com/v1
+  properties:
+  - url: https://docs.endorlabs.com/rest-api/authentication/
+    type: Documentation
+  - url: https://docs.endorlabs.com/api/
+    type: APIReference
+  - url: openapi/endor-labs-openapi.yml
+    type: OpenAPI
+  - url: collections/endor-labs.postman_collection.json
+    type: PostmanCollection
+  description: Exchange an API key and secret for a bearer access token via
+    POST /v1/auth/api-key, and list the namespaces (tenants and child namespaces)
+    a token is authorized to access.
+common:
+- type: GitHubOrganization
+  url: https://github.com/endorlabs
+- type: LinkedIn
+  url: https://www.linkedin.com/company/endor-labs
+- type: Website
+  url: https://www.endorlabs.com
+- type: Documentation
+  url: https://docs.endorlabs.com/rest-api/
+- type: Plans
+  url: plans/endor-labs-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/endor-labs-rate-limits.yml
+- type: FinOps
+  url: finops/endor-labs-finops.yml
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

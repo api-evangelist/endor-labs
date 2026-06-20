@@ -1,0 +1,109 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Endor Labs
+providerId: endor-labs
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: false
+tags:
+- Security
+- Software Supply Chain
+- SCA
+- Reachability
+- AppSec
+- AI Security
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Endor Labs spend. Endor Labs is sold as a sales-led
+  subscription rather than transparent usage-based metering, so cost is
+  committed annually and allocated internally by the dimensions that drive
+  packaging - typically developers, repositories, applications, or namespaces
+  scanned. The REST API and endorctl make it possible to attribute platform
+  value (projects scanned, findings, policy outcomes) back to teams and cost
+  centers via namespaces even though billing itself is contract-based.
+notes: >-
+  Endor Labs does not publish per-unit rates; subscription terms are
+  negotiated. Meters below model the allocation dimensions an organization can
+  track internally, not provider-billed usage units. Confirm contract scope and
+  any usage-based components with Endor Labs during reconciliation.
+sources:
+- https://www.endorlabs.com/pricing
+- https://www.endorlabs.com
+- https://docs.endorlabs.com/rest-api/
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Endor Labs
+serviceCategory: Security
+billingModel:
+  pricingCategory: Commitment-Based
+  billingFrequency: Annual
+  billingCurrency: USD
+  chargeCategories:
+  - Purchase
+  - Usage
+  - Adjustment
+focusColumns:
+  ServiceName: Endor Labs Platform
+  ServiceCategory: Security
+  ProviderName: Endor Labs
+  PublisherName: Endor Labs
+  InvoiceIssuerName: Endor Labs
+  BillingCurrency: USD
+  ChargeCategory: Purchase
+  PricingCategory: Commitment-Based
+meters:
+- name: developers
+  description: Developers covered by the subscription, a common packaging dimension.
+  unit: developers
+  aggregation: max
+  dimensions:
+  - tenant
+  - namespace
+- name: repositories
+  description: Repositories onboarded and scanned across the tenant.
+  unit: repositories
+  aggregation: max
+  dimensions:
+  - tenant
+  - namespace
+- name: projects_scanned
+  description: Project resources scanned, attributable per namespace for allocation.
+  unit: projects
+  aggregation: sum
+  dimensions:
+  - tenant
+  - namespace
+- name: scan_results
+  description: Scan executions completed, useful for internal activity allocation.
+  unit: scans
+  aggregation: sum
+  dimensions:
+  - tenant
+  - namespace
+- name: findings
+  description: Findings produced, allocated to teams via namespaces for accountability.
+  unit: findings
+  aggregation: sum
+  dimensions:
+  - tenant
+  - namespace
+principles:
+- name: Visibility
+  description: Use the REST API to pull projects, scan-results, and findings per namespace to see where platform value accrues.
+- name: Allocation
+  description: Organize teams and applications into namespaces so platform cost can be mapped to internal cost centers.
+- name: Optimization
+  description: Prioritize remediation on reachable findings to focus security effort where it reduces real risk and rework.
+- name: Accountability
+  description: Assign namespace owners; review onboarded repositories and developer counts against the contracted subscription scope.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
