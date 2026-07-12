@@ -147,6 +147,10 @@ apis:
     POST /v1/auth/api-key, and list the namespaces (tenants and child namespaces)
     a token is authorized to access.
 common:
+- type: DomainSecurity
+  url: security/endor-labs-domain-security.yml
+- type: Authentication
+  url: authentication/endor-labs-authentication.yml
 - type: GitHubOrganization
   url: https://github.com/endorlabs
 - type: LinkedIn
@@ -161,6 +165,8 @@ common:
   url: rate-limits/endor-labs-rate-limits.yml
 - type: FinOps
   url: finops/endor-labs-finops.yml
+- url: https://www.endorlabs.com/learn/rss.xml
+  type: Blog
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

@@ -1,0 +1,15 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/endor-labs-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  description: Bearer access token obtained from POST /v1/auth/api-key by exchanging an Endor
+    Labs API key and secret.
+  sources:
+  - openapi/endor-labs-openapi.yml
