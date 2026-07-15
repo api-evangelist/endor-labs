@@ -147,6 +147,8 @@ apis:
     POST /v1/auth/api-key, and list the namespaces (tenants and child namespaces)
     a token is authorized to access.
 common:
+- type: AgenticAccess
+  url: agentic-access/endor-labs-agentic-access.yml
 - type: DomainSecurity
   url: security/endor-labs-domain-security.yml
 - type: Authentication
