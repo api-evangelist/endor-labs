@@ -1,0 +1,83 @@
+openapi: 3.0.1
+info:
+  title: Endor Labs REST Authentication API
+  description: The Endor Labs REST API is a uniform resource API over namespaces. Every resource kind (Project, PackageVersion, DependencyMetadata, Finding, Policy, ScanResult, Metric, and more) is addressed under /v1/namespaces/{namespace}/{resource}, with consistent list (GET), get (GET /{uuid}), create (POST), update (PATCH /{uuid}), and delete (DELETE /{uuid}) semantics. List endpoints share a common set of list_parameters (filter, mask, page_size, page_token, sort, count, group). Authentication is a bearer access token obtained by exchanging an API key and secret at POST /v1/auth/api-key.
+  termsOfService: https://www.endorlabs.com/terms
+  contact:
+    name: Endor Labs Support
+    url: https://docs.endorlabs.com/rest-api/
+  version: '1.0'
+servers:
+- url: https://api.endorlabs.com/v1
+security:
+- bearerAuth: []
+tags:
+- name: Authentication
+  description: Exchange API key and secret for a bearer access token.
+paths:
+  /auth/api-key:
+    post:
+      operationId: exchangeApiKey
+      tags:
+      - Authentication
+      summary: Exchange an API key and secret for an access token.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiKeyRequest'
+      responses:
+        '200':
+          description: A bearer access token with the same scopes as the API key.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    TokenResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: The bearer access token.
+        expiration_time:
+          type: string
+          format: date-time
+    ApiKeyRequest:
+      type: object
+      required:
+      - key
+      - secret
+      properties:
+        key:
+          type: string
+          description: The API key identifier.
+        secret:
+          type: string
+          description: The API key secret.
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+  responses:
+    Unauthorized:
+      description: Missing or invalid bearer access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Bearer access token obtained from POST /v1/auth/api-key by exchanging an Endor Labs API key and secret.

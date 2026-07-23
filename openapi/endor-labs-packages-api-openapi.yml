@@ -1,0 +1,200 @@
+openapi: 3.0.1
+info:
+  title: Endor Labs REST Authentication Packages API
+  description: The Endor Labs REST API is a uniform resource API over namespaces. Every resource kind (Project, PackageVersion, DependencyMetadata, Finding, Policy, ScanResult, Metric, and more) is addressed under /v1/namespaces/{namespace}/{resource}, with consistent list (GET), get (GET /{uuid}), create (POST), update (PATCH /{uuid}), and delete (DELETE /{uuid}) semantics. List endpoints share a common set of list_parameters (filter, mask, page_size, page_token, sort, count, group). Authentication is a bearer access token obtained by exchanging an API key and secret at POST /v1/auth/api-key.
+  termsOfService: https://www.endorlabs.com/terms
+  contact:
+    name: Endor Labs Support
+    url: https://docs.endorlabs.com/rest-api/
+  version: '1.0'
+servers:
+- url: https://api.endorlabs.com/v1
+security:
+- bearerAuth: []
+tags:
+- name: Packages
+  description: PackageVersion and dependency resources.
+paths:
+  /namespaces/{namespace}/package-versions:
+    get:
+      operationId: listPackageVersions
+      tags:
+      - Packages
+      summary: List PackageVersion resources in a namespace.
+      parameters:
+      - $ref: '#/components/parameters/Namespace'
+      - $ref: '#/components/parameters/Filter'
+      - $ref: '#/components/parameters/Mask'
+      - $ref: '#/components/parameters/PageSize'
+      - $ref: '#/components/parameters/PageToken'
+      - $ref: '#/components/parameters/Count'
+      responses:
+        '200':
+          description: A list of PackageVersion resources.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PackageVersionList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /namespaces/{namespace}/package-versions/{uuid}:
+    get:
+      operationId: getPackageVersion
+      tags:
+      - Packages
+      summary: Get a PackageVersion resource by UUID.
+      parameters:
+      - $ref: '#/components/parameters/Namespace'
+      - $ref: '#/components/parameters/Uuid'
+      responses:
+        '200':
+          description: The requested PackageVersion resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PackageVersion'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  parameters:
+    Uuid:
+      name: uuid
+      in: path
+      required: true
+      description: The UUID of the resource.
+      schema:
+        type: string
+    Filter:
+      name: list_parameters.filter
+      in: query
+      required: false
+      description: Endor query-language filter expression applied to the resource list.
+      schema:
+        type: string
+    Count:
+      name: list_parameters.count
+      in: query
+      required: false
+      description: When true, return only the count of matching resources.
+      schema:
+        type: boolean
+    Mask:
+      name: list_parameters.mask
+      in: query
+      required: false
+      description: Comma-separated field mask selecting which fields to return.
+      schema:
+        type: string
+    PageToken:
+      name: list_parameters.page_token
+      in: query
+      required: false
+      description: Opaque token to retrieve the next page of results.
+      schema:
+        type: string
+    Namespace:
+      name: namespace
+      in: path
+      required: true
+      description: The tenant namespace (tenant_meta.namespace) that scopes the resource.
+      schema:
+        type: string
+    PageSize:
+      name: list_parameters.page_size
+      in: query
+      required: false
+      description: Maximum number of resources to return per page.
+      schema:
+        type: integer
+        format: int32
+  schemas:
+    PackageVersionList:
+      type: object
+      properties:
+        list:
+          type: object
+          properties:
+            objects:
+              type: array
+              items:
+                $ref: '#/components/schemas/PackageVersion'
+            response:
+              $ref: '#/components/schemas/ListResponse'
+    PackageVersion:
+      type: object
+      properties:
+        uuid:
+          type: string
+        meta:
+          $ref: '#/components/schemas/ResourceMeta'
+        tenant_meta:
+          $ref: '#/components/schemas/TenantMeta'
+        spec:
+          type: object
+          properties:
+            ecosystem:
+              type: string
+            package_name:
+              type: string
+            version:
+              type: string
+            project_uuid:
+              type: string
+    ListResponse:
+      type: object
+      properties:
+        next_page_token:
+          type: string
+        count:
+          type: integer
+          format: int32
+    TenantMeta:
+      type: object
+      properties:
+        namespace:
+          type: string
+          description: The namespace the resource belongs to.
+    ResourceMeta:
+      type: object
+      properties:
+        name:
+          type: string
+        kind:
+          type: string
+        description:
+          type: string
+        version:
+          type: string
+        create_time:
+          type: string
+          format: date-time
+        update_time:
+          type: string
+          format: date-time
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+  responses:
+    Unauthorized:
+      description: Missing or invalid bearer access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Bearer access token obtained from POST /v1/auth/api-key by exchanging an Endor Labs API key and secret.
