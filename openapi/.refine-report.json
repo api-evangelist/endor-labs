@@ -1,0 +1,26 @@
+{
+  "provider": "endor-labs",
+  "sources": [
+    "endor-labs-authentication-api-openapi.yml",
+    "endor-labs-findings-api-openapi.yml",
+    "endor-labs-namespaces-api-openapi.yml",
+    "endor-labs-packages-api-openapi.yml",
+    "endor-labs-policies-api-openapi.yml",
+    "endor-labs-projects-api-openapi.yml",
+    "endor-labs-scan-results-api-openapi.yml"
+  ],
+  "outputs": [
+    "endor-labs-authentication-api-openapi.yml",
+    "endor-labs-findings-api-openapi.yml",
+    "endor-labs-namespaces-api-openapi.yml",
+    "endor-labs-packages-api-openapi.yml",
+    "endor-labs-policies-api-openapi.yml",
+    "endor-labs-projects-api-openapi.yml",
+    "endor-labs-scan-results-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
