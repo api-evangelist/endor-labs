@@ -1,0 +1,966 @@
+{
+  "item": [
+    {
+      "id": "3e2863f5-726b-4c17-bf68-9f7b4fdc7107",
+      "name": "Policies",
+      "description": {
+        "content": "Governance rules over resources.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "66903417-99c6-44b2-9cb5-e153bf3d2e63",
+          "name": "List Policy resources in a namespace.",
+          "request": {
+            "name": "List Policy resources in a namespace.",
+            "description": {},
+            "url": {
+              "path": [
+                "namespaces",
+                ":namespace",
+                "policies"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "list_parameters.filter",
+                  "value": "<string>",
+                  "description": "Endor query-language filter expression applied to the resource list."
+                },
+                {
+                  "disabled": false,
+                  "key": "list_parameters.mask",
+                  "value": "<string>",
+                  "description": "Comma-separated field mask selecting which fields to return."
+                },
+                {
+                  "disabled": false,
+                  "key": "list_parameters.page_size",
+                  "value": "<integer>",
+                  "description": "Maximum number of resources to return per page."
+                },
+                {
+                  "disabled": false,
+                  "key": "list_parameters.page_token",
+                  "value": "<string>",
+                  "description": "Opaque token to retrieve the next page of results."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "namespace",
+                  "description": "(Required) The tenant namespace (tenant_meta.namespace) that scopes the resource."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "eea2840b-8cb2-4a03-810d-31ae483d934a",
+              "name": "A list of Policy resources.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "namespaces",
+                    ":namespace",
+                    "policies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "list_parameters.filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "list_parameters.mask",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "list_parameters.page_size",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "list_parameters.page_token",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) The tenant namespace (tenant_meta.namespace) that scopes the resource."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"list\": {\n    \"objects\": [\n      {\n        \"uuid\": \"string\",\n        \"meta\": {\n          \"name\": \"string\",\n          \"kind\": \"string\",\n          \"description\": \"string\",\n          \"version\": \"string\",\n          \"create_time\": \"2023-06-13T22:23:04.928Z\",\n          \"update_time\": \"1997-08-21T18:48:44.254Z\"\n        },\n        \"tenant_meta\": {\n          \"namespace\": \"string\"\n        },\n        \"spec\": {\n          \"policy_type\": \"string\",\n          \"resource_kinds\": [\n            \"string\",\n            \"string\"\n          ],\n          \"query_statements\": [\n            \"string\",\n            \"string\"\n          ],\n          \"rule\": \"string\",\n          \"disable\": true\n        }\n      },\n      {\n        \"uuid\": \"string\",\n        \"meta\": {\n          \"name\": \"string\",\n          \"kind\": \"string\",\n          \"description\": \"string\",\n          \"version\": \"string\",\n          \"create_time\": \"2006-07-21T14:02:03.148Z\",\n          \"update_time\": \"1952-06-02T20:10:24.180Z\"\n        },\n        \"tenant_meta\": {\n          \"namespace\": \"string\"\n        },\n        \"spec\": {\n          \"policy_type\": \"string\",\n          \"resource_kinds\": [\n            \"string\",\n            \"string\"\n          ],\n          \"query_statements\": [\n            \"string\",\n            \"string\"\n          ],\n          \"rule\": \"string\",\n          \"disable\": true\n        }\n      }\n    ],\n    \"response\": {\n      \"next_page_token\": \"string\",\n      \"count\": 4416\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "74afe8ae-f01f-42a1-98e2-3fccffdab500",
+              "name": "Missing or invalid bearer access token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "namespaces",
+                    ":namespace",
+                    "policies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "list_parameters.filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "list_parameters.mask",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "list_parameters.page_size",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "list_parameters.page_token",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) The tenant namespace (tenant_meta.namespace) that scopes the resource."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 7901,\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "efa4ba38-6e94-4c26-a353-9711ff3333e9",
+          "name": "Create a Policy resource in a namespace.",
+          "request": {
+            "name": "Create a Policy resource in a namespace.",
+            "description": {},
+            "url": {
+              "path": [
+                "namespaces",
+                ":namespace",
+                "policies"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "namespace",
+                  "description": "(Required) The tenant namespace (tenant_meta.namespace) that scopes the resource."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"uuid\": \"<string>\",\n  \"meta\": {\n    \"name\": \"<string>\",\n    \"kind\": \"<string>\",\n    \"description\": \"<string>\",\n    \"version\": \"<string>\",\n    \"create_time\": \"<dateTime>\",\n    \"update_time\": \"<dateTime>\"\n  },\n  \"tenant_meta\": {\n    \"namespace\": \"<string>\"\n  },\n  \"spec\": {\n    \"policy_type\": \"<string>\",\n    \"resource_kinds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"query_statements\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"rule\": \"<string>\",\n    \"disable\": \"<boolean>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "19102f57-b553-44e5-9b22-2ebd3afe94fc",
+              "name": "The created Policy resource.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "namespaces",
+                    ":namespace",
+                    "policies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) The tenant namespace (tenant_meta.namespace) that scopes the resource."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"uuid\": \"<string>\",\n  \"meta\": {\n    \"name\": \"<string>\",\n    \"kind\": \"<string>\",\n    \"description\": \"<string>\",\n    \"version\": \"<string>\",\n    \"create_time\": \"<dateTime>\",\n    \"update_time\": \"<dateTime>\"\n  },\n  \"tenant_meta\": {\n    \"namespace\": \"<string>\"\n  },\n  \"spec\": {\n    \"policy_type\": \"<string>\",\n    \"resource_kinds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"query_statements\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"rule\": \"<string>\",\n    \"disable\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uuid\": \"<string>\",\n  \"meta\": {\n    \"name\": \"<string>\",\n    \"kind\": \"<string>\",\n    \"description\": \"<string>\",\n    \"version\": \"<string>\",\n    \"create_time\": \"<dateTime>\",\n    \"update_time\": \"<dateTime>\"\n  },\n  \"tenant_meta\": {\n    \"namespace\": \"<string>\"\n  },\n  \"spec\": {\n    \"policy_type\": \"<string>\",\n    \"resource_kinds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"query_statements\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"rule\": \"<string>\",\n    \"disable\": \"<boolean>\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d8f049bc-7df5-4635-b27f-318c0bd25be3",
+              "name": "Missing or invalid bearer access token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "namespaces",
+                    ":namespace",
+                    "policies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) The tenant namespace (tenant_meta.namespace) that scopes the resource."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"uuid\": \"<string>\",\n  \"meta\": {\n    \"name\": \"<string>\",\n    \"kind\": \"<string>\",\n    \"description\": \"<string>\",\n    \"version\": \"<string>\",\n    \"create_time\": \"<dateTime>\",\n    \"update_time\": \"<dateTime>\"\n  },\n  \"tenant_meta\": {\n    \"namespace\": \"<string>\"\n  },\n  \"spec\": {\n    \"policy_type\": \"<string>\",\n    \"resource_kinds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"query_statements\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"rule\": \"<string>\",\n    \"disable\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 7901,\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b383934c-6f68-4bd3-b03a-b9e88a691590",
+          "name": "Get a Policy resource by UUID.",
+          "request": {
+            "name": "Get a Policy resource by UUID.",
+            "description": {},
+            "url": {
+              "path": [
+                "namespaces",
+                ":namespace",
+                "policies",
+                ":uuid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "namespace",
+                  "description": "(Required) The tenant namespace (tenant_meta.namespace) that scopes the resource."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) The UUID of the resource."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "fd5940b3-aaca-4793-b6f7-669d4a2057e9",
+              "name": "The requested Policy resource.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "namespaces",
+                    ":namespace",
+                    "policies",
+                    ":uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) The tenant namespace (tenant_meta.namespace) that scopes the resource."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) The UUID of the resource."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uuid\": \"<string>\",\n  \"meta\": {\n    \"name\": \"<string>\",\n    \"kind\": \"<string>\",\n    \"description\": \"<string>\",\n    \"version\": \"<string>\",\n    \"create_time\": \"<dateTime>\",\n    \"update_time\": \"<dateTime>\"\n  },\n  \"tenant_meta\": {\n    \"namespace\": \"<string>\"\n  },\n  \"spec\": {\n    \"policy_type\": \"<string>\",\n    \"resource_kinds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"query_statements\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"rule\": \"<string>\",\n    \"disable\": \"<boolean>\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b0222946-e7c9-474d-81fa-06b4a52029df",
+              "name": "The requested resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "namespaces",
+                    ":namespace",
+                    "policies",
+                    ":uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) The tenant namespace (tenant_meta.namespace) that scopes the resource."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) The UUID of the resource."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 7901,\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c45566a5-2315-48a9-ba85-427851a0d77b",
+          "name": "Update a Policy resource by UUID.",
+          "request": {
+            "name": "Update a Policy resource by UUID.",
+            "description": {},
+            "url": {
+              "path": [
+                "namespaces",
+                ":namespace",
+                "policies",
+                ":uuid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "namespace",
+                  "description": "(Required) The tenant namespace (tenant_meta.namespace) that scopes the resource."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) The UUID of the resource."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"uuid\": \"<string>\",\n  \"meta\": {\n    \"name\": \"<string>\",\n    \"kind\": \"<string>\",\n    \"description\": \"<string>\",\n    \"version\": \"<string>\",\n    \"create_time\": \"<dateTime>\",\n    \"update_time\": \"<dateTime>\"\n  },\n  \"tenant_meta\": {\n    \"namespace\": \"<string>\"\n  },\n  \"spec\": {\n    \"policy_type\": \"<string>\",\n    \"resource_kinds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"query_statements\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"rule\": \"<string>\",\n    \"disable\": \"<boolean>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a369d3d4-c9dc-49a9-ae56-9fab4ebd4766",
+              "name": "The updated Policy resource.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "namespaces",
+                    ":namespace",
+                    "policies",
+                    ":uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) The tenant namespace (tenant_meta.namespace) that scopes the resource."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) The UUID of the resource."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"uuid\": \"<string>\",\n  \"meta\": {\n    \"name\": \"<string>\",\n    \"kind\": \"<string>\",\n    \"description\": \"<string>\",\n    \"version\": \"<string>\",\n    \"create_time\": \"<dateTime>\",\n    \"update_time\": \"<dateTime>\"\n  },\n  \"tenant_meta\": {\n    \"namespace\": \"<string>\"\n  },\n  \"spec\": {\n    \"policy_type\": \"<string>\",\n    \"resource_kinds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"query_statements\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"rule\": \"<string>\",\n    \"disable\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uuid\": \"<string>\",\n  \"meta\": {\n    \"name\": \"<string>\",\n    \"kind\": \"<string>\",\n    \"description\": \"<string>\",\n    \"version\": \"<string>\",\n    \"create_time\": \"<dateTime>\",\n    \"update_time\": \"<dateTime>\"\n  },\n  \"tenant_meta\": {\n    \"namespace\": \"<string>\"\n  },\n  \"spec\": {\n    \"policy_type\": \"<string>\",\n    \"resource_kinds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"query_statements\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"rule\": \"<string>\",\n    \"disable\": \"<boolean>\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ef5ecefb-28f6-42eb-bd49-74580f9d3874",
+              "name": "The requested resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "namespaces",
+                    ":namespace",
+                    "policies",
+                    ":uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) The tenant namespace (tenant_meta.namespace) that scopes the resource."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) The UUID of the resource."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"uuid\": \"<string>\",\n  \"meta\": {\n    \"name\": \"<string>\",\n    \"kind\": \"<string>\",\n    \"description\": \"<string>\",\n    \"version\": \"<string>\",\n    \"create_time\": \"<dateTime>\",\n    \"update_time\": \"<dateTime>\"\n  },\n  \"tenant_meta\": {\n    \"namespace\": \"<string>\"\n  },\n  \"spec\": {\n    \"policy_type\": \"<string>\",\n    \"resource_kinds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"query_statements\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"rule\": \"<string>\",\n    \"disable\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 7901,\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "df924c91-8951-43e6-bbf4-f4477ee127da",
+          "name": "Delete a Policy resource by UUID.",
+          "request": {
+            "name": "Delete a Policy resource by UUID.",
+            "description": {},
+            "url": {
+              "path": [
+                "namespaces",
+                ":namespace",
+                "policies",
+                ":uuid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "namespace",
+                  "description": "(Required) The tenant namespace (tenant_meta.namespace) that scopes the resource."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) The UUID of the resource."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e7a56bef-bf4b-4ee5-a34f-18899302d27a",
+              "name": "The Policy resource was deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "namespaces",
+                    ":namespace",
+                    "policies",
+                    ":uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) The tenant namespace (tenant_meta.namespace) that scopes the resource."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) The UUID of the resource."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "95d3c05c-7382-41fe-a34d-3a9afb3f75d4",
+              "name": "The requested resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "namespaces",
+                    ":namespace",
+                    "policies",
+                    ":uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) The tenant namespace (tenant_meta.namespace) that scopes the resource."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) The UUID of the resource."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 7901,\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.endorlabs.com/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "a31ef6a9-f55f-4a35-b225-c279d9d12f84",
+    "name": "Endor Labs REST Authentication Policies API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Endor Labs REST API is a uniform resource API over namespaces. Every resource kind (Project, PackageVersion, DependencyMetadata, Finding, Policy, ScanResult, Metric, and more) is addressed under /v1/namespaces/{namespace}/{resource}, with consistent list (GET), get (GET /{uuid}), create (POST), update (PATCH /{uuid}), and delete (DELETE /{uuid}) semantics. List endpoints share a common set of list_parameters (filter, mask, page_size, page_token, sort, count, group). Authentication is a bearer access token obtained by exchanging an API key and secret at POST /v1/auth/api-key.\n\nContact Support:\n Name: Endor Labs Support",
+      "type": "text/plain"
+    }
+  }
+}

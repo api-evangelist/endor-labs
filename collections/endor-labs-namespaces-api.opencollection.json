@@ -1,0 +1,55 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Endor Labs REST Authentication Namespaces API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Namespaces",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List child namespaces under a namespace.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.endorlabs.com/v1/namespaces/:namespace/namespaces",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "path",
+                "description": "The tenant namespace (tenant_meta.namespace) that scopes the resource."
+              },
+              {
+                "name": "list_parameters.page_size",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of resources to return per page."
+              },
+              {
+                "name": "list_parameters.page_token",
+                "value": "",
+                "type": "query",
+                "description": "Opaque token to retrieve the next page of results."
+              }
+            ]
+          },
+          "docs": "List child namespaces under a namespace."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

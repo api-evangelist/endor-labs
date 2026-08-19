@@ -1,0 +1,98 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Endor Labs REST Authentication Packages API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Packages",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List PackageVersion resources in a namespace.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.endorlabs.com/v1/namespaces/:namespace/package-versions",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "path",
+                "description": "The tenant namespace (tenant_meta.namespace) that scopes the resource."
+              },
+              {
+                "name": "list_parameters.filter",
+                "value": "",
+                "type": "query",
+                "description": "Endor query-language filter expression applied to the resource list."
+              },
+              {
+                "name": "list_parameters.mask",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated field mask selecting which fields to return."
+              },
+              {
+                "name": "list_parameters.page_size",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of resources to return per page."
+              },
+              {
+                "name": "list_parameters.page_token",
+                "value": "",
+                "type": "query",
+                "description": "Opaque token to retrieve the next page of results."
+              },
+              {
+                "name": "list_parameters.count",
+                "value": "",
+                "type": "query",
+                "description": "When true, return only the count of matching resources."
+              }
+            ]
+          },
+          "docs": "List PackageVersion resources in a namespace."
+        },
+        {
+          "info": {
+            "name": "Get a PackageVersion resource by UUID.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.endorlabs.com/v1/namespaces/:namespace/package-versions/:uuid",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "path",
+                "description": "The tenant namespace (tenant_meta.namespace) that scopes the resource."
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the resource."
+              }
+            ]
+          },
+          "docs": "Get a PackageVersion resource by UUID."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
