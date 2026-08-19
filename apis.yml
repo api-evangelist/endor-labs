@@ -31,7 +31,7 @@ tags:
 - AI Security
 created: '2026-06-20'
 modified: '2026-06-20'
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 apis:
 - aid: endor-labs:endor-labs-authentication-api
   name: Endor Labs Authentication API
