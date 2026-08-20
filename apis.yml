@@ -159,6 +159,8 @@ apis:
   humanURL: https://docs.endorlabs.com/rest-api/
   baseURL: https://api.endorlabs.com/v1
   tags:
+  - Project
+  tags_raw:
   - Projects
   properties:
   - type: OpenAPI
