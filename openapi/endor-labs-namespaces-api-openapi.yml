@@ -1,7 +1,7 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Endor Labs REST Authentication Namespaces API
-  description: The Endor Labs REST API is a uniform resource API over namespaces. Every resource kind (Project, PackageVersion, DependencyMetadata, Finding, Policy, ScanResult, Metric, and more) is addressed under /v1/namespaces/{namespace}/{resource}, with consistent list (GET), get (GET /{uuid}), create (POST), update (PATCH /{uuid}), and delete (DELETE /{uuid}) semantics. List endpoints share a common set of list_parameters (filter, mask, page_size, page_token, sort, count, group). Authentication is a bearer access token obtained by exchanging an API key and secret at POST /v1/auth/api-key.
+  title: Endor Labs REST Namespaces API
+  description: The Endor Labs REST API is a uniform resource API over namespaces.
   termsOfService: https://www.endorlabs.com/terms
   contact:
     name: Endor Labs Support
@@ -20,7 +20,7 @@ paths:
       operationId: listNamespaces
       tags:
       - Namespaces
-      summary: List child namespaces under a namespace.
+      summary: List child namespaces under a namespace
       parameters:
       - $ref: '#/components/parameters/Namespace'
       - $ref: '#/components/parameters/PageSize'
@@ -35,6 +35,29 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  parameters:
+    PageSize:
+      name: list_parameters.page_size
+      in: query
+      required: false
+      description: Maximum number of resources to return per page.
+      schema:
+        type: integer
+        format: int32
+    Namespace:
+      name: namespace
+      in: path
+      required: true
+      description: The tenant namespace (tenant_meta.namespace) that scopes the resource.
+      schema:
+        type: string
+    PageToken:
+      name: list_parameters.page_token
+      in: query
+      required: false
+      description: Opaque token to retrieve the next page of results.
+      schema:
+        type: string
   schemas:
     ListResponse:
       type: object
@@ -44,12 +67,6 @@ components:
         count:
           type: integer
           format: int32
-    TenantMeta:
-      type: object
-      properties:
-        namespace:
-          type: string
-          description: The namespace the resource belongs to.
     ResourceMeta:
       type: object
       properties:
@@ -67,6 +84,20 @@ components:
         update_time:
           type: string
           format: date-time
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    TenantMeta:
+      type: object
+      properties:
+        namespace:
+          type: string
+          description: The namespace the resource belongs to.
     Namespace:
       type: object
       properties:
@@ -88,14 +119,6 @@ components:
                 $ref: '#/components/schemas/Namespace'
             response:
               $ref: '#/components/schemas/ListResponse'
-    Error:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
   responses:
     Unauthorized:
       description: Missing or invalid bearer access token.
@@ -103,29 +126,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-  parameters:
-    PageToken:
-      name: list_parameters.page_token
-      in: query
-      required: false
-      description: Opaque token to retrieve the next page of results.
-      schema:
-        type: string
-    Namespace:
-      name: namespace
-      in: path
-      required: true
-      description: The tenant namespace (tenant_meta.namespace) that scopes the resource.
-      schema:
-        type: string
-    PageSize:
-      name: list_parameters.page_size
-      in: query
-      required: false
-      description: Maximum number of resources to return per page.
-      schema:
-        type: integer
-        format: int32
   securitySchemes:
     bearerAuth:
       type: http

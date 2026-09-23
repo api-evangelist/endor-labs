@@ -1,7 +1,7 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Endor Labs REST Authentication Policies API
-  description: The Endor Labs REST API is a uniform resource API over namespaces. Every resource kind (Project, PackageVersion, DependencyMetadata, Finding, Policy, ScanResult, Metric, and more) is addressed under /v1/namespaces/{namespace}/{resource}, with consistent list (GET), get (GET /{uuid}), create (POST), update (PATCH /{uuid}), and delete (DELETE /{uuid}) semantics. List endpoints share a common set of list_parameters (filter, mask, page_size, page_token, sort, count, group). Authentication is a bearer access token obtained by exchanging an API key and secret at POST /v1/auth/api-key.
+  title: Endor Labs REST Policies API
+  description: The Endor Labs REST API is a uniform resource API over namespaces.
   termsOfService: https://www.endorlabs.com/terms
   contact:
     name: Endor Labs Support
@@ -20,7 +20,7 @@ paths:
       operationId: listPolicies
       tags:
       - Policies
-      summary: List Policy resources in a namespace.
+      summary: List Policy resources in a namespace
       parameters:
       - $ref: '#/components/parameters/Namespace'
       - $ref: '#/components/parameters/Filter'
@@ -40,7 +40,7 @@ paths:
       operationId: createPolicy
       tags:
       - Policies
-      summary: Create a Policy resource in a namespace.
+      summary: Create a Policy resource in a namespace
       parameters:
       - $ref: '#/components/parameters/Namespace'
       requestBody:
@@ -63,7 +63,7 @@ paths:
       operationId: getPolicy
       tags:
       - Policies
-      summary: Get a Policy resource by UUID.
+      summary: Get a Policy resource by UUID
       parameters:
       - $ref: '#/components/parameters/Namespace'
       - $ref: '#/components/parameters/Uuid'
@@ -80,7 +80,7 @@ paths:
       operationId: updatePolicy
       tags:
       - Policies
-      summary: Update a Policy resource by UUID.
+      summary: Update a Policy resource by UUID
       parameters:
       - $ref: '#/components/parameters/Namespace'
       - $ref: '#/components/parameters/Uuid'
@@ -103,7 +103,7 @@ paths:
       operationId: deletePolicy
       tags:
       - Policies
-      summary: Delete a Policy resource by UUID.
+      summary: Delete a Policy resource by UUID
       parameters:
       - $ref: '#/components/parameters/Namespace'
       - $ref: '#/components/parameters/Uuid'
@@ -113,33 +113,33 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid bearer access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
-    Uuid:
-      name: uuid
-      in: path
-      required: true
-      description: The UUID of the resource.
-      schema:
-        type: string
-    Filter:
-      name: list_parameters.filter
+    PageSize:
+      name: list_parameters.page_size
       in: query
       required: false
-      description: Endor query-language filter expression applied to the resource list.
+      description: Maximum number of resources to return per page.
       schema:
-        type: string
+        type: integer
+        format: int32
     Mask:
       name: list_parameters.mask
       in: query
       required: false
       description: Comma-separated field mask selecting which fields to return.
-      schema:
-        type: string
-    PageToken:
-      name: list_parameters.page_token
-      in: query
-      required: false
-      description: Opaque token to retrieve the next page of results.
       schema:
         type: string
     Namespace:
@@ -149,14 +149,27 @@ components:
       description: The tenant namespace (tenant_meta.namespace) that scopes the resource.
       schema:
         type: string
-    PageSize:
-      name: list_parameters.page_size
+    Filter:
+      name: list_parameters.filter
       in: query
       required: false
-      description: Maximum number of resources to return per page.
+      description: Endor query-language filter expression applied to the resource list.
       schema:
-        type: integer
-        format: int32
+        type: string
+    Uuid:
+      name: uuid
+      in: path
+      required: true
+      description: The UUID of the resource.
+      schema:
+        type: string
+    PageToken:
+      name: list_parameters.page_token
+      in: query
+      required: false
+      description: Opaque token to retrieve the next page of results.
+      schema:
+        type: string
   schemas:
     ListResponse:
       type: object
@@ -166,29 +179,6 @@ components:
         count:
           type: integer
           format: int32
-    TenantMeta:
-      type: object
-      properties:
-        namespace:
-          type: string
-          description: The namespace the resource belongs to.
-    ResourceMeta:
-      type: object
-      properties:
-        name:
-          type: string
-        kind:
-          type: string
-        description:
-          type: string
-        version:
-          type: string
-        create_time:
-          type: string
-          format: date-time
-        update_time:
-          type: string
-          format: date-time
     Policy:
       type: object
       properties:
@@ -215,6 +205,23 @@ components:
               type: string
             disable:
               type: boolean
+    ResourceMeta:
+      type: object
+      properties:
+        name:
+          type: string
+        kind:
+          type: string
+        description:
+          type: string
+        version:
+          type: string
+        create_time:
+          type: string
+          format: date-time
+        update_time:
+          type: string
+          format: date-time
     Error:
       type: object
       properties:
@@ -223,6 +230,12 @@ components:
           format: int32
         message:
           type: string
+    TenantMeta:
+      type: object
+      properties:
+        namespace:
+          type: string
+          description: The namespace the resource belongs to.
     PolicyList:
       type: object
       properties:
@@ -235,19 +248,6 @@ components:
                 $ref: '#/components/schemas/Policy'
             response:
               $ref: '#/components/schemas/ListResponse'
-  responses:
-    Unauthorized:
-      description: Missing or invalid bearer access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     bearerAuth:
       type: http

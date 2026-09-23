@@ -1,7 +1,7 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Endor Labs REST Authentication API
-  description: The Endor Labs REST API is a uniform resource API over namespaces. Every resource kind (Project, PackageVersion, DependencyMetadata, Finding, Policy, ScanResult, Metric, and more) is addressed under /v1/namespaces/{namespace}/{resource}, with consistent list (GET), get (GET /{uuid}), create (POST), update (PATCH /{uuid}), and delete (DELETE /{uuid}) semantics. List endpoints share a common set of list_parameters (filter, mask, page_size, page_token, sort, count, group). Authentication is a bearer access token obtained by exchanging an API key and secret at POST /v1/auth/api-key.
+  description: The Endor Labs REST API is a uniform resource API over namespaces.
   termsOfService: https://www.endorlabs.com/terms
   contact:
     name: Endor Labs Support
@@ -20,7 +20,7 @@ paths:
       operationId: exchangeApiKey
       tags:
       - Authentication
-      summary: Exchange an API key and secret for an access token.
+      summary: Exchange an API key and secret for an access token
       security: []
       requestBody:
         required: true

@@ -1,7 +1,7 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Endor Labs REST Authentication Projects API
-  description: The Endor Labs REST API is a uniform resource API over namespaces. Every resource kind (Project, PackageVersion, DependencyMetadata, Finding, Policy, ScanResult, Metric, and more) is addressed under /v1/namespaces/{namespace}/{resource}, with consistent list (GET), get (GET /{uuid}), create (POST), update (PATCH /{uuid}), and delete (DELETE /{uuid}) semantics. List endpoints share a common set of list_parameters (filter, mask, page_size, page_token, sort, count, group). Authentication is a bearer access token obtained by exchanging an API key and secret at POST /v1/auth/api-key.
+  title: Endor Labs REST Projects API
+  description: The Endor Labs REST API is a uniform resource API over namespaces.
   termsOfService: https://www.endorlabs.com/terms
   contact:
     name: Endor Labs Support
@@ -20,7 +20,7 @@ paths:
       operationId: listProjects
       tags:
       - Projects
-      summary: List Project resources in a namespace.
+      summary: List Project resources in a namespace
       parameters:
       - $ref: '#/components/parameters/Namespace'
       - $ref: '#/components/parameters/Filter'
@@ -42,7 +42,7 @@ paths:
       operationId: createProject
       tags:
       - Projects
-      summary: Create a Project resource in a namespace.
+      summary: Create a Project resource in a namespace
       parameters:
       - $ref: '#/components/parameters/Namespace'
       requestBody:
@@ -65,7 +65,7 @@ paths:
       operationId: getProject
       tags:
       - Projects
-      summary: Get a Project resource by UUID.
+      summary: Get a Project resource by UUID
       parameters:
       - $ref: '#/components/parameters/Namespace'
       - $ref: '#/components/parameters/Uuid'
@@ -79,21 +79,20 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid bearer access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
-    Uuid:
-      name: uuid
-      in: path
-      required: true
-      description: The UUID of the resource.
-      schema:
-        type: string
-    Filter:
-      name: list_parameters.filter
-      in: query
-      required: false
-      description: Endor query-language filter expression applied to the resource list.
-      schema:
-        type: string
     Count:
       name: list_parameters.count
       in: query
@@ -108,18 +107,19 @@ components:
       description: Field path to sort the result set by.
       schema:
         type: string
+    PageSize:
+      name: list_parameters.page_size
+      in: query
+      required: false
+      description: Maximum number of resources to return per page.
+      schema:
+        type: integer
+        format: int32
     Mask:
       name: list_parameters.mask
       in: query
       required: false
       description: Comma-separated field mask selecting which fields to return.
-      schema:
-        type: string
-    PageToken:
-      name: list_parameters.page_token
-      in: query
-      required: false
-      description: Opaque token to retrieve the next page of results.
       schema:
         type: string
     Namespace:
@@ -129,15 +129,36 @@ components:
       description: The tenant namespace (tenant_meta.namespace) that scopes the resource.
       schema:
         type: string
-    PageSize:
-      name: list_parameters.page_size
+    Filter:
+      name: list_parameters.filter
       in: query
       required: false
-      description: Maximum number of resources to return per page.
+      description: Endor query-language filter expression applied to the resource list.
       schema:
-        type: integer
-        format: int32
+        type: string
+    Uuid:
+      name: uuid
+      in: path
+      required: true
+      description: The UUID of the resource.
+      schema:
+        type: string
+    PageToken:
+      name: list_parameters.page_token
+      in: query
+      required: false
+      description: Opaque token to retrieve the next page of results.
+      schema:
+        type: string
   schemas:
+    ListResponse:
+      type: object
+      properties:
+        next_page_token:
+          type: string
+        count:
+          type: integer
+          format: int32
     ProjectList:
       type: object
       properties:
@@ -150,20 +171,6 @@ components:
                 $ref: '#/components/schemas/Project'
             response:
               $ref: '#/components/schemas/ListResponse'
-    ListResponse:
-      type: object
-      properties:
-        next_page_token:
-          type: string
-        count:
-          type: integer
-          format: int32
-    TenantMeta:
-      type: object
-      properties:
-        namespace:
-          type: string
-          description: The namespace the resource belongs to.
     ResourceMeta:
       type: object
       properties:
@@ -189,6 +196,12 @@ components:
           format: int32
         message:
           type: string
+    TenantMeta:
+      type: object
+      properties:
+        namespace:
+          type: string
+          description: The namespace the resource belongs to.
     Project:
       type: object
       properties:
@@ -211,19 +224,6 @@ components:
             platform_source:
               type: string
               description: Source platform, e.g. GITHUB, GITLAB.
-  responses:
-    Unauthorized:
-      description: Missing or invalid bearer access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     bearerAuth:
       type: http
