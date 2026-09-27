@@ -57,19 +57,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid bearer access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   parameters:
     Count:
       name: list_parameters.count
@@ -85,33 +72,18 @@ components:
       description: Field path to sort the result set by.
       schema:
         type: string
-    PageSize:
-      name: list_parameters.page_size
-      in: query
-      required: false
-      description: Maximum number of resources to return per page.
-      schema:
-        type: integer
-        format: int32
-    Mask:
-      name: list_parameters.mask
-      in: query
-      required: false
-      description: Comma-separated field mask selecting which fields to return.
-      schema:
-        type: string
-    Namespace:
-      name: namespace
-      in: path
-      required: true
-      description: The tenant namespace (tenant_meta.namespace) that scopes the resource.
-      schema:
-        type: string
     Filter:
       name: list_parameters.filter
       in: query
       required: false
       description: Endor query-language filter expression applied to the resource list.
+      schema:
+        type: string
+    Mask:
+      name: list_parameters.mask
+      in: query
+      required: false
+      description: Comma-separated field mask selecting which fields to return.
       schema:
         type: string
     Uuid:
@@ -128,58 +100,22 @@ components:
       description: Opaque token to retrieve the next page of results.
       schema:
         type: string
+    Namespace:
+      name: namespace
+      in: path
+      required: true
+      description: The tenant namespace (tenant_meta.namespace) that scopes the resource.
+      schema:
+        type: string
+    PageSize:
+      name: list_parameters.page_size
+      in: query
+      required: false
+      description: Maximum number of resources to return per page.
+      schema:
+        type: integer
+        format: int32
   schemas:
-    ListResponse:
-      type: object
-      properties:
-        next_page_token:
-          type: string
-        count:
-          type: integer
-          format: int32
-    FindingList:
-      type: object
-      properties:
-        list:
-          type: object
-          properties:
-            objects:
-              type: array
-              items:
-                $ref: '#/components/schemas/Finding'
-            response:
-              $ref: '#/components/schemas/ListResponse'
-    ResourceMeta:
-      type: object
-      properties:
-        name:
-          type: string
-        kind:
-          type: string
-        description:
-          type: string
-        version:
-          type: string
-        create_time:
-          type: string
-          format: date-time
-        update_time:
-          type: string
-          format: date-time
-    Error:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-    TenantMeta:
-      type: object
-      properties:
-        namespace:
-          type: string
-          description: The namespace the resource belongs to.
     Finding:
       type: object
       properties:
@@ -216,6 +152,70 @@ components:
                 reachability:
                   type: string
                   description: Reachability assessment for the finding.
+    ResourceMeta:
+      type: object
+      properties:
+        name:
+          type: string
+        kind:
+          type: string
+        description:
+          type: string
+        version:
+          type: string
+        create_time:
+          type: string
+          format: date-time
+        update_time:
+          type: string
+          format: date-time
+    FindingList:
+      type: object
+      properties:
+        list:
+          type: object
+          properties:
+            objects:
+              type: array
+              items:
+                $ref: '#/components/schemas/Finding'
+            response:
+              $ref: '#/components/schemas/ListResponse'
+    ListResponse:
+      type: object
+      properties:
+        next_page_token:
+          type: string
+        count:
+          type: integer
+          format: int32
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    TenantMeta:
+      type: object
+      properties:
+        namespace:
+          type: string
+          description: The namespace the resource belongs to.
+  responses:
+    Unauthorized:
+      description: Missing or invalid bearer access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     bearerAuth:
       type: http

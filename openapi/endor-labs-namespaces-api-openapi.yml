@@ -35,38 +35,14 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  parameters:
-    PageSize:
-      name: list_parameters.page_size
-      in: query
-      required: false
-      description: Maximum number of resources to return per page.
-      schema:
-        type: integer
-        format: int32
-    Namespace:
-      name: namespace
-      in: path
-      required: true
-      description: The tenant namespace (tenant_meta.namespace) that scopes the resource.
-      schema:
-        type: string
-    PageToken:
-      name: list_parameters.page_token
-      in: query
-      required: false
-      description: Opaque token to retrieve the next page of results.
-      schema:
-        type: string
+  responses:
+    Unauthorized:
+      description: Missing or invalid bearer access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    ListResponse:
-      type: object
-      properties:
-        next_page_token:
-          type: string
-        count:
-          type: integer
-          format: int32
     ResourceMeta:
       type: object
       properties:
@@ -84,6 +60,23 @@ components:
         update_time:
           type: string
           format: date-time
+    Namespace:
+      type: object
+      properties:
+        uuid:
+          type: string
+        meta:
+          $ref: '#/components/schemas/ResourceMeta'
+        tenant_meta:
+          $ref: '#/components/schemas/TenantMeta'
+    ListResponse:
+      type: object
+      properties:
+        next_page_token:
+          type: string
+        count:
+          type: integer
+          format: int32
     Error:
       type: object
       properties:
@@ -98,15 +91,6 @@ components:
         namespace:
           type: string
           description: The namespace the resource belongs to.
-    Namespace:
-      type: object
-      properties:
-        uuid:
-          type: string
-        meta:
-          $ref: '#/components/schemas/ResourceMeta'
-        tenant_meta:
-          $ref: '#/components/schemas/TenantMeta'
     NamespaceList:
       type: object
       properties:
@@ -119,13 +103,29 @@ components:
                 $ref: '#/components/schemas/Namespace'
             response:
               $ref: '#/components/schemas/ListResponse'
-  responses:
-    Unauthorized:
-      description: Missing or invalid bearer access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+  parameters:
+    PageToken:
+      name: list_parameters.page_token
+      in: query
+      required: false
+      description: Opaque token to retrieve the next page of results.
+      schema:
+        type: string
+    Namespace:
+      name: namespace
+      in: path
+      required: true
+      description: The tenant namespace (tenant_meta.namespace) that scopes the resource.
+      schema:
+        type: string
+    PageSize:
+      name: list_parameters.page_size
+      in: query
+      required: false
+      description: Maximum number of resources to return per page.
+      schema:
+        type: integer
+        format: int32
   securitySchemes:
     bearerAuth:
       type: http

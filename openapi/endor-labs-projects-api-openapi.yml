@@ -79,19 +79,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid bearer access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   parameters:
     Count:
       name: list_parameters.count
@@ -105,28 +92,6 @@ components:
       in: query
       required: false
       description: Field path to sort the result set by.
-      schema:
-        type: string
-    PageSize:
-      name: list_parameters.page_size
-      in: query
-      required: false
-      description: Maximum number of resources to return per page.
-      schema:
-        type: integer
-        format: int32
-    Mask:
-      name: list_parameters.mask
-      in: query
-      required: false
-      description: Comma-separated field mask selecting which fields to return.
-      schema:
-        type: string
-    Namespace:
-      name: namespace
-      in: path
-      required: true
-      description: The tenant namespace (tenant_meta.namespace) that scopes the resource.
       schema:
         type: string
     Filter:
@@ -143,6 +108,13 @@ components:
       description: The UUID of the resource.
       schema:
         type: string
+    Mask:
+      name: list_parameters.mask
+      in: query
+      required: false
+      description: Comma-separated field mask selecting which fields to return.
+      schema:
+        type: string
     PageToken:
       name: list_parameters.page_token
       in: query
@@ -150,27 +122,35 @@ components:
       description: Opaque token to retrieve the next page of results.
       schema:
         type: string
+    Namespace:
+      name: namespace
+      in: path
+      required: true
+      description: The tenant namespace (tenant_meta.namespace) that scopes the resource.
+      schema:
+        type: string
+    PageSize:
+      name: list_parameters.page_size
+      in: query
+      required: false
+      description: Maximum number of resources to return per page.
+      schema:
+        type: integer
+        format: int32
+  responses:
+    Unauthorized:
+      description: Missing or invalid bearer access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    ListResponse:
-      type: object
-      properties:
-        next_page_token:
-          type: string
-        count:
-          type: integer
-          format: int32
-    ProjectList:
-      type: object
-      properties:
-        list:
-          type: object
-          properties:
-            objects:
-              type: array
-              items:
-                $ref: '#/components/schemas/Project'
-            response:
-              $ref: '#/components/schemas/ListResponse'
     ResourceMeta:
       type: object
       properties:
@@ -188,6 +168,14 @@ components:
         update_time:
           type: string
           format: date-time
+    ListResponse:
+      type: object
+      properties:
+        next_page_token:
+          type: string
+        count:
+          type: integer
+          format: int32
     Error:
       type: object
       properties:
@@ -196,12 +184,6 @@ components:
           format: int32
         message:
           type: string
-    TenantMeta:
-      type: object
-      properties:
-        namespace:
-          type: string
-          description: The namespace the resource belongs to.
     Project:
       type: object
       properties:
@@ -224,6 +206,24 @@ components:
             platform_source:
               type: string
               description: Source platform, e.g. GITHUB, GITLAB.
+    TenantMeta:
+      type: object
+      properties:
+        namespace:
+          type: string
+          description: The namespace the resource belongs to.
+    ProjectList:
+      type: object
+      properties:
+        list:
+          type: object
+          properties:
+            objects:
+              type: array
+              items:
+                $ref: '#/components/schemas/Project'
+            response:
+              $ref: '#/components/schemas/ListResponse'
   securitySchemes:
     bearerAuth:
       type: http
