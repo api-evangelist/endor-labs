@@ -56,79 +56,14 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  schemas:
-    PackageVersion:
-      type: object
-      properties:
-        uuid:
-          type: string
-        meta:
-          $ref: '#/components/schemas/ResourceMeta'
-        tenant_meta:
-          $ref: '#/components/schemas/TenantMeta'
-        spec:
-          type: object
-          properties:
-            ecosystem:
-              type: string
-            package_name:
-              type: string
-            version:
-              type: string
-            project_uuid:
-              type: string
-    PackageVersionList:
-      type: object
-      properties:
-        list:
-          type: object
-          properties:
-            objects:
-              type: array
-              items:
-                $ref: '#/components/schemas/PackageVersion'
-            response:
-              $ref: '#/components/schemas/ListResponse'
-    ResourceMeta:
-      type: object
-      properties:
-        name:
-          type: string
-        kind:
-          type: string
-        description:
-          type: string
-        version:
-          type: string
-        create_time:
-          type: string
-          format: date-time
-        update_time:
-          type: string
-          format: date-time
-    Error:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-    ListResponse:
-      type: object
-      properties:
-        next_page_token:
-          type: string
-        count:
-          type: integer
-          format: int32
-    TenantMeta:
-      type: object
-      properties:
-        namespace:
-          type: string
-          description: The namespace the resource belongs to.
   parameters:
+    PageToken:
+      name: list_parameters.page_token
+      in: query
+      required: false
+      description: Opaque token to retrieve the next page of results.
+      schema:
+        type: string
     Count:
       name: list_parameters.count
       in: query
@@ -150,27 +85,6 @@ components:
       description: Comma-separated field mask selecting which fields to return.
       schema:
         type: string
-    Uuid:
-      name: uuid
-      in: path
-      required: true
-      description: The UUID of the resource.
-      schema:
-        type: string
-    PageToken:
-      name: list_parameters.page_token
-      in: query
-      required: false
-      description: Opaque token to retrieve the next page of results.
-      schema:
-        type: string
-    Namespace:
-      name: namespace
-      in: path
-      required: true
-      description: The tenant namespace (tenant_meta.namespace) that scopes the resource.
-      schema:
-        type: string
     PageSize:
       name: list_parameters.page_size
       in: query
@@ -179,19 +93,105 @@ components:
       schema:
         type: integer
         format: int32
+    Namespace:
+      name: namespace
+      in: path
+      required: true
+      description: The tenant namespace (tenant_meta.namespace) that scopes the resource.
+      schema:
+        type: string
+    Uuid:
+      name: uuid
+      in: path
+      required: true
+      description: The UUID of the resource.
+      schema:
+        type: string
   responses:
-    Unauthorized:
-      description: Missing or invalid bearer access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     NotFound:
       description: The requested resource was not found.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid bearer access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    TenantMeta:
+      type: object
+      properties:
+        namespace:
+          type: string
+          description: The namespace the resource belongs to.
+    PackageVersionList:
+      type: object
+      properties:
+        list:
+          type: object
+          properties:
+            objects:
+              type: array
+              items:
+                $ref: '#/components/schemas/PackageVersion'
+            response:
+              $ref: '#/components/schemas/ListResponse'
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    PackageVersion:
+      type: object
+      properties:
+        uuid:
+          type: string
+        meta:
+          $ref: '#/components/schemas/ResourceMeta'
+        tenant_meta:
+          $ref: '#/components/schemas/TenantMeta'
+        spec:
+          type: object
+          properties:
+            ecosystem:
+              type: string
+            package_name:
+              type: string
+            version:
+              type: string
+            project_uuid:
+              type: string
+    ListResponse:
+      type: object
+      properties:
+        next_page_token:
+          type: string
+        count:
+          type: integer
+          format: int32
+    ResourceMeta:
+      type: object
+      properties:
+        name:
+          type: string
+        kind:
+          type: string
+        description:
+          type: string
+        version:
+          type: string
+        create_time:
+          type: string
+          format: date-time
+        update_time:
+          type: string
+          format: date-time
   securitySchemes:
     bearerAuth:
       type: http

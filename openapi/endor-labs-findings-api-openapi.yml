@@ -58,13 +58,6 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   parameters:
-    Count:
-      name: list_parameters.count
-      in: query
-      required: false
-      description: When true, return only the count of matching resources.
-      schema:
-        type: boolean
     SortPath:
       name: list_parameters.sort.path
       in: query
@@ -72,6 +65,20 @@ components:
       description: Field path to sort the result set by.
       schema:
         type: string
+    PageToken:
+      name: list_parameters.page_token
+      in: query
+      required: false
+      description: Opaque token to retrieve the next page of results.
+      schema:
+        type: string
+    Count:
+      name: list_parameters.count
+      in: query
+      required: false
+      description: When true, return only the count of matching resources.
+      schema:
+        type: boolean
     Filter:
       name: list_parameters.filter
       in: query
@@ -86,27 +93,6 @@ components:
       description: Comma-separated field mask selecting which fields to return.
       schema:
         type: string
-    Uuid:
-      name: uuid
-      in: path
-      required: true
-      description: The UUID of the resource.
-      schema:
-        type: string
-    PageToken:
-      name: list_parameters.page_token
-      in: query
-      required: false
-      description: Opaque token to retrieve the next page of results.
-      schema:
-        type: string
-    Namespace:
-      name: namespace
-      in: path
-      required: true
-      description: The tenant namespace (tenant_meta.namespace) that scopes the resource.
-      schema:
-        type: string
     PageSize:
       name: list_parameters.page_size
       in: query
@@ -115,7 +101,54 @@ components:
       schema:
         type: integer
         format: int32
+    Namespace:
+      name: namespace
+      in: path
+      required: true
+      description: The tenant namespace (tenant_meta.namespace) that scopes the resource.
+      schema:
+        type: string
+    Uuid:
+      name: uuid
+      in: path
+      required: true
+      description: The UUID of the resource.
+      schema:
+        type: string
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid bearer access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    FindingList:
+      type: object
+      properties:
+        list:
+          type: object
+          properties:
+            objects:
+              type: array
+              items:
+                $ref: '#/components/schemas/Finding'
+            response:
+              $ref: '#/components/schemas/ListResponse'
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
     Finding:
       type: object
       properties:
@@ -152,6 +185,20 @@ components:
                 reachability:
                   type: string
                   description: Reachability assessment for the finding.
+    TenantMeta:
+      type: object
+      properties:
+        namespace:
+          type: string
+          description: The namespace the resource belongs to.
+    ListResponse:
+      type: object
+      properties:
+        next_page_token:
+          type: string
+        count:
+          type: integer
+          format: int32
     ResourceMeta:
       type: object
       properties:
@@ -169,53 +216,6 @@ components:
         update_time:
           type: string
           format: date-time
-    FindingList:
-      type: object
-      properties:
-        list:
-          type: object
-          properties:
-            objects:
-              type: array
-              items:
-                $ref: '#/components/schemas/Finding'
-            response:
-              $ref: '#/components/schemas/ListResponse'
-    ListResponse:
-      type: object
-      properties:
-        next_page_token:
-          type: string
-        count:
-          type: integer
-          format: int32
-    Error:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-    TenantMeta:
-      type: object
-      properties:
-        namespace:
-          type: string
-          description: The namespace the resource belongs to.
-  responses:
-    Unauthorized:
-      description: Missing or invalid bearer access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     bearerAuth:
       type: http

@@ -80,39 +80,11 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   parameters:
-    Count:
-      name: list_parameters.count
-      in: query
-      required: false
-      description: When true, return only the count of matching resources.
-      schema:
-        type: boolean
     SortPath:
       name: list_parameters.sort.path
       in: query
       required: false
       description: Field path to sort the result set by.
-      schema:
-        type: string
-    Filter:
-      name: list_parameters.filter
-      in: query
-      required: false
-      description: Endor query-language filter expression applied to the resource list.
-      schema:
-        type: string
-    Uuid:
-      name: uuid
-      in: path
-      required: true
-      description: The UUID of the resource.
-      schema:
-        type: string
-    Mask:
-      name: list_parameters.mask
-      in: query
-      required: false
-      description: Comma-separated field mask selecting which fields to return.
       schema:
         type: string
     PageToken:
@@ -122,11 +94,25 @@ components:
       description: Opaque token to retrieve the next page of results.
       schema:
         type: string
-    Namespace:
-      name: namespace
-      in: path
-      required: true
-      description: The tenant namespace (tenant_meta.namespace) that scopes the resource.
+    Count:
+      name: list_parameters.count
+      in: query
+      required: false
+      description: When true, return only the count of matching resources.
+      schema:
+        type: boolean
+    Filter:
+      name: list_parameters.filter
+      in: query
+      required: false
+      description: Endor query-language filter expression applied to the resource list.
+      schema:
+        type: string
+    Mask:
+      name: list_parameters.mask
+      in: query
+      required: false
+      description: Comma-separated field mask selecting which fields to return.
       schema:
         type: string
     PageSize:
@@ -137,20 +123,68 @@ components:
       schema:
         type: integer
         format: int32
+    Namespace:
+      name: namespace
+      in: path
+      required: true
+      description: The tenant namespace (tenant_meta.namespace) that scopes the resource.
+      schema:
+        type: string
+    Uuid:
+      name: uuid
+      in: path
+      required: true
+      description: The UUID of the resource.
+      schema:
+        type: string
   responses:
-    Unauthorized:
-      description: Missing or invalid bearer access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     NotFound:
       description: The requested resource was not found.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid bearer access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    ProjectList:
+      type: object
+      properties:
+        list:
+          type: object
+          properties:
+            objects:
+              type: array
+              items:
+                $ref: '#/components/schemas/Project'
+            response:
+              $ref: '#/components/schemas/ListResponse'
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    TenantMeta:
+      type: object
+      properties:
+        namespace:
+          type: string
+          description: The namespace the resource belongs to.
+    ListResponse:
+      type: object
+      properties:
+        next_page_token:
+          type: string
+        count:
+          type: integer
+          format: int32
     ResourceMeta:
       type: object
       properties:
@@ -168,22 +202,6 @@ components:
         update_time:
           type: string
           format: date-time
-    ListResponse:
-      type: object
-      properties:
-        next_page_token:
-          type: string
-        count:
-          type: integer
-          format: int32
-    Error:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
     Project:
       type: object
       properties:
@@ -206,24 +224,6 @@ components:
             platform_source:
               type: string
               description: Source platform, e.g. GITHUB, GITLAB.
-    TenantMeta:
-      type: object
-      properties:
-        namespace:
-          type: string
-          description: The namespace the resource belongs to.
-    ProjectList:
-      type: object
-      properties:
-        list:
-          type: object
-          properties:
-            objects:
-              type: array
-              items:
-                $ref: '#/components/schemas/Project'
-            response:
-              $ref: '#/components/schemas/ListResponse'
   securitySchemes:
     bearerAuth:
       type: http
