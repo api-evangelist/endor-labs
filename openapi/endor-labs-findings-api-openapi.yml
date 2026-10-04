@@ -57,98 +57,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  parameters:
-    SortPath:
-      name: list_parameters.sort.path
-      in: query
-      required: false
-      description: Field path to sort the result set by.
-      schema:
-        type: string
-    PageToken:
-      name: list_parameters.page_token
-      in: query
-      required: false
-      description: Opaque token to retrieve the next page of results.
-      schema:
-        type: string
-    Count:
-      name: list_parameters.count
-      in: query
-      required: false
-      description: When true, return only the count of matching resources.
-      schema:
-        type: boolean
-    Filter:
-      name: list_parameters.filter
-      in: query
-      required: false
-      description: Endor query-language filter expression applied to the resource list.
-      schema:
-        type: string
-    Mask:
-      name: list_parameters.mask
-      in: query
-      required: false
-      description: Comma-separated field mask selecting which fields to return.
-      schema:
-        type: string
-    PageSize:
-      name: list_parameters.page_size
-      in: query
-      required: false
-      description: Maximum number of resources to return per page.
-      schema:
-        type: integer
-        format: int32
-    Namespace:
-      name: namespace
-      in: path
-      required: true
-      description: The tenant namespace (tenant_meta.namespace) that scopes the resource.
-      schema:
-        type: string
-    Uuid:
-      name: uuid
-      in: path
-      required: true
-      description: The UUID of the resource.
-      schema:
-        type: string
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid bearer access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    FindingList:
-      type: object
-      properties:
-        list:
-          type: object
-          properties:
-            objects:
-              type: array
-              items:
-                $ref: '#/components/schemas/Finding'
-            response:
-              $ref: '#/components/schemas/ListResponse'
-    Error:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
     Finding:
       type: object
       properties:
@@ -216,6 +125,97 @@ components:
         update_time:
           type: string
           format: date-time
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    FindingList:
+      type: object
+      properties:
+        list:
+          type: object
+          properties:
+            objects:
+              type: array
+              items:
+                $ref: '#/components/schemas/Finding'
+            response:
+              $ref: '#/components/schemas/ListResponse'
+  parameters:
+    Mask:
+      name: list_parameters.mask
+      in: query
+      required: false
+      description: Comma-separated field mask selecting which fields to return.
+      schema:
+        type: string
+    SortPath:
+      name: list_parameters.sort.path
+      in: query
+      required: false
+      description: Field path to sort the result set by.
+      schema:
+        type: string
+    PageSize:
+      name: list_parameters.page_size
+      in: query
+      required: false
+      description: Maximum number of resources to return per page.
+      schema:
+        type: integer
+        format: int32
+    Filter:
+      name: list_parameters.filter
+      in: query
+      required: false
+      description: Endor query-language filter expression applied to the resource list.
+      schema:
+        type: string
+    Count:
+      name: list_parameters.count
+      in: query
+      required: false
+      description: When true, return only the count of matching resources.
+      schema:
+        type: boolean
+    Namespace:
+      name: namespace
+      in: path
+      required: true
+      description: The tenant namespace (tenant_meta.namespace) that scopes the resource.
+      schema:
+        type: string
+    Uuid:
+      name: uuid
+      in: path
+      required: true
+      description: The UUID of the resource.
+      schema:
+        type: string
+    PageToken:
+      name: list_parameters.page_token
+      in: query
+      required: false
+      description: Opaque token to retrieve the next page of results.
+      schema:
+        type: string
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid bearer access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     bearerAuth:
       type: http

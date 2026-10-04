@@ -56,20 +56,6 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   parameters:
-    PageToken:
-      name: list_parameters.page_token
-      in: query
-      required: false
-      description: Opaque token to retrieve the next page of results.
-      schema:
-        type: string
-    Filter:
-      name: list_parameters.filter
-      in: query
-      required: false
-      description: Endor query-language filter expression applied to the resource list.
-      schema:
-        type: string
     Mask:
       name: list_parameters.mask
       in: query
@@ -85,6 +71,13 @@ components:
       schema:
         type: integer
         format: int32
+    Filter:
+      name: list_parameters.filter
+      in: query
+      required: false
+      description: Endor query-language filter expression applied to the resource list.
+      schema:
+        type: string
     Namespace:
       name: namespace
       in: path
@@ -99,7 +92,45 @@ components:
       description: The UUID of the resource.
       schema:
         type: string
+    PageToken:
+      name: list_parameters.page_token
+      in: query
+      required: false
+      description: Opaque token to retrieve the next page of results.
+      schema:
+        type: string
   schemas:
+    TenantMeta:
+      type: object
+      properties:
+        namespace:
+          type: string
+          description: The namespace the resource belongs to.
+    ResourceMeta:
+      type: object
+      properties:
+        name:
+          type: string
+        kind:
+          type: string
+        description:
+          type: string
+        version:
+          type: string
+        create_time:
+          type: string
+          format: date-time
+        update_time:
+          type: string
+          format: date-time
+    ListResponse:
+      type: object
+      properties:
+        next_page_token:
+          type: string
+        count:
+          type: integer
+          format: int32
     ScanResultList:
       type: object
       properties:
@@ -144,37 +175,6 @@ components:
             end_time:
               type: string
               format: date-time
-    TenantMeta:
-      type: object
-      properties:
-        namespace:
-          type: string
-          description: The namespace the resource belongs to.
-    ListResponse:
-      type: object
-      properties:
-        next_page_token:
-          type: string
-        count:
-          type: integer
-          format: int32
-    ResourceMeta:
-      type: object
-      properties:
-        name:
-          type: string
-        kind:
-          type: string
-        description:
-          type: string
-        version:
-          type: string
-        create_time:
-          type: string
-          format: date-time
-        update_time:
-          type: string
-          format: date-time
   responses:
     NotFound:
       description: The requested resource was not found.
