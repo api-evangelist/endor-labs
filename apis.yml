@@ -34,6 +34,10 @@ accessModel:
   generated: '2026-07-22'
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/endor-labs.png
+x-docs-platform: mintlify
+x-docs-platform-confidence: medium
+x-docs-platform-checked: 2026-10-03
+x-docs-hosting: vercel
 tags:
 - Security
 - Software Supply Chain
@@ -216,6 +220,9 @@ apis:
   - type: Documentation
     url: https://docs.endorlabs.com/rest-api/authentication/
 common:
+- type: CapabilityMap
+  url: capabilities/endor-labs-capability-edges.yml
+  name: Endor Labs Business Capability Map
 - type: AgenticAccess
   url: agentic-access/endor-labs-agentic-access.yml
 - type: DomainSecurity
