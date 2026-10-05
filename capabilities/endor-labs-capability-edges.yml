@@ -1,0 +1,50 @@
+slug: endor-labs
+provider: Endor Labs
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 3
+edges:
+- tag: Findings
+  spec_file: endor-labs-findings-api-openapi.yml
+  capability_id: BC-620.40
+  capability_id_l1: BC-620
+  capability_name: Vulnerability Management
+  confidence: 0.8
+  evidence: 'GET /namespaces/{namespace}/findings "List Finding resources in a namespace"; vendor: "reachability-based
+    Software Composition Analysis (SCA), SBOM/VEX, secrets and SAST scanning"'
+  reason: Findings here are security scan results (SCA/SAST/secrets) over software assets, i.e. vulnerability
+    identification and remediation tracking. Some ambiguity between vulnerability management and broader
+    security governance keeps this at 0.8.
+- tag: Policies
+  spec_file: endor-labs-policies-api-openapi.yml
+  capability_id: BC-620.10
+  capability_id_l1: BC-620
+  capability_name: Security Strategy & Governance Management
+  confidence: 0.7
+  evidence: 'POST /namespaces/{namespace}/policies "Create a Policy resource in a namespace"; vendor:
+    "exposing projects, packages, findings, policies, scan results"'
+  reason: Full lifecycle management of security policies that govern scanning and finding enforcement
+    on an application-security platform, which is security policy/governance. The operations do not detail
+    policy content, hence 0.7.
+- tag: Scan Results
+  spec_file: endor-labs-scan-results-api-openapi.yml
+  capability_id: BC-620.40
+  capability_id_l1: BC-620
+  capability_name: Vulnerability Management
+  confidence: 0.7
+  evidence: 'GET /namespaces/{namespace}/scan-results listScanResults ''List ScanResult resources in a
+    namespace''; vendor: ''reachability-based Software Composition Analysis (SCA), SBOM/VEX, secrets and
+    SAST scanning'''
+  reason: The tag exposes results of security scans (SCA/SAST/secrets) over code and dependencies, which
+    is the output of vulnerability scanning and remediation tracking. Confidence is moderate rather than
+    high because the tag's own operations are only generic list/get over a ScanResult resource, and an
+    argument could be made for software quality engineering instead.
