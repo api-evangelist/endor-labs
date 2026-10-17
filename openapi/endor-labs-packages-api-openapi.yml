@@ -56,57 +56,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  parameters:
-    Mask:
-      name: list_parameters.mask
-      in: query
-      required: false
-      description: Comma-separated field mask selecting which fields to return.
-      schema:
-        type: string
-    PageSize:
-      name: list_parameters.page_size
-      in: query
-      required: false
-      description: Maximum number of resources to return per page.
-      schema:
-        type: integer
-        format: int32
-    Filter:
-      name: list_parameters.filter
-      in: query
-      required: false
-      description: Endor query-language filter expression applied to the resource list.
-      schema:
-        type: string
-    Count:
-      name: list_parameters.count
-      in: query
-      required: false
-      description: When true, return only the count of matching resources.
-      schema:
-        type: boolean
-    Namespace:
-      name: namespace
-      in: path
-      required: true
-      description: The tenant namespace (tenant_meta.namespace) that scopes the resource.
-      schema:
-        type: string
-    Uuid:
-      name: uuid
-      in: path
-      required: true
-      description: The UUID of the resource.
-      schema:
-        type: string
-    PageToken:
-      name: list_parameters.page_token
-      in: query
-      required: false
-      description: Opaque token to retrieve the next page of results.
-      schema:
-        type: string
   schemas:
     PackageVersion:
       type: object
@@ -142,23 +91,6 @@ components:
         count:
           type: integer
           format: int32
-    ResourceMeta:
-      type: object
-      properties:
-        name:
-          type: string
-        kind:
-          type: string
-        description:
-          type: string
-        version:
-          type: string
-        create_time:
-          type: string
-          format: date-time
-        update_time:
-          type: string
-          format: date-time
     PackageVersionList:
       type: object
       properties:
@@ -179,6 +111,23 @@ components:
           format: int32
         message:
           type: string
+    ResourceMeta:
+      type: object
+      properties:
+        name:
+          type: string
+        kind:
+          type: string
+        description:
+          type: string
+        version:
+          type: string
+        create_time:
+          type: string
+          format: date-time
+        update_time:
+          type: string
+          format: date-time
   responses:
     NotFound:
       description: The requested resource was not found.
@@ -192,6 +141,57 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+  parameters:
+    Uuid:
+      name: uuid
+      in: path
+      required: true
+      description: The UUID of the resource.
+      schema:
+        type: string
+    Filter:
+      name: list_parameters.filter
+      in: query
+      required: false
+      description: Endor query-language filter expression applied to the resource list.
+      schema:
+        type: string
+    Mask:
+      name: list_parameters.mask
+      in: query
+      required: false
+      description: Comma-separated field mask selecting which fields to return.
+      schema:
+        type: string
+    PageToken:
+      name: list_parameters.page_token
+      in: query
+      required: false
+      description: Opaque token to retrieve the next page of results.
+      schema:
+        type: string
+    Namespace:
+      name: namespace
+      in: path
+      required: true
+      description: The tenant namespace (tenant_meta.namespace) that scopes the resource.
+      schema:
+        type: string
+    PageSize:
+      name: list_parameters.page_size
+      in: query
+      required: false
+      description: Maximum number of resources to return per page.
+      schema:
+        type: integer
+        format: int32
+    Count:
+      name: list_parameters.count
+      in: query
+      required: false
+      description: When true, return only the count of matching resources.
+      schema:
+        type: boolean
   securitySchemes:
     bearerAuth:
       type: http

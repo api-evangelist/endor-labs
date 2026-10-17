@@ -36,14 +36,6 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   parameters:
-    PageSize:
-      name: list_parameters.page_size
-      in: query
-      required: false
-      description: Maximum number of resources to return per page.
-      schema:
-        type: integer
-        format: int32
     Namespace:
       name: namespace
       in: path
@@ -58,19 +50,22 @@ components:
       description: Opaque token to retrieve the next page of results.
       schema:
         type: string
+    PageSize:
+      name: list_parameters.page_size
+      in: query
+      required: false
+      description: Maximum number of resources to return per page.
+      schema:
+        type: integer
+        format: int32
+  responses:
+    Unauthorized:
+      description: Missing or invalid bearer access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    NamespaceList:
-      type: object
-      properties:
-        list:
-          type: object
-          properties:
-            objects:
-              type: array
-              items:
-                $ref: '#/components/schemas/Namespace'
-            response:
-              $ref: '#/components/schemas/ListResponse'
     TenantMeta:
       type: object
       properties:
@@ -85,6 +80,35 @@ components:
         count:
           type: integer
           format: int32
+    NamespaceList:
+      type: object
+      properties:
+        list:
+          type: object
+          properties:
+            objects:
+              type: array
+              items:
+                $ref: '#/components/schemas/Namespace'
+            response:
+              $ref: '#/components/schemas/ListResponse'
+    Namespace:
+      type: object
+      properties:
+        uuid:
+          type: string
+        meta:
+          $ref: '#/components/schemas/ResourceMeta'
+        tenant_meta:
+          $ref: '#/components/schemas/TenantMeta'
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
     ResourceMeta:
       type: object
       properties:
@@ -102,30 +126,6 @@ components:
         update_time:
           type: string
           format: date-time
-    Error:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-    Namespace:
-      type: object
-      properties:
-        uuid:
-          type: string
-        meta:
-          $ref: '#/components/schemas/ResourceMeta'
-        tenant_meta:
-          $ref: '#/components/schemas/TenantMeta'
-  responses:
-    Unauthorized:
-      description: Missing or invalid bearer access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     bearerAuth:
       type: http

@@ -55,82 +55,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  parameters:
-    Mask:
-      name: list_parameters.mask
-      in: query
-      required: false
-      description: Comma-separated field mask selecting which fields to return.
-      schema:
-        type: string
-    PageSize:
-      name: list_parameters.page_size
-      in: query
-      required: false
-      description: Maximum number of resources to return per page.
-      schema:
-        type: integer
-        format: int32
-    Filter:
-      name: list_parameters.filter
-      in: query
-      required: false
-      description: Endor query-language filter expression applied to the resource list.
-      schema:
-        type: string
-    Namespace:
-      name: namespace
-      in: path
-      required: true
-      description: The tenant namespace (tenant_meta.namespace) that scopes the resource.
-      schema:
-        type: string
-    Uuid:
-      name: uuid
-      in: path
-      required: true
-      description: The UUID of the resource.
-      schema:
-        type: string
-    PageToken:
-      name: list_parameters.page_token
-      in: query
-      required: false
-      description: Opaque token to retrieve the next page of results.
-      schema:
-        type: string
   schemas:
-    TenantMeta:
-      type: object
-      properties:
-        namespace:
-          type: string
-          description: The namespace the resource belongs to.
-    ResourceMeta:
-      type: object
-      properties:
-        name:
-          type: string
-        kind:
-          type: string
-        description:
-          type: string
-        version:
-          type: string
-        create_time:
-          type: string
-          format: date-time
-        update_time:
-          type: string
-          format: date-time
-    ListResponse:
-      type: object
-      properties:
-        next_page_token:
-          type: string
-        count:
-          type: integer
-          format: int32
     ScanResultList:
       type: object
       properties:
@@ -143,14 +68,6 @@ components:
                 $ref: '#/components/schemas/ScanResult'
             response:
               $ref: '#/components/schemas/ListResponse'
-    Error:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
     ScanResult:
       type: object
       properties:
@@ -175,6 +92,45 @@ components:
             end_time:
               type: string
               format: date-time
+    TenantMeta:
+      type: object
+      properties:
+        namespace:
+          type: string
+          description: The namespace the resource belongs to.
+    ListResponse:
+      type: object
+      properties:
+        next_page_token:
+          type: string
+        count:
+          type: integer
+          format: int32
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    ResourceMeta:
+      type: object
+      properties:
+        name:
+          type: string
+        kind:
+          type: string
+        description:
+          type: string
+        version:
+          type: string
+        create_time:
+          type: string
+          format: date-time
+        update_time:
+          type: string
+          format: date-time
   responses:
     NotFound:
       description: The requested resource was not found.
@@ -188,6 +144,50 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+  parameters:
+    Uuid:
+      name: uuid
+      in: path
+      required: true
+      description: The UUID of the resource.
+      schema:
+        type: string
+    Filter:
+      name: list_parameters.filter
+      in: query
+      required: false
+      description: Endor query-language filter expression applied to the resource list.
+      schema:
+        type: string
+    Mask:
+      name: list_parameters.mask
+      in: query
+      required: false
+      description: Comma-separated field mask selecting which fields to return.
+      schema:
+        type: string
+    PageToken:
+      name: list_parameters.page_token
+      in: query
+      required: false
+      description: Opaque token to retrieve the next page of results.
+      schema:
+        type: string
+    Namespace:
+      name: namespace
+      in: path
+      required: true
+      description: The tenant namespace (tenant_meta.namespace) that scopes the resource.
+      schema:
+        type: string
+    PageSize:
+      name: list_parameters.page_size
+      in: query
+      required: false
+      description: Maximum number of resources to return per page.
+      schema:
+        type: integer
+        format: int32
   securitySchemes:
     bearerAuth:
       type: http
