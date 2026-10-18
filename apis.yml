@@ -41,6 +41,13 @@ x-docs-hosting: vercel
 tags:
 - Security
 - Software Supply Chain
+- Software Composition Analysis
+- Reachability
+- AppSec
+- AI Security
+tags_raw:
+- Security
+- Software Supply Chain
 - SCA
 - Reachability
 - AppSec
