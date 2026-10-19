@@ -1,0 +1,1596 @@
+openapi: 3.2.0
+info:
+  description: Integrate your application with Endor Labs using the REST API.
+  title: Endor Labs REST API Reference Agent Hook Policy Definition…
+  version: '1.0'
+servers:
+- description: US (default)
+  url: https://api.endorlabs.com
+- description: EU (data residency)
+  url: https://api.eu.endorlabs.com
+tags:
+- name: AgentHookPolicyDefinitionService
+paths:
+  /v1/namespaces/{object.tenant_meta.namespace}/agent-hook-policy-definitions:
+    patch:
+      description: Updates a specified AgentHookPolicyDefinition.
+      operationId: AgentHookPolicyDefinitionService_UpdateAgentHookPolicyDefinition
+      parameters:
+      - description: 'Namespaces are a way to organize organizational units into virtual
+
+          groupings of resources. Namespaces must be a fully qualified name,
+
+          for example, the child namespace of namespace "endor.prod" called "app"
+
+          is called "endor.prod.app".'
+        in: path
+        name: object.tenant_meta.namespace
+        required: true
+        schema:
+          type: string
+        x-endor-name: Namespace
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentHookPolicyDefinitionServiceUpdateAgentHookPolicyDefinitionBody'
+        required: true
+        x-originalParamName: body
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1AgentHookPolicyDefinition'
+          description: A successful response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+          description: An unexpected error response.
+      summary: UpdateAgentHookPolicyDefinition
+      tags:
+      - AgentHookPolicyDefinitionService
+      x-internal: true
+  /v1/namespaces/{tenant_meta.namespace}/agent-hook-policy-definitions:
+    get:
+      description: Lists all AgentHookPolicyDefinitions visible in a namespace.
+      operationId: AgentHookPolicyDefinitionService_ListAgentHookPolicyDefinitions
+      parameters:
+      - description: 'Namespaces are a way to organize organizational units into virtual
+
+          groupings of resources. Namespaces must be a fully qualified name,
+
+          for example, the child namespace of namespace "endor.prod" called "app"
+
+          is called "endor.prod.app".'
+        in: path
+        name: tenant_meta.namespace
+        required: true
+        schema:
+          type: string
+        x-endor-name: Namespace
+      - description: 'String of conditions to filter resources by.
+
+          Filters may include any attribute along with the following operators:
+
+          "==", "!=", ">", ">=", "<", "<=", "Contains", "In", "Matches", and
+
+          "Exists". The logical operators "And" and "Or" are also supported.
+
+          Expressions may be combined and grouped with parentheses.
+
+
+          Examples:
+
+          "spec.value == 5",
+
+          "spec.value in ["a", "b", "c"]",
+
+          "(meta.name == "xyz" and "spec.value in ["a","b"]) or (spec.value ==
+
+          "c")".'
+        in: query
+        name: list_parameters.filter
+        schema:
+          type: string
+      - description: 'Set the page token to start from.
+
+          Use page tokens to page through list results or list specific pages.'
+        in: query
+        name: list_parameters.page_token
+        schema:
+          format: int32
+          type: integer
+      - description: 'Set the page size to limit the number of results returned.
+
+          Default: 100. Max: 500.'
+        in: query
+        name: list_parameters.page_size
+        schema:
+          format: int32
+          type: integer
+      - description: Action to be executed with a request. Not supported for all endpoints.
+        in: query
+        name: list_parameters.action
+        schema:
+          type: string
+      - description: List of fields to return (all fields are returned by default).
+        in: query
+        name: list_parameters.mask
+        schema:
+          type: string
+      - description: Get data from any child namespaces as well.
+        in: query
+        name: list_parameters.traverse
+        schema:
+          type: boolean
+      - description: Field to sort objects by, for example, meta.name.
+        in: query
+        name: list_parameters.sort.path
+        schema:
+          type: string
+      - description: 'Sort order. Default: ASC.'
+        in: query
+        name: list_parameters.sort.order
+        schema:
+          default: SORT_ENTRY_ORDER_UNSPECIFIED
+          enum:
+          - SORT_ENTRY_ORDER_UNSPECIFIED
+          - SORT_ENTRY_ORDER_ASC
+          - SORT_ENTRY_ORDER_DESC
+          type: string
+      - description: 'Return the number of objects matching the given list parameters.
+
+          If count is set to true, the response is a CountResponse.
+
+          Can be used together with filter and traverse.'
+        in: query
+        name: list_parameters.count
+        schema:
+          type: boolean
+      - description: 'Group the objects based on this field.
+
+          If there are multiple fields then the objects are grouped
+
+          based on the uniqueness of all fields.
+
+          Supports composite paths.
+
+          Supports arrays and maps.'
+        in: query
+        name: list_parameters.group.aggregation_paths
+        schema:
+          type: string
+      - description: 'Return the UUID of each object in each group as specified by
+
+          aggregation_paths.'
+        in: query
+        name: list_parameters.group.show_aggregation_uuids
+        schema:
+          type: boolean
+      - description: 'List of fields for which we want the unique count.
+
+          Supports arrays and maps.'
+        in: query
+        name: list_parameters.group.unique_count_paths
+        schema:
+          type: string
+      - description: 'List of fields for which we want the unique values.
+
+          Supports arrays and maps.'
+        in: query
+        name: list_parameters.group.unique_value_paths
+        schema:
+          type: string
+      - description: Only return objects from PR scans that match this context id.
+        in: query
+        name: list_parameters.ci_run_uuid
+        schema:
+          type: string
+      - description: Page ID to retrieve.
+        in: query
+        name: list_parameters.page_id
+        schema:
+          type: string
+      - description: 'Group the objects based on this time field,
+
+          for example, meta.create_time.'
+        in: query
+        name: list_parameters.group_by_time.aggregation_paths
+        schema:
+          type: string
+      - description: Return the UUIDs of the objects in each group.
+        in: query
+        name: list_parameters.group_by_time.show_aggregation_uuids
+        schema:
+          type: boolean
+      - description: Interval unit by which the objects should be grouped.
+        in: query
+        name: list_parameters.group_by_time.interval
+        schema:
+          default: GROUP_BY_TIME_INTERVAL_UNSPECIFIED
+          enum:
+          - GROUP_BY_TIME_INTERVAL_UNSPECIFIED
+          - GROUP_BY_TIME_INTERVAL_YEAR
+          - GROUP_BY_TIME_INTERVAL_QUARTER
+          - GROUP_BY_TIME_INTERVAL_MONTH
+          - GROUP_BY_TIME_INTERVAL_WEEK
+          - GROUP_BY_TIME_INTERVAL_DAY
+          - GROUP_BY_TIME_INTERVAL_HOUR
+          - GROUP_BY_TIME_INTERVAL_MINUTE
+          - GROUP_BY_TIME_INTERVAL_SECOND
+          type: string
+      - description: 'Size of the time interval to group the objects by,
+
+          for example, to group objects by 2-week intervals, set interval
+
+          to GROUP_BY_TIME_INTERVAL_WEEK and group_size to 2.'
+        in: query
+        name: list_parameters.group_by_time.group_size
+        schema:
+          format: int32
+          type: integer
+      - description: 'Beginning of the time period to group objects.
+
+          Defaults to the beginning of time.'
+        in: query
+        name: list_parameters.group_by_time.start_time
+        schema:
+          format: date-time
+          type: string
+      - description: 'End of the time period to group objects.
+
+          Defaults to the current time.'
+        in: query
+        name: list_parameters.group_by_time.end_time
+        schema:
+          format: date-time
+          type: string
+      - description: 'The mode determines how the matching objects are counted
+
+          in the produced time-series. Values allowed are:
+
+          count (default) : is the number of items matching in every interval.
+
+          sum: is the total number of items matching since the beginning of the
+
+          aggregation time.'
+        in: query
+        name: list_parameters.group_by_time.mode
+        schema:
+          type: string
+      - description: 'The aggregation_field is a field on the matched objects that we want to
+
+          perform some operation in each interval (example : min, max, avg)'
+        in: query
+        name: list_parameters.group_by_time.aggregation_value_field
+        schema:
+          type: string
+      - description: 'The aggreation_operator is the operator that we should use for the
+
+          aggregation. Allowed values are: min, max, sum, avg'
+        in: query
+        name: list_parameters.group_by_time.aggregation_operator
+        schema:
+          type: string
+      - description: 'If true, the results will not be paginated and
+
+          only the first page will be returned. The order
+
+          of the results is not guaranteed.'
+        in: query
+        name: list_parameters.disable_pagination
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1ListAgentHookPolicyDefinitionsResponse'
+          description: A successful response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+          description: An unexpected error response.
+      summary: ListAgentHookPolicyDefinitions
+      tags:
+      - AgentHookPolicyDefinitionService
+      x-internal: true
+    post:
+      description: Creates an AgentHookPolicyDefinition.
+      operationId: AgentHookPolicyDefinitionService_CreateAgentHookPolicyDefinition
+      parameters:
+      - description: 'Namespaces are a way to organize organizational units into virtual
+
+          groupings of resources. Namespaces must be a fully qualified name,
+
+          for example, the child namespace of namespace "endor.prod" called "app"
+
+          is called "endor.prod.app".'
+        in: path
+        name: tenant_meta.namespace
+        required: true
+        schema:
+          type: string
+        x-endor-name: Namespace
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentHookPolicyDefinitionServiceCreateAgentHookPolicyDefinitionBody'
+        required: true
+        x-originalParamName: body
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1AgentHookPolicyDefinition'
+          description: A successful response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+          description: An unexpected error response.
+      summary: CreateAgentHookPolicyDefinition
+      tags:
+      - AgentHookPolicyDefinitionService
+      x-internal: true
+  /v1/namespaces/{tenant_meta.namespace}/agent-hook-policy-definitions/{uuid}:
+    delete:
+      description: Deletes an AgentHookPolicyDefinition specified by its UUID.
+      operationId: AgentHookPolicyDefinitionService_DeleteAgentHookPolicyDefinition
+      parameters:
+      - description: 'Namespaces are a way to organize organizational units into virtual
+
+          groupings of resources. Namespaces must be a fully qualified name,
+
+          for example, the child namespace of namespace "endor.prod" called "app"
+
+          is called "endor.prod.app".'
+        in: path
+        name: tenant_meta.namespace
+        required: true
+        schema:
+          type: string
+        x-endor-name: Namespace
+      - description: The UUID of the resource to be deleted.
+        in: path
+        name: uuid
+        required: true
+        schema:
+          type: string
+      - description: Action to be executed with delete request.
+        in: query
+        name: delete_parameters.action
+        schema:
+          type: string
+      - description: 'Force will force the deletion of the resource if any
+
+          checks fail.'
+        in: query
+        name: delete_parameters.force
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+          description: A successful response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+          description: An unexpected error response.
+      summary: DeleteAgentHookPolicyDefinition
+      tags:
+      - AgentHookPolicyDefinitionService
+      x-internal: true
+    get:
+      description: Fetches an AgentHookPolicyDefinition specified by its UUID.
+      operationId: AgentHookPolicyDefinitionService_GetAgentHookPolicyDefinition
+      parameters:
+      - description: 'Namespaces are a way to organize organizational units into virtual
+
+          groupings of resources. Namespaces must be a fully qualified name,
+
+          for example, the child namespace of namespace "endor.prod" called "app"
+
+          is called "endor.prod.app".'
+        in: path
+        name: tenant_meta.namespace
+        required: true
+        schema:
+          type: string
+        x-endor-name: Namespace
+      - description: The UUID of the requested resource.
+        in: path
+        name: uuid
+        required: true
+        schema:
+          type: string
+      - description: List of fields to return (all fields are returned by default).
+        in: query
+        name: get_parameters.mask
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1AgentHookPolicyDefinition'
+          description: A successful response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+          description: An unexpected error response.
+      summary: GetAgentHookPolicyDefinition
+      tags:
+      - AgentHookPolicyDefinitionService
+      x-internal: true
+components:
+  schemas:
+    v1DependencyRiskActivitySeverity:
+      default: SEVERITY_UNSPECIFIED
+      description: "Severity levels, mirroring Vuln.Spec.CVSSV3Severity.Level.\n\n - SEVERITY_UNSPECIFIED: Unset. min_cvss_severity treats this as HIGH.\n - SEVERITY_LOW: CVSS low (0.1 - 3.9).\n - SEVERITY_MEDIUM: CVSS medium (4.0 - 6.9).\n - SEVERITY_HIGH: CVSS high (7.0 - 8.9).\n - SEVERITY_CRITICAL: CVSS critical (9.0 - 10.0)."
+      enum:
+      - SEVERITY_UNSPECIFIED
+      - SEVERITY_LOW
+      - SEVERITY_MEDIUM
+      - SEVERITY_HIGH
+      - SEVERITY_CRITICAL
+      type: string
+    v1AutoModeActivity:
+      description: 'AutoModeActivity turns LLM command judging on for a namespace and says which
+
+        commands reach the judge.
+
+
+        It is an activity kind rather than a resource of its own so that it inherits
+
+        the AgentHookPolicyDefinition machinery: namespace propagation, name-based
+
+        deduplication, the JSONL policy-file cache, enabled, and scope.
+
+
+        It never produces a match of its own. It is read before the per-policy loop to
+
+        decide which commands are judged, and a match the judge raises is a CMD_LINE
+
+        match attributed to this policy. The model stays server-owned: the policy
+
+        carries no model name and no prompt, only deployment_context.
+
+
+        EXACTLY ONE applies to an event — the most specifically scoped candidate, with
+
+        the policy name breaking an equal rank — and it supplies the whole
+
+        configuration. They are not unioned, unlike secrets_check or malware_check,
+
+        because a mode is not a finding: OR is monotone, so nothing at a narrower
+
+        scope could ever turn a setting back off. A policy that loses is named in a
+
+        warning, stays enabled and listed, and does nothing.'
+      properties:
+        deployment_context:
+          description: 'Free-text lines describing the local deployment: which hosts are the
+
+            organisation''s own, which registries are sanctioned, that ENDOR_TOKEN is
+
+            expected on this machine.
+
+
+            These fill the trust anchors the rubric names as deployment-supplied and
+
+            ships empty; until they are set the rubric over-escalates on ordinary
+
+            internal traffic. They are appended AFTER the rubric, so the rubric stays a
+
+            byte-identical prefix the provider can serve from its cache.
+
+
+            The bounds below are per entry. ValidatePolicy bounds the SUM at 8 KiB, the
+
+            point past which the judge stops reading, so a tenant cannot store context
+
+            that would be dropped unread on every call — nor a policy line long enough
+
+            to break the JSONL reader that distributes the set to hooks.'
+          items:
+            type: string
+          type: array
+        judge_scope:
+          $ref: '#/components/schemas/AutoModeActivityJudgeScope'
+      type: object
+    v1DependencyRiskActivity:
+      description: 'DependencyRiskActivity checks the dependencies an event introduces (from an
+
+        install command or a manifest/lockfile edit) against Endor''s vulnerability
+
+        data. Matching the activity means running the check; the verdict comes from
+
+        the lookup, not from the policy config.'
+      properties:
+        ecosystems:
+          description: Ecosystems to check (e.g. "npm", "pypi"). Empty means all ecosystems.
+          items:
+            type: string
+          type: array
+        exclude_file_patterns:
+          description: 'Skip files whose path matches one of these regexes. Applied after
+
+            include_file_patterns.'
+          items:
+            type: string
+          type: array
+        include_file_patterns:
+          description: 'Only check files whose path matches one of these regexes. Empty means every
+
+            manifest/lockfile name the check recognizes.'
+          items:
+            type: string
+          type: array
+        include_transitives:
+          description: Also check the packages the new dependency pulls in.
+          type: boolean
+        min_cvss_severity:
+          $ref: '#/components/schemas/v1DependencyRiskActivitySeverity'
+      type: object
+    AutoModeActivityJudgeScope:
+      default: JUDGE_SCOPE_UNSPECIFIED
+      description: "JudgeScope says which commands reach the judge. It is one selector rather\nthan a set of booleans so that no two modes can be in force at once.\n\n - JUDGE_SCOPE_UNSPECIFIED: Judge nothing. The policy still supplies deployment_context to the\ncmd_line policies that carry the AUTO action and judge on their own.\n\nThis is also what an endorctl too old to know a value added later reads,\nso every future value fails safe.\n - JUDGE_SCOPE_MATCHED_COMMANDS: Judge the commands a RISK command policy already matched, treating the\naction of each matched policy as AUTO.\n\nThis overrides an explicit customer decision in BOTH directions: a policy\nthat says block stops blocking and asks the judge, and one that says alert\nor feedback can escalate to a block on a suspicious label. The override\nlasts only as long as the judge answers — with no label each policy keeps\nits own action, so an outage degrades to the enforcement the tenant had.\nA GOVERNANCE policy is never overridden, and a command that only a\ngovernance policy matched is not judged at all.\n - JUDGE_SCOPE_ALL_COMMANDS: Judge every command and stand the RISK command policies down. The malware\nand secrets checks are untouched: they carry real detections rather than\nregular expressions.\n\nThe patterns are still evaluated. They are stood down by a label coming\nback rather than by this scope alone, which is what lets a judge that\ncannot be reached fall back to the verdict they produced.\n\nAn allowlist stands down on the same terms as a blocklist, so a command\nabsent from the set a tenant permitted runs anyway if the judge finds\nnothing wrong with it. Mark a command policy GOVERNANCE to keep its\naction final: a governance match keeps its own action under every label.\nThe judge still rules on the command itself, so a review or suspicious\nlabel also raises an ask or a block against the auto-mode policy, next to\nthe governance match."
+      enum:
+      - JUDGE_SCOPE_UNSPECIFIED
+      - JUDGE_SCOPE_MATCHED_COMMANDS
+      - JUDGE_SCOPE_ALL_COMMANDS
+      type: string
+    GroupResponseGroupData:
+      description: Information about objects matching the given key.
+      properties:
+        aggregation_count:
+          $ref: '#/components/schemas/v1CountResponse'
+        aggregation_uuids:
+          description: 'List of UUIDs of the objects in the group.
+
+            Only populated if show_aggregation_uuids is set.'
+          items:
+            type: string
+          type: array
+        aggregation_value:
+          $ref: '#/components/schemas/v1GroupAggregationValueResponse'
+        unique_counts:
+          additionalProperties:
+            $ref: '#/components/schemas/v1CountResponse'
+          description: 'Map of counts for the given unique_count_paths fields.
+
+            Only populated if unique_count_paths is set.'
+          type: object
+        unique_values:
+          additionalProperties:
+            items:
+              type: object
+            type: array
+          description: 'Map of values for the given unique_value_paths fields.
+
+            Only populated if unique_value_paths is set.'
+          type: object
+      type: object
+    googlerpcStatus:
+      description: 'The `Status` type defines a logical error model that is suitable for
+
+        different programming environments, including REST APIs and RPC APIs. It is
+
+        used by [gRPC](https://github.com/grpc). Each `Status` message contains
+
+        three pieces of data: error code, error message, and error details.
+
+
+        You can find out more about this error model and how to work with it in the
+
+        [API Design Guide](https://cloud.google.com/apis/design/errors).'
+      properties:
+        code:
+          description: 'The status code, which should be an enum value of
+
+            [google.rpc.Code][google.rpc.Code].'
+          format: int32
+          type: integer
+        details:
+          description: 'A list of messages that carry the error details.  There is a common set of
+
+            message types for APIs to use.'
+          items:
+            $ref: '#/components/schemas/googleprotobufAny'
+          type: array
+        message:
+          description: 'A developer-facing error message, which should be in English. Any
+
+            user-facing error message should be localized and sent in the
+
+            [google.rpc.Status.details][google.rpc.Status.details] field, or localized
+
+            by the client.'
+          type: string
+      type: object
+    v1PolicyIntent:
+      default: POLICY_INTENT_UNSPECIFIED
+      description: "PolicyIntent says what kind of rule a policy encodes, and so whether the LLM\ncommand judge may rule on its matches. Only cmd_line policies are judged, so\ntoday the intent changes behavior only on a cmd_line policy.\n\n - POLICY_INTENT_UNSPECIFIED: Read as POLICY_INTENT_RISK, so a policy that never sets the field keeps the\nbehavior it had before the field existed.\n - POLICY_INTENT_RISK: The policy is a risk assessment. A judge scope may hand its matches to the\njudge, and the label can release, ask about, or block the command.\n - POLICY_INTENT_GOVERNANCE: The policy is an organisational rule, for example \"installs go through the\npackage firewall\". A verdict on how risky the command is answers a question\nthe rule does not ask, so no judge scope hands its matches to the judge.\nIts own action is final: no label releases it, and no label escalates it.\nNot valid with the AUTO action, which hands the decision to the judge."
+      enum:
+      - POLICY_INTENT_UNSPECIFIED
+      - POLICY_INTENT_RISK
+      - POLICY_INTENT_GOVERNANCE
+      type: string
+    AgentHookActionMatchType:
+      default: MATCH_TYPE_UNSPECIFIED
+      description: 'We may want to trigger when the activity matches the patterns in the policy (blocklist)
+
+        or alternatively when the activity does not match the patterns in the policy (allowlist).'
+      enum:
+      - MATCH_TYPE_UNSPECIFIED
+      - MATCH_TYPE_BLOCKLIST
+      - MATCH_TYPE_ALLOWLIST
+      type: string
+    v1ListAgentHookPolicyDefinitionsResponseList:
+      properties:
+        objects:
+          items:
+            $ref: '#/components/schemas/v1AgentHookPolicyDefinition'
+          type: array
+        response:
+          $ref: '#/components/schemas/v1ListResponse'
+      type: object
+    v1IndexData:
+      description: 'IndexData is used to index the resource for search. It''s an internal
+
+        object.'
+      properties:
+        data:
+          items:
+            type: string
+          readOnly: true
+          type: array
+        search_score:
+          description: search_score is the score of the resource for search. Internal use only.
+          format: float
+          readOnly: true
+          type: number
+        tenant:
+          readOnly: true
+          type: string
+        will_be_deleted_at:
+          description: Time that the resource will be deleted.
+          format: date-time
+          readOnly: true
+          type: string
+      type: object
+    v1SessionSandboxCriteria:
+      description: 'SessionSandboxCriteria matches against AgentSandboxConfig at any
+
+        AgentConfigLevel, and against the session''s resolved sandbox posture.
+
+        Each field is optional.'
+      properties:
+        allowed_host_matchers:
+          description: 'Regex matchers for entries in sandbox.allowed_network_hosts (catches
+
+            overly permissive host rules like ".*").'
+          items:
+            type: string
+          type: array
+        enabled:
+          description: 'If set, match when sandbox.enabled equals this value at any level
+
+            (e.g. false ⇒ "sandbox is explicitly off at some level"). A level that
+
+            does not set sandbox.enabled never matches. To match a session that runs
+
+            unsandboxed, use `postures`.'
+          type: boolean
+        fail_if_unavailable:
+          description: If set, match when sandbox.fail_if_unavailable equals this value.
+          type: boolean
+        postures:
+          description: 'If set, match when the session''s resolved sandbox posture
+
+            (SessionHook.sandbox_config_posture) is one of these values. This is the
+
+            posture that the agent''s resolver derives from its own rules, such as
+
+            defaults, precedence, and (where the resolver checks it) whether the
+
+            sandbox can start on the host. It is not the raw config, which `enabled`
+
+            reads. Blocklist policies only. Must be the only session criterion in the
+
+            policy.'
+          items:
+            $ref: '#/components/schemas/v1SessionSandboxPosture'
+          type: array
+      type: object
+    v1SessionSandboxPosture:
+      default: SESSION_SANDBOX_POSTURE_UNSPECIFIED
+      description: "SessionSandboxPosture mirrors SandboxConfigPosture (agent_hook_event.proto)\nvalue for value. It exists because this file cannot import that one.\nKeep the two in step: the same numbers and the same name suffixes.\n\n - SESSION_SANDBOX_POSTURE_UNSPECIFIED: No posture was evaluated by the client.\n - SESSION_SANDBOX_POSTURE_UNKNOWN: The client evaluated configuration but could not determine posture.\n - SESSION_SANDBOX_POSTURE_ENABLED: Configuration indicates sandboxing is enabled for the session.\n - SESSION_SANDBOX_POSTURE_DISABLED: Configuration indicates sandboxing is disabled for the session."
+      enum:
+      - SESSION_SANDBOX_POSTURE_UNSPECIFIED
+      - SESSION_SANDBOX_POSTURE_UNKNOWN
+      - SESSION_SANDBOX_POSTURE_ENABLED
+      - SESSION_SANDBOX_POSTURE_DISABLED
+      type: string
+    v1AgentHookAction:
+      description: Action describes how to match the activity with the policy and what to do when it matches.
+      properties:
+        alert:
+          $ref: '#/components/schemas/v1AlertAction'
+        ask:
+          $ref: '#/components/schemas/v1AskAction'
+        auto:
+          $ref: '#/components/schemas/v1AutoAction'
+        block:
+          $ref: '#/components/schemas/v1BlockAction'
+        feedback:
+          $ref: '#/components/schemas/v1FeedbackAction'
+        match_type:
+          $ref: '#/components/schemas/AgentHookActionMatchType'
+      type: object
+    v1FileAccessActivityFileOperation:
+      default: FILE_OPERATION_UNSPECIFIED
+      description: FileOperation identifies the type of file access.
+      enum:
+      - FILE_OPERATION_UNSPECIFIED
+      - FILE_OPERATION_READ
+      - FILE_OPERATION_WRITE
+      - FILE_OPERATION_DELETE
+      - FILE_OPERATION_EDIT
+      type: string
+    AgentHookPolicyDefinitionServiceUpdateAgentHookPolicyDefinitionBody:
+      description: Request to update an AgentHookPolicyDefinition.
+      properties:
+        object:
+          description: 'AgentHookPolicyDefinition is a top-level CRUD object that stores a single
+
+            AgentHookPolicy alongside standard metadata.'
+          properties:
+            meta:
+              $ref: '#/components/schemas/v1Meta'
+            propagate:
+              description: 'Object can be propagated to child namespaces. Global objects are visible to
+
+                all namespaces.'
+              type: boolean
+            spec:
+              $ref: '#/components/schemas/v1AgentHookPolicyDefinitionSpec'
+            tenant_meta:
+              description: AgentHookPolicyDefinitions are associated with a tenant or are global.
+              title: AgentHookPolicyDefinitions are associated with a tenant or are global.
+              type: object
+            uuid:
+              description: The UUID of an AgentHookPolicyDefinition.
+              readOnly: true
+              type: string
+          type: object
+        request:
+          $ref: '#/components/schemas/v1UpdateRequest'
+      required:
+      - meta
+      type: object
+    v1UpdateRequest:
+      description: Message used for all update requests.
+      properties:
+        force:
+          description: 'Force will force the update of the resource if any
+
+            checks fail.'
+          type: boolean
+        update_mask:
+          description: Fields to update. Defaults to all fields.
+          type: string
+      type: object
+    v1AutoAction:
+      description: 'AutoAction hands the decision on a matched command to the LLM judge: the
+
+        command is judged on its own security intent and effect, and the label that
+
+        comes back is the decision — benign allows, review asks, suspicious blocks.
+
+
+        It carries no message on purpose. The agent sees the model''s own reason,
+
+        naming the concrete thing it saw, and a policy-authored string would either be
+
+        ignored or contradict it. The evaluator converts a matched AUTO policy into a
+
+        plain ask or block carrying that reason before the verdict is computed, so the
+
+        verdict is still read off ordinary action kinds.
+
+
+        Valid only on cmd_line activities, with either match type, and never on a
+
+        POLICY_INTENT_GOVERNANCE policy. On an ALLOWLIST the permitted set acts as a
+
+        prefilter: a listed command never reaches the judge, and one outside it is
+
+        judged rather than refused outright.
+
+
+        Requires an endorctl new enough to know the field. An older client drops it
+
+        (maniprest unmarshals with DiscardUnknown), is left with an empty action kind,
+
+        and allows — so switching a policy to AUTO silently loses enforcement of that
+
+        policy on clients below the minimum version.'
+      type: object
+    v1ListAgentHookPolicyDefinitionsResponse:
+      description: Response to the request to list agent hook policy definitions.
+      properties:
+        count_response:
+          $ref: '#/components/schemas/v1CountResponse'
+        group_response:
+          $ref: '#/components/schemas/v1GroupResponse'
+        list:
+          $ref: '#/components/schemas/v1ListAgentHookPolicyDefinitionsResponseList'
+      type: object
+    v1GroupAggregationValueResponse:
+      description: 'GroupAggregationValueResponse returns the value of the aggregation if
+
+        requested.'
+      properties:
+        value:
+          format: float
+          type: number
+      type: object
+    v1McpDimensionThresholds:
+      description: 'McpDimensionThresholds holds per-dimension score thresholds for
+
+        McpServerActivity. Each field is optional; an unset dimension is ignored.
+
+        Set dimensions are OR''d among themselves and with score_at_or_below:
+
+        any single dimension at or below its threshold fires the predicate.
+
+        Dimension names mirror AgenticInventory.McpScoreDimensions.'
+      properties:
+        authentication_authorization:
+          description: 'Threshold for authentication & authorization (credential-less network
+
+            access, hardcoded secrets).'
+          format: float
+          type: number
+        input_validation_injection:
+          description: 'Threshold for input validation & injection (shell/SQL/code injection,
+
+            prompt-poisoning patterns).'
+          format: float
+          type: number
+        operational_hygiene:
+          description: 'Threshold for operational hygiene (spec conformance, destructive tool
+
+            labeling).'
+          format: float
+          type: number
+        supply_chain_provenance:
+          description: 'Threshold for supply chain & provenance (malicious packages, CVEs,
+
+            unverified publishers, unpinned deps).'
+          format: float
+          type: number
+      type: object
+    v1SecretsCheckActivity:
+      description: 'SecretsCheckActivity runs Endor''s secret detection over file content (the
+
+        proposed content of a write/edit, or a file read scanned from disk). Matching
+
+        the activity means running the scan; the verdict comes from the findings, not
+
+        from the policy config.'
+      properties:
+        exclude_file_patterns:
+          description: 'Skip files whose path matches one of these regexes (e.g. test fixtures,
+
+            "*.example" files, vendored dirs). Applied after include_file_patterns.'
+          items:
+            type: string
+          type: array
+        exclude_rule_ids:
+          description: 'Rule IDs whose findings this policy ignores. Matched as for
+
+            include_rule_ids, and applied after it, so an id in both is ignored.'
+          items:
+            type: string
+          type: array
+        file_operations:
+          description: 'File operations to scan. Empty means write and edit; scanning a read means
+
+            reading the file from disk, so reads are opt-in.'
+          items:
+            $ref: '#/components/schemas/v1FileAccessActivityFileOperation'
+          type: array
+        include_file_patterns:
+          description: 'Only scan files whose path matches one of these regexes. Empty means all
+
+            files the event covers.'
+          items:
+            type: string
+          type: array
+        include_rule_ids:
+          description: 'Rule IDs whose findings this policy acts on, compared exactly and
+
+            case-sensitively against the rule id on each finding
+
+            (SecretRule.spec.rule_id, e.g. "aws-access-token"). Empty means every rule in
+
+            the tenant''s effective ruleset.'
+          items:
+            type: string
+          type: array
+      type: object
+    v1AgentHookActivity:
+      description: Activity describes what kind of hook activity the policy applies to.
+      properties:
+        auto_mode:
+          $ref: '#/components/schemas/v1AutoModeActivity'
+        cmd_line:
+          $ref: '#/components/schemas/v1CmdLineActivity'
+        dependency_risk:
+          $ref: '#/components/schemas/v1DependencyRiskActivity'
+        file_access:
+          $ref: '#/components/schemas/v1FileAccessActivity'
+        malware_check:
+          $ref: '#/components/schemas/v1MalwareCheckActivity'
+        mcp_server:
+          $ref: '#/components/schemas/v1McpServerActivity'
+        mcp_tool_call:
+          $ref: '#/components/schemas/v1McpToolCallActivity'
+        secrets_check:
+          $ref: '#/components/schemas/v1SecretsCheckActivity'
+        session:
+          $ref: '#/components/schemas/v1SessionActivity'
+        skill:
+          $ref: '#/components/schemas/v1SkillActivity'
+      type: object
+    v1CmdLineActivity:
+      description: CmdLineActivity matches command-line execution by regex patterns.
+      properties:
+        patterns:
+          description: Patterns to match against the command (e.g. "rm -rf /.*", "curl .* \\| bash").
+          items:
+            type: string
+          type: array
+      type: object
+    v1AgentHookPolicyScope:
+      description: 'AgentHookPolicyScope restricts a policy to a subset of events by matching
+
+        against per-event identity carried on AgentHookEvent.Spec (repository, user).
+
+        Scope is evaluated once, before activity-kind matching, so it applies
+
+        uniformly to all activity kinds.
+
+
+        Match logic: an unset scope (or a scope with no matchers set) applies to
+
+        every event. When set, configured matcher branches are AND''d — every set
+
+        branch must produce a hit; within a branch the regexes are OR''d (any one
+
+        matching satisfies the branch); an empty branch is ignored. A scope miss
+
+        makes the policy a no-op for the event for both blocklist and allowlist
+
+        match types (the policy simply does not apply).'
+      properties:
+        repository_matchers:
+          description: 'Regex matchers for the repository from AgentHookEvent.Spec.repository
+
+            (e.g. "github\\.com/acme/.*", ".*-infra$"). OR''d among themselves.'
+          items:
+            type: string
+          type: array
+        user_matchers:
+          description: 'Regex matchers for the user/account from AgentHookEvent.Spec.user
+
+            (e.g. "alice", "svc-.*", ".*@example\\.com"). "Account" in the ticket
+
+            maps to this per-session user identity; there is no separate account
+
+            entity. OR''d among themselves.'
+          items:
+            type: string
+          type: array
+      type: object
+    v1McpToolCallActivity:
+      description: McpToolCallActivity matches tool calls to a specific MCP server and tool.
+      properties:
+        mcp_server_name:
+          description: MCP server name (e.g. "jira").
+          type: string
+        server_name_matchers:
+          description: Optional regex matchers for MCP server name.
+          items:
+            type: string
+          type: array
+        tool_input_matchers:
+          description: Optional regex matchers for tool input (e.g. ".*AI.*").
+          items:
+            type: string
+          type: array
+        tool_name:
+          description: Tool name (e.g. "open bug").
+          type: string
+        tool_name_matchers:
+          description: Optional regex matchers for tool name.
+          items:
+            type: string
+          type: array
+      type: object
+    v1TenantMeta:
+      description: Tenant related data for the tenant containing the resource.
+      properties:
+        namespace:
+          description: 'Namespaces are a way to organize organizational units into virtual
+
+            groupings of resources. Namespaces must be a fully qualified name,
+
+            for example, the child namespace of namespace "endor.prod" called "app"
+
+            is called "endor.prod.app".'
+          type: string
+      required:
+      - namespace
+      type: object
+    v1SkillActivity:
+      description: 'SkillActivity matches skills by name patterns and/or score thresholds.
+
+        Match logic: configured branches are AND''d — when both name_matchers
+
+        and score predicates are set, both must hold for the match to fire;
+
+        when only one is set, only that one must hold; if neither is set,
+
+        the activity never matches. Within the score branch, score_at_or_below
+
+        and every set field of dimension_at_or_below are OR''d: any single
+
+        satisfied threshold fires the branch. When score predicates are set
+
+        but no SkillMeta is available for the skill, the score branch is
+
+        configured-but-cannot-fire, failing the AND with the name branch
+
+        (fail-safe).'
+      properties:
+        dimension_at_or_below:
+          $ref: '#/components/schemas/v1SkillDimensionThresholds'
+        name_matchers:
+          description: 'Regex matchers for skill name (e.g. "untrusted-.*", "experimental-.*").
+
+            AND''d with the score-predicate branch when both are configured.'
+          items:
+            type: string
+          type: array
+        score_at_or_below:
+          description: 'Match when the overall score is at or below this threshold
+
+            (scores are 1-10, higher = safer). OR''d with dimension_at_or_below.'
+          format: float
+          type: number
+      type: object
+    v1BlockAction:
+      description: BlockAction blocks the activity and shows a message.
+      properties:
+        feedback_message:
+          description: Feedback message shown to the user when the action is blocked.
+          type: string
+        message:
+          type: string
+      type: object
+    v1SessionPermissionsCriteria:
+      description: 'SessionPermissionsCriteria matches against AgentPermissionsConfig at
+
+        any AgentConfigLevel. Each field is optional.'
+      properties:
+        allowed_command_matchers:
+          description: Regex matchers for entries in permissions.allowed_commands.
+          items:
+            type: string
+          type: array
+        bypass_disabled:
+          description: 'If set, match when permissions.bypass_disabled equals this value
+
+            (e.g. false ⇒ "bypass is allowed").'
+          type: boolean
+        default_mode_matchers:
+          description: Regex matchers for permissions.default_mode (e.g. "bypassPermissions").
+          items:
+            type: string
+          type: array
+        denied_command_matchers:
+          description: Regex matchers for entries in permissions.denied_commands.
+          items:
+            type: string
+          type: array
+      type: object
+    googleprotobufAny:
+      additionalProperties: {}
+      description: "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(&foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n    // or ...\n    if (any.isSameTypeAs(Foo.getDefaultInstance())) {\n      foo = any.unpack(Foo.getDefaultInstance());\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := &pb.Foo{...}\n     any, err := anypb.New(foo)\n     if err != nil {\n       ...\n     }\n     ...\n     foo := &pb.Foo{}\n     if err := any.UnmarshalTo(foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": <string>,\n      \"lastName\": <string>\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }"
+      properties:
+        '@type':
+          description: "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com. As of May 2023, there are no widely used type server\nimplementations and no plans to implement one.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
+          type: string
+      type: object
+    v1FeedbackAction:
+      description: FeedbackAction prompts the user with a message without blocking.
+      properties:
+        feedback_message:
+          type: string
+        message:
+          type: string
+      type: object
+    v1SessionTopLevelCriteria:
+      description: 'SessionTopLevelCriteria matches against SessionHook top-level fields
+
+        (composer_mode, source, is_background_agent) and the per-session
+
+        user identity carried on AgentHookEvent.Spec.user.'
+      properties:
+        composer_mode_matchers:
+          description: Regex matchers for composer_mode (e.g. "agent", "ask", "edit").
+          items:
+            type: string
+          type: array
+        group_matchers:
+          description: 'Regex matchers against the resolved org groups in
+
+            AgentHookEvent.Spec.identity.groups. A match fires when any group
+
+            matches any matcher (e.g. "platform", "security").'
+          items:
+            type: string
+          type: array
+        is_background_agent:
+          description: If set, match when is_background_agent equals this value.
+          type: boolean
+        role_matchers:
+          description: 'Regex matchers against the resolved org roles in
+
+            AgentHookEvent.Spec.identity.roles. A match fires when any role
+
+            matches any matcher (e.g. "contractor", "admin").'
+          items:
+            type: string
+          type: array
+        source_matchers:
+          description: Regex matchers for source (e.g. "startup", "resume", "clear").
+          items:
+            type: string
+          type: array
+        user_name_matchers:
+          description: 'Regex matchers for the user name from AgentHookEvent.Spec.user
+
+            (e.g. "alice", "svc-.*", ".*@example\\.com").'
+          items:
+            type: string
+          type: array
+      type: object
+    v1AgentHookPolicyDefinitionSpec:
+      properties:
+        policy:
+          $ref: '#/components/schemas/v1AgentHookPolicy'
+      type: object
+    v1MalwareCheckActivity:
+      description: 'MalwareCheckActivity runs Endor''s malware lookup against the packages in a
+
+        package-install command (a cmd_line event). It carries no regex matchers:
+
+        matching the activity means running the check, and the block/allow verdict
+
+        comes from the malware feed (MALWARE-status, non-contested records), not from
+
+        the policy config.'
+      properties:
+        ecosystems:
+          description: Ecosystems to check (e.g. "npm", "pypi", "cargo"). Empty means all ecosystems.
+          items:
+            type: string
+          type: array
+      type: object
+    v1AskAction:
+      description: AskAction allows asking the user with a message.
+      properties:
+        feedback_message:
+          description: Feedback message shown to the user when asking for confirmation.
+          type: string
+        message:
+          type: string
+      type: object
+    v1GroupResponse:
+      description: Response to a list group request.
+      properties:
+        groups:
+          additionalProperties:
+            $ref: '#/components/schemas/GroupResponseGroupData'
+          description: 'Map indexed by values of the fields specified in aggregation_paths,
+
+            for example, {"[{"key":"meta.kind","value":"Project"}]": {
+
+            "aggregation_count": { "count": 1649 } } }.'
+          type: object
+      type: object
+    v1Meta:
+      description: Common fields for all Endor Labs resources.
+      properties:
+        annotations:
+          additionalProperties:
+            type: string
+          description: 'Annotations can be used to attach metadata to a resource message.
+
+            Annotation values can be small or large, structured or unstructured,
+
+            and may include characters not permitted by labels.
+
+            The keys may contain alphanumerics, underscores (_), dots (.) and dashes
+
+            (-). The values of an annotation must be 16384 bytes or smaller.'
+          type: object
+        create_time:
+          description: 'Time the resource was created.
+
+
+            Format: 2017-01-15T01:30:15.01Z
+
+            RFC 3339: https://www.ietf.org/rfc/rfc3339.txt.'
+          format: date-time
+          readOnly: true
+          type: string
+        created_by:
+          description: 'Name and authentication source of the user who created the object,
+
+            for example, ewok@endor.ai@google@api-key.'
+          readOnly: true
+          type: string
+        description:
+          description: Resource description. Must be less than 1024 bytes.
+          type: string
+        index_data:
+          $ref: '#/components/schemas/v1IndexData'
+        kind:
+          description: 'Resource kind, for example, HelloResponse.
+
+            Auto-generated using the protobuf message proto.MessageName().Name().'
+          readOnly: true
+          type: string
+        name:
+          description: Resource name. Must be 63 characters or less.
+          type: string
+        parent_kind:
+          description: Parent object resource kind, for example, Project.
+          type: string
+        parent_uuid:
+          description: Parent object UUID.
+          type: string
+        references:
+          additionalProperties:
+            $ref: '#/components/schemas/googleprotobufAny'
+          description: Map of objects referenced in a query API.
+          readOnly: true
+          type: object
+        tags:
+          description: 'List of tags attached to the resource.
+
+            Tags can be used to select objects and to find collections of objects that
+
+            satisfy certain conditions. A tag must be 255 characters or less.'
+          items:
+            type: string
+          type: array
+        update_time:
+          description: 'Time the resource was last updated.
+
+            Note: Updated on all create/patch/delete operations.
+
+
+            Format: 2017-01-15T01:30:15.01Z
+
+            RFC 3339: https://www.ietf.org/rfc/rfc3339.txt.'
+          format: date-time
+          readOnly: true
+          type: string
+        updated_by:
+          description: 'Name and authentication source of the last user who updated the object,
+
+            for example, vulnerabilityingestor@endor.ai@x509.'
+          readOnly: true
+          type: string
+        upsert_time:
+          description: 'Time the resource was last upserted.
+
+
+            Note:
+
+            create_time is only set the first time the resource is created.
+
+            upsert_time is set every time the resource is upseted.
+
+
+            Format: 2017-01-15T01:30:15.01Z
+
+            RFC 3339: https://www.ietf.org/rfc/rfc3339.txt.'
+          format: date-time
+          readOnly: true
+          type: string
+        version:
+          description: Message version.
+          readOnly: true
+          type: string
+      required:
+      - name
+      type: object
+    v1AgentHookPolicy:
+      description: 'AgentHookPolicy describes a policy to apply when agent hook events match a
+
+        given activity. When the activity matches, the action (e.g. feedback, block,
+
+        alert) is applied.'
+      properties:
+        action:
+          $ref: '#/components/schemas/v1AgentHookAction'
+        activity:
+          $ref: '#/components/schemas/v1AgentHookActivity'
+        enabled:
+          description: Whether this policy is active.
+          type: boolean
+        intent:
+          $ref: '#/components/schemas/v1PolicyIntent'
+        inventory_classification:
+          $ref: '#/components/schemas/v1InventoryClassification'
+        name:
+          description: Name of the policy.
+          type: string
+        scope:
+          $ref: '#/components/schemas/v1AgentHookPolicyScope'
+        system:
+          description: Whether this is a system-defined policy (vs user-defined).
+          type: boolean
+      type: object
+    v1SessionActivity:
+      description: 'SessionActivity matches sessions by posture predicates over SessionHook
+
+        fields and the captured AgentConfigSnapshot. Sessions have no stable
+
+        name, so matching uses field predicates instead of name regexes.
+
+
+        Each sub-message is optional; if set, all its predicates are AND''d.
+
+        Sub-messages are also AND''d with each other. Predicates that target
+
+        AgentConfigSnapshot evaluate across repository / user / enterprise
+
+        levels (any-level satisfies). MCP-server-related criteria intentionally
+
+        live on McpServerActivity, not here.'
+      properties:
+        hook:
+          $ref: '#/components/schemas/v1SessionHookCriteria'
+        model:
+          $ref: '#/components/schemas/v1SessionModelCriteria'
+        permissions:
+          $ref: '#/components/schemas/v1SessionPermissionsCriteria'
+        sandbox:
+          $ref: '#/components/schemas/v1SessionSandboxCriteria'
+        top_level:
+          $ref: '#/components/schemas/v1SessionTopLevelCriteria'
+      type: object
+    v1SessionHookCriteria:
+      description: 'SessionHookCriteria matches against AgentHookConfig entries at any
+
+        AgentConfigLevel. Each field is optional.'
+      properties:
+        command_matchers:
+          description: Regex matchers for hook command strings (e.g. "curl .* \\| bash").
+          items:
+            type: string
+          type: array
+        event_name_matchers:
+          description: Regex matchers for hook event_name (e.g. "PostToolUse").
+          items:
+            type: string
+          type: array
+      type: object
+    v1ListResponse:
+      description: Response to a list request.
+      properties:
+        next_page_id:
+          description: The UUID of last message retrieved.
+          type: string
+        next_page_token:
+          description: Pagination token that can be used to retrieve the next page of results.
+          format: int32
+          type: integer
+      type: object
+    v1FileAccessActivity:
+      description: FileAccessActivity matches file access by operation and path patterns.
+      properties:
+        file_name_patterns:
+          description: Regex file patterns (e.g. "\\.env$", "secrets/.*", ".*\\.key$").
+          items:
+            type: string
+          type: array
+        file_operation:
+          $ref: '#/components/schemas/v1FileAccessActivityFileOperation'
+      type: object
+    v1SessionModelCriteria:
+      description: 'SessionModelCriteria matches against default_model and available_models
+
+        at any AgentConfigLevel. Each field is optional.'
+      properties:
+        available_model_matchers:
+          description: Regex matchers for entries in available_models.
+          items:
+            type: string
+          type: array
+        default_model_matchers:
+          description: Regex matchers for default_model.
+          items:
+            type: string
+          type: array
+      type: object
+    v1McpServerActivity:
+      description: 'McpServerActivity matches MCP servers by name patterns and/or score
+
+        thresholds. Match logic: configured branches are AND''d — when both
+
+        server_name_matchers and score predicates are set, both must hold;
+
+        when only one is set, only that one must hold; if neither is set,
+
+        the activity never matches. Within the score branch, score_at_or_below
+
+        and every set field of dimension_at_or_below are OR''d: any single
+
+        satisfied threshold fires the branch. This is server-level matching;
+
+        for per-tool-call matching, use McpToolCallActivity.'
+      properties:
+        dimension_at_or_below:
+          $ref: '#/components/schemas/v1McpDimensionThresholds'
+        score_at_or_below:
+          description: 'Match when the overall score is at or below this threshold
+
+            (scores are 1-10, higher = safer). OR''d with dimension_at_or_below.'
+          format: float
+          type: number
+        server_name_matchers:
+          description: 'Regex matchers for MCP server name (e.g. "untrusted-.*", "remote-.*").
+
+            AND''d with the score-predicate branch when both are configured.'
+          items:
+            type: string
+          type: array
+      type: object
+    v1InventoryClassification:
+      default: INVENTORY_CLASSIFICATION_UNSPECIFIED
+      description: 'InventoryClassification declares the classification a policy assigns to a
+
+        matched MCP server or skill when it fires. UNSPECIFIED means the policy
+
+        plays no role in inventory classification (e.g. a session, file-access,
+
+        or cmd-line policy, or an MCP/skill policy whose author only wants the
+
+        per-event action).'
+      enum:
+      - INVENTORY_CLASSIFICATION_UNSPECIFIED
+      - INVENTORY_CLASSIFICATION_ALLOW
+      - INVENTORY_CLASSIFICATION_BLOCK
+      - INVENTORY_CLASSIFICATION_SUSPICIOUS
+      - INVENTORY_CLASSIFICATION_MALICIOUS
+      type: string
+    v1AlertAction:
+      description: AlertAction records an alert with a message (e.g. for audit).
+      properties:
+        feedback_message:
+          description: Feedback message shown to the user when the alert is raised.
+          type: string
+        message:
+          type: string
+      type: object
+    v1AgentHookPolicyDefinition:
+      description: 'AgentHookPolicyDefinition is a top-level CRUD object that stores a single
+
+        AgentHookPolicy alongside standard metadata.'
+      properties:
+        meta:
+          $ref: '#/components/schemas/v1Meta'
+        propagate:
+          description: 'Object can be propagated to child namespaces. Global objects are visible to
+
+            all namespaces.'
+          type: boolean
+        spec:
+          $ref: '#/components/schemas/v1AgentHookPolicyDefinitionSpec'
+        tenant_meta:
+          $ref: '#/components/schemas/v1TenantMeta'
+        uuid:
+          description: The UUID of an AgentHookPolicyDefinition.
+          readOnly: true
+          type: string
+      required:
+      - meta
+      type: object
+    v1SkillDimensionThresholds:
+      description: 'SkillDimensionThresholds holds per-dimension score thresholds for
+
+        SkillActivity. Each field is optional; an unset dimension is ignored.
+
+        Set dimensions are OR''d among themselves and with score_at_or_below:
+
+        any single dimension at or below its threshold fires the predicate.
+
+        Dimension names mirror AgenticInventory.SkillScoreDimensions.'
+      properties:
+        data_protection:
+          description: Threshold for data protection (credential access, exfiltration).
+          format: float
+          type: number
+        external_dependencies:
+          description: Threshold for external dependencies (untrusted sources, remote code).
+          format: float
+          type: number
+        instruction_integrity:
+          description: Threshold for instruction integrity (prompt injection, boundary violations).
+          format: float
+          type: number
+        permission_boundaries:
+          description: Threshold for permission boundaries (privilege claims, tool misuse).
+          format: float
+          type: number
+      type: object
+    v1CountResponse:
+      description: Response to a list count request.
+      properties:
+        count:
+          description: Number of objects matching the given list parameters.
+          format: int32
+          type: integer
+      type: object
+    AgentHookPolicyDefinitionServiceCreateAgentHookPolicyDefinitionBody:
+      description: 'AgentHookPolicyDefinition is a top-level CRUD object that stores a single
+
+        AgentHookPolicy alongside standard metadata.'
+      properties:
+        meta:
+          $ref: '#/components/schemas/v1Meta'
+        propagate:
+          description: 'Object can be propagated to child namespaces. Global objects are visible to
+
+            all namespaces.'
+          type: boolean
+        spec:
+          $ref: '#/components/schemas/v1AgentHookPolicyDefinitionSpec'
+        tenant_meta:
+          description: AgentHookPolicyDefinitions are associated with a tenant or are global.
+          title: AgentHookPolicyDefinitions are associated with a tenant or are global.
+          type: object
+        uuid:
+          description: The UUID of an AgentHookPolicyDefinition.
+          readOnly: true
+          type: string
+      required:
+      - meta
+      type: object

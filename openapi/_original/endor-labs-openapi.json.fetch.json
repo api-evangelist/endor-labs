@@ -1,0 +1,12 @@
+{
+ "url": "https://docs.endorlabs.com/api-reference/openapi.full.v3.json",
+ "final": "https://docs.endorlabs.com/api-reference/openapi.full.v3.json",
+ "status": 200,
+ "content_type": "application/json",
+ "bytes": 3325219,
+ "sha256": "278e51b3cb2af24df00c4e6a5f03fd973b7d2fd59b6b88789723df163d08f8f4",
+ "fetched_at": "2026-10-19",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "re-archived: the provider's current document replaced a stale archive (roadmap#793); the old files are in openapi/_superseded/2026-10-19-stale"
+}

@@ -1,0 +1,1208 @@
+openapi: 3.2.0
+info:
+  description: Integrate your application with Endor Labs using the REST API.
+  title: Endor Labs REST API Reference Agentic Inventory Service API
+  version: '1.0'
+servers:
+- description: US (default)
+  url: https://api.endorlabs.com
+- description: EU (data residency)
+  url: https://api.eu.endorlabs.com
+tags:
+- name: AgenticInventoryService
+paths:
+  /v1/namespaces/{object.tenant_meta.namespace}/agentic-inventory:
+    patch:
+      operationId: AgenticInventoryService_UpdateAgenticInventory
+      parameters:
+      - description: 'Namespaces are a way to organize organizational units into virtual
+
+          groupings of resources. Namespaces must be a fully qualified name,
+
+          for example, the child namespace of namespace "endor.prod" called "app"
+
+          is called "endor.prod.app".'
+        in: path
+        name: object.tenant_meta.namespace
+        required: true
+        schema:
+          type: string
+        x-endor-name: Namespace
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgenticInventoryServiceUpdateAgenticInventoryBody'
+        required: true
+        x-originalParamName: body
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1AgenticInventory'
+          description: A successful response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+          description: An unexpected error response.
+      summary: UpdateAgenticInventory updates an agentic inventory record
+      tags:
+      - AgenticInventoryService
+      x-internal: true
+  /v1/namespaces/{tenant_meta.namespace}/agentic-inventory:
+    get:
+      operationId: AgenticInventoryService_ListAgenticInventory
+      parameters:
+      - description: 'Namespaces are a way to organize organizational units into virtual
+
+          groupings of resources. Namespaces must be a fully qualified name,
+
+          for example, the child namespace of namespace "endor.prod" called "app"
+
+          is called "endor.prod.app".'
+        in: path
+        name: tenant_meta.namespace
+        required: true
+        schema:
+          type: string
+        x-endor-name: Namespace
+      - description: 'String of conditions to filter resources by.
+
+          Filters may include any attribute along with the following operators:
+
+          "==", "!=", ">", ">=", "<", "<=", "Contains", "In", "Matches", and
+
+          "Exists". The logical operators "And" and "Or" are also supported.
+
+          Expressions may be combined and grouped with parentheses.
+
+
+          Examples:
+
+          "spec.value == 5",
+
+          "spec.value in ["a", "b", "c"]",
+
+          "(meta.name == "xyz" and "spec.value in ["a","b"]) or (spec.value ==
+
+          "c")".'
+        in: query
+        name: list_parameters.filter
+        schema:
+          type: string
+      - description: 'Set the page token to start from.
+
+          Use page tokens to page through list results or list specific pages.'
+        in: query
+        name: list_parameters.page_token
+        schema:
+          format: int32
+          type: integer
+      - description: 'Set the page size to limit the number of results returned.
+
+          Default: 100. Max: 500.'
+        in: query
+        name: list_parameters.page_size
+        schema:
+          format: int32
+          type: integer
+      - description: Action to be executed with a request. Not supported for all endpoints.
+        in: query
+        name: list_parameters.action
+        schema:
+          type: string
+      - description: List of fields to return (all fields are returned by default).
+        in: query
+        name: list_parameters.mask
+        schema:
+          type: string
+      - description: Get data from any child namespaces as well.
+        in: query
+        name: list_parameters.traverse
+        schema:
+          type: boolean
+      - description: Field to sort objects by, for example, meta.name.
+        in: query
+        name: list_parameters.sort.path
+        schema:
+          type: string
+      - description: 'Sort order. Default: ASC.'
+        in: query
+        name: list_parameters.sort.order
+        schema:
+          default: SORT_ENTRY_ORDER_UNSPECIFIED
+          enum:
+          - SORT_ENTRY_ORDER_UNSPECIFIED
+          - SORT_ENTRY_ORDER_ASC
+          - SORT_ENTRY_ORDER_DESC
+          type: string
+      - description: 'Return the number of objects matching the given list parameters.
+
+          If count is set to true, the response is a CountResponse.
+
+          Can be used together with filter and traverse.'
+        in: query
+        name: list_parameters.count
+        schema:
+          type: boolean
+      - description: 'Group the objects based on this field.
+
+          If there are multiple fields then the objects are grouped
+
+          based on the uniqueness of all fields.
+
+          Supports composite paths.
+
+          Supports arrays and maps.'
+        in: query
+        name: list_parameters.group.aggregation_paths
+        schema:
+          type: string
+      - description: 'Return the UUID of each object in each group as specified by
+
+          aggregation_paths.'
+        in: query
+        name: list_parameters.group.show_aggregation_uuids
+        schema:
+          type: boolean
+      - description: 'List of fields for which we want the unique count.
+
+          Supports arrays and maps.'
+        in: query
+        name: list_parameters.group.unique_count_paths
+        schema:
+          type: string
+      - description: 'List of fields for which we want the unique values.
+
+          Supports arrays and maps.'
+        in: query
+        name: list_parameters.group.unique_value_paths
+        schema:
+          type: string
+      - description: Only return objects from PR scans that match this context id.
+        in: query
+        name: list_parameters.ci_run_uuid
+        schema:
+          type: string
+      - description: Page ID to retrieve.
+        in: query
+        name: list_parameters.page_id
+        schema:
+          type: string
+      - description: 'Group the objects based on this time field,
+
+          for example, meta.create_time.'
+        in: query
+        name: list_parameters.group_by_time.aggregation_paths
+        schema:
+          type: string
+      - description: Return the UUIDs of the objects in each group.
+        in: query
+        name: list_parameters.group_by_time.show_aggregation_uuids
+        schema:
+          type: boolean
+      - description: Interval unit by which the objects should be grouped.
+        in: query
+        name: list_parameters.group_by_time.interval
+        schema:
+          default: GROUP_BY_TIME_INTERVAL_UNSPECIFIED
+          enum:
+          - GROUP_BY_TIME_INTERVAL_UNSPECIFIED
+          - GROUP_BY_TIME_INTERVAL_YEAR
+          - GROUP_BY_TIME_INTERVAL_QUARTER
+          - GROUP_BY_TIME_INTERVAL_MONTH
+          - GROUP_BY_TIME_INTERVAL_WEEK
+          - GROUP_BY_TIME_INTERVAL_DAY
+          - GROUP_BY_TIME_INTERVAL_HOUR
+          - GROUP_BY_TIME_INTERVAL_MINUTE
+          - GROUP_BY_TIME_INTERVAL_SECOND
+          type: string
+      - description: 'Size of the time interval to group the objects by,
+
+          for example, to group objects by 2-week intervals, set interval
+
+          to GROUP_BY_TIME_INTERVAL_WEEK and group_size to 2.'
+        in: query
+        name: list_parameters.group_by_time.group_size
+        schema:
+          format: int32
+          type: integer
+      - description: 'Beginning of the time period to group objects.
+
+          Defaults to the beginning of time.'
+        in: query
+        name: list_parameters.group_by_time.start_time
+        schema:
+          format: date-time
+          type: string
+      - description: 'End of the time period to group objects.
+
+          Defaults to the current time.'
+        in: query
+        name: list_parameters.group_by_time.end_time
+        schema:
+          format: date-time
+          type: string
+      - description: 'The mode determines how the matching objects are counted
+
+          in the produced time-series. Values allowed are:
+
+          count (default) : is the number of items matching in every interval.
+
+          sum: is the total number of items matching since the beginning of the
+
+          aggregation time.'
+        in: query
+        name: list_parameters.group_by_time.mode
+        schema:
+          type: string
+      - description: 'The aggregation_field is a field on the matched objects that we want to
+
+          perform some operation in each interval (example : min, max, avg)'
+        in: query
+        name: list_parameters.group_by_time.aggregation_value_field
+        schema:
+          type: string
+      - description: 'The aggreation_operator is the operator that we should use for the
+
+          aggregation. Allowed values are: min, max, sum, avg'
+        in: query
+        name: list_parameters.group_by_time.aggregation_operator
+        schema:
+          type: string
+      - description: 'If true, the results will not be paginated and
+
+          only the first page will be returned. The order
+
+          of the results is not guaranteed.'
+        in: query
+        name: list_parameters.disable_pagination
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1ListAgenticInventoryResponse'
+          description: A successful response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+          description: An unexpected error response.
+      summary: ListAgenticInventory lists agentic inventory records
+      tags:
+      - AgenticInventoryService
+      x-internal: true
+  /v1/namespaces/{tenant_meta.namespace}/agentic-inventory/{uuid}:
+    delete:
+      operationId: AgenticInventoryService_DeleteAgenticInventory
+      parameters:
+      - description: 'Namespaces are a way to organize organizational units into virtual
+
+          groupings of resources. Namespaces must be a fully qualified name,
+
+          for example, the child namespace of namespace "endor.prod" called "app"
+
+          is called "endor.prod.app".'
+        in: path
+        name: tenant_meta.namespace
+        required: true
+        schema:
+          type: string
+        x-endor-name: Namespace
+      - description: The UUID of the resource to be deleted.
+        in: path
+        name: uuid
+        required: true
+        schema:
+          type: string
+      - description: Action to be executed with delete request.
+        in: query
+        name: delete_parameters.action
+        schema:
+          type: string
+      - description: 'Force will force the deletion of the resource if any
+
+          checks fail.'
+        in: query
+        name: delete_parameters.force
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+          description: A successful response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+          description: An unexpected error response.
+      summary: DeleteAgenticInventory deletes an agentic inventory record by UUID
+      tags:
+      - AgenticInventoryService
+      x-internal: true
+    get:
+      operationId: AgenticInventoryService_GetAgenticInventory
+      parameters:
+      - description: 'Namespaces are a way to organize organizational units into virtual
+
+          groupings of resources. Namespaces must be a fully qualified name,
+
+          for example, the child namespace of namespace "endor.prod" called "app"
+
+          is called "endor.prod.app".'
+        in: path
+        name: tenant_meta.namespace
+        required: true
+        schema:
+          type: string
+        x-endor-name: Namespace
+      - description: The UUID of the requested resource.
+        in: path
+        name: uuid
+        required: true
+        schema:
+          type: string
+      - description: List of fields to return (all fields are returned by default).
+        in: query
+        name: get_parameters.mask
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1AgenticInventory'
+          description: A successful response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+          description: An unexpected error response.
+      summary: GetAgenticInventory returns an agentic inventory record by UUID
+      tags:
+      - AgenticInventoryService
+      x-internal: true
+components:
+  schemas:
+    v1AgenticInventorySpec:
+      properties:
+        active_sessions:
+          description: 'Number of sessions currently in progress (incremented on SESSION_START,
+
+            decremented on SESSION_STOP).'
+          format: int64
+          type: string
+        agent:
+          $ref: '#/components/schemas/AgenticInventoryAgentMeta'
+        ai_tool:
+          $ref: '#/components/schemas/AgenticInventoryAiToolMeta'
+        cmd_hook_events:
+          description: Number of command hook events.
+          format: int64
+          type: string
+        config_hook_events:
+          description: 'Number of agent configuration change events. Counted separately from
+
+            file_hook_events even though a config change is physically a file write,
+
+            so that file activity and settings churn stay distinguishable.'
+          format: int64
+          type: string
+        error_hook_events:
+          description: Number of hook events that had an error.
+          format: int64
+          type: string
+        file_hook_events:
+          description: Number of file hook events.
+          format: int64
+          type: string
+        interrupted_hook_events:
+          description: Number of events that were interrupted.
+          format: int64
+          type: string
+        last_seen:
+          description: Timestamp when this inventory was last seen (most recent activity).
+          format: date-time
+          type: string
+        mcp_server:
+          $ref: '#/components/schemas/AgenticInventoryMcpMeta'
+        model:
+          $ref: '#/components/schemas/AgenticInventoryModelMeta'
+        name:
+          description: Unique name within the type (e.g. server name for MCP, agent name, model name).
+          type: string
+        repositories:
+          description: Number of distinct repositories associated with this inventory item.
+          format: int64
+          type: string
+        session_hook_events:
+          description: Number of session hook events.
+          format: int64
+          type: string
+        skill:
+          $ref: '#/components/schemas/AgenticInventorySkillMeta'
+        tool_hook_events:
+          description: Number of tool hook events.
+          format: int64
+          type: string
+        total_duration_msec:
+          description: Sum of all hook event durations in milliseconds.
+          format: int64
+          type: string
+        total_hook_events:
+          description: Total number of hook events.
+          format: int64
+          type: string
+        type:
+          $ref: '#/components/schemas/v1InventoryType'
+        user_prompt_hook_events:
+          description: Number of user prompts submitted.
+          format: int64
+          type: string
+        users:
+          description: Number of distinct users that triggered events for this inventory item.
+          format: int64
+          type: string
+      required:
+      - type
+      - name
+      type: object
+    v1InventoryType:
+      default: INVENTORY_TYPE_UNSPECIFIED
+      description: InventoryType discriminates agent, model, MCP server, skill, and AI tool inventory in the unified collection.
+      enum:
+      - INVENTORY_TYPE_UNSPECIFIED
+      - INVENTORY_TYPE_AGENT
+      - INVENTORY_TYPE_MODEL
+      - INVENTORY_TYPE_MCP_SERVER
+      - INVENTORY_TYPE_SKILL
+      - INVENTORY_TYPE_AI_TOOL
+      type: string
+    AgenticInventoryMcpMeta:
+      description: McpMeta holds MCP server-specific inventory fields.
+      properties:
+        admin_classification:
+          $ref: '#/components/schemas/v1InventoryAdminClassification'
+        agents_used:
+          description: Agents that have used this MCP server.
+          items:
+            type: string
+          type: array
+        command:
+          description: Command + args for stdio transport (e.g. ["npx","-y","@some/mcp"]).
+          items:
+            type: string
+          type: array
+        endpoint:
+          description: Endpoint URL for http/sse transport.
+          type: string
+        env_keys:
+          description: Names of env vars passed to the server. Values are NEVER persisted.
+          items:
+            type: string
+          type: array
+        models_used:
+          description: Models that have been used with this MCP server.
+          items:
+            type: string
+          type: array
+        score_meta:
+          $ref: '#/components/schemas/AgenticInventoryMcpScoreMeta'
+        server_host:
+          description: Host or URL of the server (e.g. "localhost", "https://api.example.com").
+          type: string
+        server_type:
+          $ref: '#/components/schemas/v1ServerType'
+        source:
+          $ref: '#/components/schemas/v1McpServerSource'
+        threat_classification:
+          $ref: '#/components/schemas/v1InventoryThreatClassification'
+        tools:
+          description: List of tool names available/used from this server.
+          items:
+            type: string
+          type: array
+        transport:
+          description: 'Transport: "stdio", "http", "sse" (from AgentMCPServer.transport).'
+          type: string
+      type: object
+    AgenticInventorySkillRiskDimensions:
+      description: 'Deprecated: use SkillScoreDimensions instead.'
+      properties:
+        data_protection:
+          $ref: '#/components/schemas/AgenticInventorySkillRiskDimension'
+        external_dependencies:
+          $ref: '#/components/schemas/AgenticInventorySkillRiskDimension'
+        instruction_integrity:
+          $ref: '#/components/schemas/AgenticInventorySkillRiskDimension'
+        permission_boundaries:
+          $ref: '#/components/schemas/AgenticInventorySkillRiskDimension'
+      type: object
+    AgenticInventorySkillRiskDimension:
+      description: 'Deprecated: use SkillScoreDimension instead.'
+      properties:
+        evidence:
+          type: string
+        score:
+          format: float
+          type: number
+      type: object
+    GroupResponseGroupData:
+      description: Information about objects matching the given key.
+      properties:
+        aggregation_count:
+          $ref: '#/components/schemas/v1CountResponse'
+        aggregation_uuids:
+          description: 'List of UUIDs of the objects in the group.
+
+            Only populated if show_aggregation_uuids is set.'
+          items:
+            type: string
+          type: array
+        aggregation_value:
+          $ref: '#/components/schemas/v1GroupAggregationValueResponse'
+        unique_counts:
+          additionalProperties:
+            $ref: '#/components/schemas/v1CountResponse'
+          description: 'Map of counts for the given unique_count_paths fields.
+
+            Only populated if unique_count_paths is set.'
+          type: object
+        unique_values:
+          additionalProperties:
+            items:
+              type: object
+            type: array
+          description: 'Map of values for the given unique_value_paths fields.
+
+            Only populated if unique_value_paths is set.'
+          type: object
+      type: object
+    AgenticInventoryModelMeta:
+      description: ModelMeta holds model-specific inventory fields.
+      properties:
+        agents_used:
+          description: Agents that have used this model.
+          items:
+            type: string
+          type: array
+        mcp_servers_used:
+          description: MCP servers used with this model.
+          items:
+            type: string
+          type: array
+      type: object
+    googlerpcStatus:
+      description: 'The `Status` type defines a logical error model that is suitable for
+
+        different programming environments, including REST APIs and RPC APIs. It is
+
+        used by [gRPC](https://github.com/grpc). Each `Status` message contains
+
+        three pieces of data: error code, error message, and error details.
+
+
+        You can find out more about this error model and how to work with it in the
+
+        [API Design Guide](https://cloud.google.com/apis/design/errors).'
+      properties:
+        code:
+          description: 'The status code, which should be an enum value of
+
+            [google.rpc.Code][google.rpc.Code].'
+          format: int32
+          type: integer
+        details:
+          description: 'A list of messages that carry the error details.  There is a common set of
+
+            message types for APIs to use.'
+          items:
+            $ref: '#/components/schemas/googleprotobufAny'
+          type: array
+        message:
+          description: 'A developer-facing error message, which should be in English. Any
+
+            user-facing error message should be localized and sent in the
+
+            [google.rpc.Status.details][google.rpc.Status.details] field, or localized
+
+            by the client.'
+          type: string
+      type: object
+    v1ListAgenticInventoryResponse:
+      description: Response to list agentic inventory records.
+      properties:
+        count_response:
+          $ref: '#/components/schemas/v1CountResponse'
+        group_response:
+          $ref: '#/components/schemas/v1GroupResponse'
+        list:
+          $ref: '#/components/schemas/v1ListAgenticInventoryResponseList'
+      type: object
+    AgenticInventoryMcpRiskLevel:
+      default: MCP_RISK_LEVEL_UNSPECIFIED
+      description: McpRiskLevel is the categorical risk level produced by the aggregator.
+      enum:
+      - MCP_RISK_LEVEL_UNSPECIFIED
+      - MCP_RISK_LEVEL_LOW
+      - MCP_RISK_LEVEL_MEDIUM
+      - MCP_RISK_LEVEL_HIGH
+      - MCP_RISK_LEVEL_CRITICAL
+      type: string
+    AgenticInventoryMcpScoreDimension:
+      description: McpScoreDimension is a single category's score block.
+      properties:
+        evidence:
+          description: 'Human-readable evidence of what brought the score down. One line per
+
+            triggered check, formatted as "[SEVERITY] CheckName: Detail". Unset when
+
+            no findings fired in this category.'
+          type: string
+        score:
+          description: Score 1-10 (higher = safer); unset if no checks ran for this category.
+          format: float
+          type: number
+      type: object
+    v1IndexData:
+      description: 'IndexData is used to index the resource for search. It''s an internal
+
+        object.'
+      properties:
+        data:
+          items:
+            type: string
+          readOnly: true
+          type: array
+        search_score:
+          description: search_score is the score of the resource for search. Internal use only.
+          format: float
+          readOnly: true
+          type: number
+        tenant:
+          readOnly: true
+          type: string
+        will_be_deleted_at:
+          description: Time that the resource will be deleted.
+          format: date-time
+          readOnly: true
+          type: string
+      type: object
+    v1AgenticInventory:
+      description: 'AgenticInventory represents aggregated metrics for agents, models, MCP servers, skills, and AI tools.
+
+        One collection with type discriminator. Upserted on agent hook events.'
+      properties:
+        meta:
+          $ref: '#/components/schemas/v1Meta'
+        spec:
+          $ref: '#/components/schemas/v1AgenticInventorySpec'
+        tenant_meta:
+          $ref: '#/components/schemas/v1TenantMeta'
+        uuid:
+          description: The UUID of the inventory record.
+          readOnly: true
+          type: string
+      required:
+      - meta
+      type: object
+    AgenticInventoryAiToolMeta:
+      description: AiToolMeta holds AI tool-specific inventory fields.
+      properties:
+        category:
+          $ref: '#/components/schemas/v1AiToolCategory'
+        evidence:
+          description: Evidence supporting the detection.
+          items:
+            $ref: '#/components/schemas/v1AiToolEvidence'
+          type: array
+        sandbox_capable:
+          description: Whether this tool supports a built-in sandbox.
+          readOnly: true
+          type: boolean
+        vendor:
+          description: Vendor of the tool (e.g. "Anthropic", "OpenSource", "Google").
+          type: string
+      type: object
+    v1InventoryClassificationEvidence:
+      description: 'InventoryClassificationEvidence records the policy that assigned the
+
+        current value on a single classification axis. Snapshotted from the
+
+        matching AgentHookPolicy so the inventory record remains self-describing
+
+        after the policy is renamed or deleted.'
+      properties:
+        policy_name:
+          description: Policy name at the time of match (snapshot — not refreshed later).
+          type: string
+      type: object
+    v1UpdateRequest:
+      description: Message used for all update requests.
+      properties:
+        force:
+          description: 'Force will force the update of the resource if any
+
+            checks fail.'
+          type: boolean
+        update_mask:
+          description: Fields to update. Defaults to all fields.
+          type: string
+      type: object
+    v1InventoryThreatClassification:
+      description: 'InventoryThreatClassification carries the suspicious/malicious axis plus
+
+        evidence. Within a single event, when multiple matching policies disagree,
+
+        the stronger value wins (MALICIOUS dominates SUSPICIOUS dominates
+
+        UNSPECIFIED). Across events, the current policy set is authoritative:
+
+        see InventoryAdminClassification for the full semantics.'
+      properties:
+        evidence:
+          $ref: '#/components/schemas/v1InventoryClassificationEvidence'
+        value:
+          $ref: '#/components/schemas/InventoryThreatClassificationThreatLevel'
+      type: object
+    v1GroupAggregationValueResponse:
+      description: 'GroupAggregationValueResponse returns the value of the aggregation if
+
+        requested.'
+      properties:
+        value:
+          format: float
+          type: number
+      type: object
+    AgenticInventorySkillScoreDimensions:
+      description: 'SkillScoreDimensions holds per-dimension scores from LLM security analysis.
+
+        Each dimension is scored 1-10 (higher = safer) with evidence.'
+      properties:
+        data_protection:
+          $ref: '#/components/schemas/AgenticInventorySkillScoreDimension'
+        external_dependencies:
+          $ref: '#/components/schemas/AgenticInventorySkillScoreDimension'
+        instruction_integrity:
+          $ref: '#/components/schemas/AgenticInventorySkillScoreDimension'
+        permission_boundaries:
+          $ref: '#/components/schemas/AgenticInventorySkillScoreDimension'
+      type: object
+    AgenticInventoryAgentMeta:
+      description: AgentMeta holds agent-specific inventory fields.
+      properties:
+        agent_version:
+          description: Agent version if available.
+          type: string
+        mcp_servers_used:
+          description: MCP servers used by this agent.
+          items:
+            type: string
+          type: array
+        models_used:
+          description: Models that have been used with this agent.
+          items:
+            type: string
+          type: array
+        sandbox_capable:
+          description: Whether this agent supports a built-in sandbox.
+          readOnly: true
+          type: boolean
+      type: object
+    InventoryThreatClassificationThreatLevel:
+      default: THREAT_LEVEL_UNSPECIFIED
+      description: "ThreatLevel is the threat classification level on the suspicious/malicious axis.\n\n - THREAT_LEVEL_UNSPECIFIED: No threat classification has been assigned.\n - THREAT_LEVEL_SUSPICIOUS: Flagged as suspicious by an AgentHookPolicy match.\n - THREAT_LEVEL_MALICIOUS: Flagged as malicious by an AgentHookPolicy match."
+      enum:
+      - THREAT_LEVEL_UNSPECIFIED
+      - THREAT_LEVEL_SUSPICIOUS
+      - THREAT_LEVEL_MALICIOUS
+      type: string
+    v1ListAgenticInventoryResponseList:
+      properties:
+        objects:
+          items:
+            $ref: '#/components/schemas/v1AgenticInventory'
+          type: array
+        response:
+          $ref: '#/components/schemas/v1ListResponse'
+      type: object
+    v1TenantMeta:
+      description: Tenant related data for the tenant containing the resource.
+      properties:
+        namespace:
+          description: 'Namespaces are a way to organize organizational units into virtual
+
+            groupings of resources. Namespaces must be a fully qualified name,
+
+            for example, the child namespace of namespace "endor.prod" called "app"
+
+            is called "endor.prod.app".'
+          type: string
+      required:
+      - namespace
+      type: object
+    v1InventoryAdminClassification:
+      description: 'InventoryAdminClassification carries the allow/block axis plus evidence.
+
+        Within a single event, when multiple matching policies disagree, the
+
+        stronger value wins (BLOCKED dominates ALLOWED dominates UNSPECIFIED).
+
+        Across events, the current policy set is authoritative: a later event
+
+        that no longer matches any classification policy leaves the field
+
+        untouched, but a later event matching a different policy reclassifies
+
+        the record accordingly.'
+      properties:
+        evidence:
+          $ref: '#/components/schemas/v1InventoryClassificationEvidence'
+        value:
+          $ref: '#/components/schemas/InventoryAdminClassificationAdminLevel'
+      type: object
+    v1AiToolCategory:
+      default: AI_TOOL_CATEGORY_UNSPECIFIED
+      description: "AiToolCategory classifies a detected AI development tool.\n\n - AI_TOOL_CATEGORY_SANDBOX_TOOL: Dedicated sandbox tools that wrap an agent, as opposed to an agent's own\nbuilt-in sandbox."
+      enum:
+      - AI_TOOL_CATEGORY_UNSPECIFIED
+      - AI_TOOL_CATEGORY_IDE
+      - AI_TOOL_CATEGORY_CLI_TOOL
+      - AI_TOOL_CATEGORY_AGENT
+      - AI_TOOL_CATEGORY_FRAMEWORK
+      - AI_TOOL_CATEGORY_MCP_CONFIG
+      - AI_TOOL_CATEGORY_IDE_EXTENSION
+      - AI_TOOL_CATEGORY_SANDBOX_TOOL
+      type: string
+    googleprotobufAny:
+      additionalProperties: {}
+      description: "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(&foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n    // or ...\n    if (any.isSameTypeAs(Foo.getDefaultInstance())) {\n      foo = any.unpack(Foo.getDefaultInstance());\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := &pb.Foo{...}\n     any, err := anypb.New(foo)\n     if err != nil {\n       ...\n     }\n     ...\n     foo := &pb.Foo{}\n     if err := any.UnmarshalTo(foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": <string>,\n      \"lastName\": <string>\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }"
+      properties:
+        '@type':
+          description: "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com. As of May 2023, there are no widely used type server\nimplementations and no plans to implement one.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
+          type: string
+      type: object
+    v1McpServerSource:
+      default: MCP_SERVER_SOURCE_UNSPECIFIED
+      description: "McpServerSource is where an MCP server came from. Orthogonal to ServerType,\nwhich answers \"where does it run\": a vendor connector is a connector by\nsource and REMOTE by type at the same time. Declared here rather than in\nagentic_inventory.proto because that file imports this one, not the reverse.\n\n - MCP_SERVER_SOURCE_UNSPECIFIED: Not classified: no config snapshot was available to check the server\nagainst. Distinct from \"checked and absent\", which is CLIENT_INJECTED.\n - MCP_SERVER_SOURCE_PROJECT_CONFIG: Registered in the workspace's own checked-in agent config.\n - MCP_SERVER_SOURCE_USER_CONFIG: Registered in the user's home-directory agent config.\n - MCP_SERVER_SOURCE_ENTERPRISE_CONFIG: Registered in the OS-managed enterprise agent config.\n - MCP_SERVER_SOURCE_PLUGIN: Supplied by an agent plugin's manifest rather than by an mcp_servers entry.\n - MCP_SERVER_SOURCE_VENDOR_CONNECTOR: Vendor hosted connector enabled on the user's agent account, for\nexample a claude.ai connector. Never present in local config.\n - MCP_SERVER_SOURCE_CLIENT_RESERVED: A name the client reserves for one of its own built in servers, so\nuser config cannot register under it. Highest confidence verdict.\n - MCP_SERVER_SOURCE_CLIENT_INJECTED: Injected by the client at runtime but not on the reserved list: other\nproduct surfaces, IDE bridges, host applications. Absent from a config\nsnapshot that was loaded."
+      enum:
+      - MCP_SERVER_SOURCE_UNSPECIFIED
+      - MCP_SERVER_SOURCE_PROJECT_CONFIG
+      - MCP_SERVER_SOURCE_USER_CONFIG
+      - MCP_SERVER_SOURCE_ENTERPRISE_CONFIG
+      - MCP_SERVER_SOURCE_PLUGIN
+      - MCP_SERVER_SOURCE_VENDOR_CONNECTOR
+      - MCP_SERVER_SOURCE_CLIENT_RESERVED
+      - MCP_SERVER_SOURCE_CLIENT_INJECTED
+      type: string
+    v1ServerType:
+      default: SERVER_TYPE_UNSPECIFIED
+      description: ServerType indicates whether a tool server runs locally or remotely.
+      enum:
+      - SERVER_TYPE_UNSPECIFIED
+      - SERVER_TYPE_LOCAL
+      - SERVER_TYPE_REMOTE
+      type: string
+    AgenticInventorySkillMeta:
+      description: SkillMeta holds skill-specific inventory fields.
+      properties:
+        admin_classification:
+          $ref: '#/components/schemas/v1InventoryAdminClassification'
+        agents_used:
+          description: Agents that have used this skill.
+          items:
+            type: string
+          type: array
+        allowed_tools:
+          description: Tools declared in SKILL.md frontmatter (allowed-tools).
+          items:
+            type: string
+          type: array
+        compatibility:
+          description: Environment requirements from SKILL.md frontmatter (agentskills.io standard field).
+          type: string
+        content:
+          description: Base64-encoded SKILL.md content for backend scoring. Capped at 128 KB.
+          type: string
+        content_hash:
+          description: SHA-256 hash of the SKILL.md content.
+          type: string
+        description:
+          description: Human-readable description from SKILL.md frontmatter.
+          type: string
+        file_count:
+          description: Number of files in the skill directory (including SKILL.md).
+          format: int32
+          type: integer
+        license:
+          description: License from SKILL.md frontmatter (agentskills.io standard field).
+          type: string
+        path:
+          description: Path to the SKILL.md file within the workspace or user home directory.
+          type: string
+        risk_dimensions:
+          $ref: '#/components/schemas/AgenticInventorySkillRiskDimensions'
+        risk_score:
+          description: 'Deprecated: use score (field 14) instead. Was risk-oriented (higher = riskier).'
+          format: float
+          type: number
+        score:
+          description: Overall score (1-10, higher = safer). Computed by backend LLM analysis.
+          format: float
+          type: number
+        score_dimensions:
+          $ref: '#/components/schemas/AgenticInventorySkillScoreDimensions'
+        scored_content_hash:
+          description: 'SHA-256 hash of the content that was last scored. Used to detect drift
+
+            and decide whether re-scoring is needed.'
+          type: string
+        threat_classification:
+          $ref: '#/components/schemas/v1InventoryThreatClassification'
+      type: object
+    v1GroupResponse:
+      description: Response to a list group request.
+      properties:
+        groups:
+          additionalProperties:
+            $ref: '#/components/schemas/GroupResponseGroupData'
+          description: 'Map indexed by values of the fields specified in aggregation_paths,
+
+            for example, {"[{"key":"meta.kind","value":"Project"}]": {
+
+            "aggregation_count": { "count": 1649 } } }.'
+          type: object
+      type: object
+    v1Meta:
+      description: Common fields for all Endor Labs resources.
+      properties:
+        annotations:
+          additionalProperties:
+            type: string
+          description: 'Annotations can be used to attach metadata to a resource message.
+
+            Annotation values can be small or large, structured or unstructured,
+
+            and may include characters not permitted by labels.
+
+            The keys may contain alphanumerics, underscores (_), dots (.) and dashes
+
+            (-). The values of an annotation must be 16384 bytes or smaller.'
+          type: object
+        create_time:
+          description: 'Time the resource was created.
+
+
+            Format: 2017-01-15T01:30:15.01Z
+
+            RFC 3339: https://www.ietf.org/rfc/rfc3339.txt.'
+          format: date-time
+          readOnly: true
+          type: string
+        created_by:
+          description: 'Name and authentication source of the user who created the object,
+
+            for example, ewok@endor.ai@google@api-key.'
+          readOnly: true
+          type: string
+        description:
+          description: Resource description. Must be less than 1024 bytes.
+          type: string
+        index_data:
+          $ref: '#/components/schemas/v1IndexData'
+        kind:
+          description: 'Resource kind, for example, HelloResponse.
+
+            Auto-generated using the protobuf message proto.MessageName().Name().'
+          readOnly: true
+          type: string
+        name:
+          description: Resource name. Must be 63 characters or less.
+          type: string
+        parent_kind:
+          description: Parent object resource kind, for example, Project.
+          type: string
+        parent_uuid:
+          description: Parent object UUID.
+          type: string
+        references:
+          additionalProperties:
+            $ref: '#/components/schemas/googleprotobufAny'
+          description: Map of objects referenced in a query API.
+          readOnly: true
+          type: object
+        tags:
+          description: 'List of tags attached to the resource.
+
+            Tags can be used to select objects and to find collections of objects that
+
+            satisfy certain conditions. A tag must be 255 characters or less.'
+          items:
+            type: string
+          type: array
+        update_time:
+          description: 'Time the resource was last updated.
+
+            Note: Updated on all create/patch/delete operations.
+
+
+            Format: 2017-01-15T01:30:15.01Z
+
+            RFC 3339: https://www.ietf.org/rfc/rfc3339.txt.'
+          format: date-time
+          readOnly: true
+          type: string
+        updated_by:
+          description: 'Name and authentication source of the last user who updated the object,
+
+            for example, vulnerabilityingestor@endor.ai@x509.'
+          readOnly: true
+          type: string
+        upsert_time:
+          description: 'Time the resource was last upserted.
+
+
+            Note:
+
+            create_time is only set the first time the resource is created.
+
+            upsert_time is set every time the resource is upseted.
+
+
+            Format: 2017-01-15T01:30:15.01Z
+
+            RFC 3339: https://www.ietf.org/rfc/rfc3339.txt.'
+          format: date-time
+          readOnly: true
+          type: string
+        version:
+          description: Message version.
+          readOnly: true
+          type: string
+      required:
+      - name
+      type: object
+    v1ListResponse:
+      description: Response to a list request.
+      properties:
+        next_page_id:
+          description: The UUID of last message retrieved.
+          type: string
+        next_page_token:
+          description: Pagination token that can be used to retrieve the next page of results.
+          format: int32
+          type: integer
+      type: object
+    AgenticInventoryMcpScoreMeta:
+      description: 'McpScoreMeta groups the riskevaluator outputs written by the jobctl
+
+        mcpscoring handler.'
+      properties:
+        risk_level:
+          $ref: '#/components/schemas/AgenticInventoryMcpRiskLevel'
+        score:
+          description: 'Headline score 1-10 (higher = safer). Min across category scores
+
+            with at least one executable check.'
+          format: float
+          type: number
+        score_dimensions:
+          $ref: '#/components/schemas/AgenticInventoryMcpScoreDimensions'
+        scored_config_hash:
+          description: SHA-256 of the scored ServerConfig (transport+command+endpoint+env_keys).
+          type: string
+      type: object
+    v1AiToolEvidence:
+      description: AiToolEvidence is a single key-value signal supporting an AI tool detection.
+      properties:
+        key:
+          description: Evidence key (e.g. "install_path", "binary_path", "version", "config_path").
+          type: string
+        value:
+          description: Evidence value.
+          type: string
+      type: object
+    InventoryAdminClassificationAdminLevel:
+      default: ADMIN_LEVEL_UNSPECIFIED
+      description: "AdminLevel is the admin classification level on the allow/block axis.\n\n - ADMIN_LEVEL_UNSPECIFIED: No admin classification has been assigned.\n - ADMIN_LEVEL_ALLOWED: Explicitly allowed by an AgentHookPolicy match.\n - ADMIN_LEVEL_BLOCKED: Explicitly blocked by an AgentHookPolicy match."
+      enum:
+      - ADMIN_LEVEL_UNSPECIFIED
+      - ADMIN_LEVEL_ALLOWED
+      - ADMIN_LEVEL_BLOCKED
+      type: string
+    AgenticInventoryServiceUpdateAgenticInventoryBody:
+      description: UpdateAgenticInventoryRequest is the request message for updating an agentic inventory record.
+      properties:
+        object:
+          description: 'AgenticInventory represents aggregated metrics for agents, models, MCP servers, skills, and AI tools.
+
+            One collection with type discriminator. Upserted on agent hook events.'
+          properties:
+            meta:
+              $ref: '#/components/schemas/v1Meta'
+            spec:
+              $ref: '#/components/schemas/v1AgenticInventorySpec'
+            tenant_meta:
+              description: Inventory is associated with a tenant.
+              title: Inventory is associated with a tenant.
+              type: object
+            uuid:
+              description: The UUID of the inventory record.
+              readOnly: true
+              type: string
+          type: object
+        request:
+          $ref: '#/components/schemas/v1UpdateRequest'
+      required:
+      - meta
+      type: object
+    v1CountResponse:
+      description: Response to a list count request.
+      properties:
+        count:
+          description: Number of objects matching the given list parameters.
+          format: int32
+          type: integer
+      type: object
+    AgenticInventoryMcpScoreDimensions:
+      description: McpScoreDimensions holds per-category 1-10 scores from the evaluator.
+      properties:
+        auth:
+          $ref: '#/components/schemas/AgenticInventoryMcpScoreDimension'
+        input_validation:
+          $ref: '#/components/schemas/AgenticInventoryMcpScoreDimension'
+        llm_interaction:
+          $ref: '#/components/schemas/AgenticInventoryMcpScoreDimension'
+        operational:
+          $ref: '#/components/schemas/AgenticInventoryMcpScoreDimension'
+        resource_access:
+          $ref: '#/components/schemas/AgenticInventoryMcpScoreDimension'
+        supply_chain:
+          $ref: '#/components/schemas/AgenticInventoryMcpScoreDimension'
+        transport:
+          $ref: '#/components/schemas/AgenticInventoryMcpScoreDimension'
+      type: object
+    AgenticInventorySkillScoreDimension:
+      description: SkillScoreDimension holds the score and evidence for a single dimension.
+      properties:
+        evidence:
+          description: Brief evidence or explanation from the LLM justifying the score.
+          type: string
+        score:
+          description: Score for this dimension (1-10, higher = safer).
+          format: float
+          type: number
+      type: object

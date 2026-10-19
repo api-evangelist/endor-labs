@@ -1,0 +1,2076 @@
+openapi: 3.2.0
+info:
+  description: Integrate your application with Endor Labs using the REST API.
+  title: Endor Labs REST API Reference Linter Result Service API
+  version: '1.0'
+servers:
+- description: US (default)
+  url: https://api.endorlabs.com
+- description: EU (data residency)
+  url: https://api.eu.endorlabs.com
+tags:
+- name: LinterResultService
+paths:
+  /v1/namespaces/{object.tenant_meta.namespace}/linter-results:
+    patch:
+      description: Updates a linter result.
+      operationId: LinterResultService_UpdateLinterResult
+      parameters:
+      - description: 'Namespaces are a way to organize organizational units into virtual
+
+          groupings of resources. Namespaces must be a fully qualified name,
+
+          for example, the child namespace of namespace "endor.prod" called "app"
+
+          is called "endor.prod.app".'
+        in: path
+        name: object.tenant_meta.namespace
+        required: true
+        schema:
+          type: string
+        x-endor-name: Namespace
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LinterResultServiceUpdateLinterResultBody'
+        required: true
+        x-originalParamName: body
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1LinterResult'
+          description: A successful response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+          description: An unexpected error response.
+      summary: UpdateLinterResult
+      tags:
+      - LinterResultService
+      x-internal: true
+  /v1/namespaces/{tenant_meta.namespace}/linter-results:
+    get:
+      description: Lists all linter results.
+      operationId: LinterResultService_ListLinterResults
+      parameters:
+      - description: 'Namespaces are a way to organize organizational units into virtual
+
+          groupings of resources. Namespaces must be a fully qualified name,
+
+          for example, the child namespace of namespace "endor.prod" called "app"
+
+          is called "endor.prod.app".'
+        in: path
+        name: tenant_meta.namespace
+        required: true
+        schema:
+          type: string
+        x-endor-name: Namespace
+      - description: 'String of conditions to filter resources by.
+
+          Filters may include any attribute along with the following operators:
+
+          "==", "!=", ">", ">=", "<", "<=", "Contains", "In", "Matches", and
+
+          "Exists". The logical operators "And" and "Or" are also supported.
+
+          Expressions may be combined and grouped with parentheses.
+
+
+          Examples:
+
+          "spec.value == 5",
+
+          "spec.value in ["a", "b", "c"]",
+
+          "(meta.name == "xyz" and "spec.value in ["a","b"]) or (spec.value ==
+
+          "c")".'
+        in: query
+        name: list_parameters.filter
+        schema:
+          type: string
+      - description: 'Set the page token to start from.
+
+          Use page tokens to page through list results or list specific pages.'
+        in: query
+        name: list_parameters.page_token
+        schema:
+          format: int32
+          type: integer
+      - description: 'Set the page size to limit the number of results returned.
+
+          Default: 100. Max: 500.'
+        in: query
+        name: list_parameters.page_size
+        schema:
+          format: int32
+          type: integer
+      - description: Action to be executed with a request. Not supported for all endpoints.
+        in: query
+        name: list_parameters.action
+        schema:
+          type: string
+      - description: List of fields to return (all fields are returned by default).
+        in: query
+        name: list_parameters.mask
+        schema:
+          type: string
+      - description: Get data from any child namespaces as well.
+        in: query
+        name: list_parameters.traverse
+        schema:
+          type: boolean
+      - description: Field to sort objects by, for example, meta.name.
+        in: query
+        name: list_parameters.sort.path
+        schema:
+          type: string
+      - description: 'Sort order. Default: ASC.'
+        in: query
+        name: list_parameters.sort.order
+        schema:
+          default: SORT_ENTRY_ORDER_UNSPECIFIED
+          enum:
+          - SORT_ENTRY_ORDER_UNSPECIFIED
+          - SORT_ENTRY_ORDER_ASC
+          - SORT_ENTRY_ORDER_DESC
+          type: string
+      - description: 'Return the number of objects matching the given list parameters.
+
+          If count is set to true, the response is a CountResponse.
+
+          Can be used together with filter and traverse.'
+        in: query
+        name: list_parameters.count
+        schema:
+          type: boolean
+      - description: 'Group the objects based on this field.
+
+          If there are multiple fields then the objects are grouped
+
+          based on the uniqueness of all fields.
+
+          Supports composite paths.
+
+          Supports arrays and maps.'
+        in: query
+        name: list_parameters.group.aggregation_paths
+        schema:
+          type: string
+      - description: 'Return the UUID of each object in each group as specified by
+
+          aggregation_paths.'
+        in: query
+        name: list_parameters.group.show_aggregation_uuids
+        schema:
+          type: boolean
+      - description: 'List of fields for which we want the unique count.
+
+          Supports arrays and maps.'
+        in: query
+        name: list_parameters.group.unique_count_paths
+        schema:
+          type: string
+      - description: 'List of fields for which we want the unique values.
+
+          Supports arrays and maps.'
+        in: query
+        name: list_parameters.group.unique_value_paths
+        schema:
+          type: string
+      - description: Only return objects from PR scans that match this context id.
+        in: query
+        name: list_parameters.ci_run_uuid
+        schema:
+          type: string
+      - description: Page ID to retrieve.
+        in: query
+        name: list_parameters.page_id
+        schema:
+          type: string
+      - description: 'Group the objects based on this time field,
+
+          for example, meta.create_time.'
+        in: query
+        name: list_parameters.group_by_time.aggregation_paths
+        schema:
+          type: string
+      - description: Return the UUIDs of the objects in each group.
+        in: query
+        name: list_parameters.group_by_time.show_aggregation_uuids
+        schema:
+          type: boolean
+      - description: Interval unit by which the objects should be grouped.
+        in: query
+        name: list_parameters.group_by_time.interval
+        schema:
+          default: GROUP_BY_TIME_INTERVAL_UNSPECIFIED
+          enum:
+          - GROUP_BY_TIME_INTERVAL_UNSPECIFIED
+          - GROUP_BY_TIME_INTERVAL_YEAR
+          - GROUP_BY_TIME_INTERVAL_QUARTER
+          - GROUP_BY_TIME_INTERVAL_MONTH
+          - GROUP_BY_TIME_INTERVAL_WEEK
+          - GROUP_BY_TIME_INTERVAL_DAY
+          - GROUP_BY_TIME_INTERVAL_HOUR
+          - GROUP_BY_TIME_INTERVAL_MINUTE
+          - GROUP_BY_TIME_INTERVAL_SECOND
+          type: string
+      - description: 'Size of the time interval to group the objects by,
+
+          for example, to group objects by 2-week intervals, set interval
+
+          to GROUP_BY_TIME_INTERVAL_WEEK and group_size to 2.'
+        in: query
+        name: list_parameters.group_by_time.group_size
+        schema:
+          format: int32
+          type: integer
+      - description: 'Beginning of the time period to group objects.
+
+          Defaults to the beginning of time.'
+        in: query
+        name: list_parameters.group_by_time.start_time
+        schema:
+          format: date-time
+          type: string
+      - description: 'End of the time period to group objects.
+
+          Defaults to the current time.'
+        in: query
+        name: list_parameters.group_by_time.end_time
+        schema:
+          format: date-time
+          type: string
+      - description: 'The mode determines how the matching objects are counted
+
+          in the produced time-series. Values allowed are:
+
+          count (default) : is the number of items matching in every interval.
+
+          sum: is the total number of items matching since the beginning of the
+
+          aggregation time.'
+        in: query
+        name: list_parameters.group_by_time.mode
+        schema:
+          type: string
+      - description: 'The aggregation_field is a field on the matched objects that we want to
+
+          perform some operation in each interval (example : min, max, avg)'
+        in: query
+        name: list_parameters.group_by_time.aggregation_value_field
+        schema:
+          type: string
+      - description: 'The aggreation_operator is the operator that we should use for the
+
+          aggregation. Allowed values are: min, max, sum, avg'
+        in: query
+        name: list_parameters.group_by_time.aggregation_operator
+        schema:
+          type: string
+      - description: 'If true, the results will not be paginated and
+
+          only the first page will be returned. The order
+
+          of the results is not guaranteed.'
+        in: query
+        name: list_parameters.disable_pagination
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1ListLinterResultsResponse'
+          description: A successful response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+          description: An unexpected error response.
+      summary: ListLinterResults
+      tags:
+      - LinterResultService
+      x-internal: false
+    post:
+      description: Creates a Semgrep rule.
+      operationId: LinterResultService_CreateLinterResult
+      parameters:
+      - description: 'Namespaces are a way to organize organizational units into virtual
+
+          groupings of resources. Namespaces must be a fully qualified name,
+
+          for example, the child namespace of namespace "endor.prod" called "app"
+
+          is called "endor.prod.app".'
+        in: path
+        name: tenant_meta.namespace
+        required: true
+        schema:
+          type: string
+        x-endor-name: Namespace
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LinterResultServiceCreateLinterResultBody'
+        required: true
+        x-originalParamName: body
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1LinterResult'
+          description: A successful response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+          description: An unexpected error response.
+      summary: CreateLinterResult
+      tags:
+      - LinterResultService
+      x-internal: true
+  /v1/namespaces/{tenant_meta.namespace}/linter-results/{uuid}:
+    delete:
+      description: Deletes the linter result specified by the UUID.
+      operationId: LinterResultService_DeleteLinterResult
+      parameters:
+      - description: 'Namespaces are a way to organize organizational units into virtual
+
+          groupings of resources. Namespaces must be a fully qualified name,
+
+          for example, the child namespace of namespace "endor.prod" called "app"
+
+          is called "endor.prod.app".'
+        in: path
+        name: tenant_meta.namespace
+        required: true
+        schema:
+          type: string
+        x-endor-name: Namespace
+      - description: The UUID of the resource to be deleted.
+        in: path
+        name: uuid
+        required: true
+        schema:
+          type: string
+      - description: Action to be executed with delete request.
+        in: query
+        name: delete_parameters.action
+        schema:
+          type: string
+      - description: 'Force will force the deletion of the resource if any
+
+          checks fail.'
+        in: query
+        name: delete_parameters.force
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+          description: A successful response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+          description: An unexpected error response.
+      summary: DeleteLinterResult
+      tags:
+      - LinterResultService
+      x-internal: true
+    get:
+      description: Fetches the linter result identified by the UUID.
+      operationId: LinterResultService_GetLinterResult
+      parameters:
+      - description: 'Namespaces are a way to organize organizational units into virtual
+
+          groupings of resources. Namespaces must be a fully qualified name,
+
+          for example, the child namespace of namespace "endor.prod" called "app"
+
+          is called "endor.prod.app".'
+        in: path
+        name: tenant_meta.namespace
+        required: true
+        schema:
+          type: string
+        x-endor-name: Namespace
+      - description: The UUID of the requested resource.
+        in: path
+        name: uuid
+        required: true
+        schema:
+          type: string
+      - description: List of fields to return (all fields are returned by default).
+        in: query
+        name: get_parameters.mask
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1LinterResult'
+          description: A successful response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+          description: An unexpected error response.
+      summary: GetLinterResult
+      tags:
+      - LinterResultService
+      x-internal: false
+components:
+  schemas:
+    v1SarifResult:
+      properties:
+        code_flows:
+          description: Code flow object representing a sequence of code locations that specify a data flow path.
+          items:
+            $ref: '#/components/schemas/v1SarifCodeFlow'
+          type: array
+        fingerprints:
+          $ref: '#/components/schemas/v1SarifFingerprint'
+        level:
+          title: Severity level of the notification (e.g., "error", "warning")
+          type: string
+        locations:
+          items:
+            $ref: '#/components/schemas/v1SarifLocation'
+          title: List of locations in the code where the finding was detected
+          type: array
+        message:
+          $ref: '#/components/schemas/v1SarifText'
+        partial_fingerprints:
+          $ref: '#/components/schemas/v1SarifFingerprint'
+        properties:
+          $ref: '#/components/schemas/v1SarifResultProperty'
+        rule_id:
+          title: Unique identifier of the rule that triggered this result
+          type: string
+        suppressions:
+          items:
+            $ref: '#/components/schemas/v1SarifSuppression'
+          type: array
+      type: object
+    v1SarifSuppression:
+      properties:
+        kind:
+          $ref: '#/components/schemas/v1SarifSuppressionKind'
+      type: object
+    v1AISASTContextRegion:
+      description: 'A source region whose content is hashed so a scheduled AI SAST refresh can
+
+        detect whether that region changed since the finding was last scanned.'
+      properties:
+        content_hash:
+          description: SHA-256 hex hash of the region's source at scan time.
+          type: string
+        location:
+          $ref: '#/components/schemas/v1SourceLocation'
+      type: object
+    LinterResultServiceUpdateLinterResultBody:
+      description: Request to update a linter result.
+      properties:
+        object:
+          description: The meta parent_kind can take one of two values - PackageVersion or RepositoryVersion.
+          properties:
+            context:
+              $ref: '#/components/schemas/v1Context'
+            meta:
+              $ref: '#/components/schemas/v1Meta'
+            spec:
+              $ref: '#/components/schemas/v1LinterResultSpec'
+            tenant_meta:
+              description: Linter results are associated with a tenant and namespace.
+              title: Linter results are associated with a tenant and namespace.
+              type: object
+            uuid:
+              description: The UUID of a linter result.
+              readOnly: true
+              type: string
+          type: object
+        request:
+          $ref: '#/components/schemas/v1UpdateRequest'
+      required:
+      - meta
+      - spec
+      - context
+      type: object
+    v1SarifReportingDescriptorReference:
+      description: A reference to a reporting descriptor.
+      properties:
+        guid:
+          description: The globally unique identifier for the referenced reporting descriptor.
+          type: string
+        id:
+          description: The id of the referenced reporting descriptor.
+          type: string
+        index:
+          description: The index of the referenced reporting descriptor in the toolComponent.rules array.
+          format: int32
+          type: integer
+        tool_component:
+          $ref: '#/components/schemas/v1SarifToolComponentReference'
+      type: object
+    v1LinterCorrectnessAnalysis:
+      description: LinterCorrectnessAnalysis represents an analysis of a linter result.
+      properties:
+        analysis_summary:
+          description: Analysis summary, providing an explanation of the linter result and classification.
+          type: string
+        analyzer:
+          $ref: '#/components/schemas/v1CorrectnessAnalyzer'
+        code_fixes:
+          description: Code fixes are potential fixes to the identified issue.
+          items:
+            $ref: '#/components/schemas/LinterCorrectnessAnalysisCodeFix'
+          type: array
+        code_references:
+          description: Textual description of line references/ fields/variables , etc for the linter result.
+          type: string
+        confidence_level:
+          $ref: '#/components/schemas/v1AIMetaConfidenceLevel'
+        content_hash:
+          description: 'sha256 over the source spans (finding location + taint dataflow) this analysis
+
+            was computed against; a mismatch on rescan invalidates the cached verdict and
+
+            forces re-analysis of the result.'
+          type: string
+        correctness:
+          $ref: '#/components/schemas/v1Correctness'
+        data_flow:
+          description: Textual Description of the source to sink data flow analysis for the linter result.
+          items:
+            $ref: '#/components/schemas/LinterCorrectnessAnalysisDataFlowNode'
+          type: array
+        description:
+          description: The textual description of the linter correctness analysis.
+          type: string
+        risk_assessment:
+          description: Risk assessment for the linter result. Provides False/True positive classifaction and reasoning for the linter result..
+          type: string
+        sanitizers:
+          description: The sanitizers used to determine the correctness of the linter result.
+          items:
+            type: string
+          type: array
+        security_control:
+          description: Description of any sanitizers, validators, or mitigations found (or lack thereof) for the linter result.
+          type: string
+        security_impact:
+          description: Description of the security impact/potential consequences for the linter result.
+          type: string
+        symbols:
+          description: Key variables/symbols in the data flow path for the linter result.
+          type: string
+        technical_detail:
+          description: Further technical details (eg results about the vulnerability type and exploitation potential) for the linter result.
+          type: string
+        version:
+          description: The version of the linter correctness analysis.
+          type: string
+      required:
+      - version
+      - analyzer
+      - correctness
+      - confidence_level
+      type: object
+    v1SarifArtifactContent:
+      description: Represents content of an artifact.
+      properties:
+        binary:
+          title: Base64-encoded content
+          type: string
+        rendered:
+          $ref: '#/components/schemas/v1SarifText'
+        text:
+          title: UTF-8 encoded content
+          type: string
+      type: object
+    v1FindingClassification:
+      default: FINDING_CLASSIFICATION_UNSPECIFIED
+      description: "Classification of the finding type. Extensible for future categories.\n\n - FINDING_CLASSIFICATION_SECURITY_VULNERABILITY: Security vulnerability (e.g. SQL injection, XSS, hardcoded creds).\n - FINDING_CLASSIFICATION_LOGICAL_BUG: Logical bug (e.g. null pointer, resource leak, race condition)."
+      enum:
+      - FINDING_CLASSIFICATION_UNSPECIFIED
+      - FINDING_CLASSIFICATION_SECURITY_VULNERABILITY
+      - FINDING_CLASSIFICATION_LOGICAL_BUG
+      type: string
+    v1IndexData:
+      description: 'IndexData is used to index the resource for search. It''s an internal
+
+        object.'
+      properties:
+        data:
+          items:
+            type: string
+          readOnly: true
+          type: array
+        search_score:
+          description: search_score is the score of the resource for search. Internal use only.
+          format: float
+          readOnly: true
+          type: number
+        tenant:
+          readOnly: true
+          type: string
+        will_be_deleted_at:
+          description: Time that the resource will be deleted.
+          format: date-time
+          readOnly: true
+          type: string
+      type: object
+    v1SemgrepWeb:
+      properties:
+        exposure:
+          $ref: '#/components/schemas/v1SemgrepExposure'
+      type: object
+    v1SarifSuppressionKind:
+      default: KIND_UNSPECIFIED
+      description: " - KIND_IN_SOURCE: Suppression is in the source code.\n - KIND_EXTERNAL: Suppression is external to the source code."
+      enum:
+      - KIND_UNSPECIFIED
+      - KIND_IN_SOURCE
+      - KIND_EXTERNAL
+      type: string
+    LinterCorrectnessAnalysisCodeFix:
+      description: CodeFix represents a potential fix to a determined true positive linter result.
+      properties:
+        file_path:
+          description: The file path of the code fix.
+          type: string
+        line_end:
+          description: The end line number of the code fix.
+          format: int32
+          type: integer
+        line_start:
+          description: The start line number of the code fix.
+          format: int32
+          type: integer
+        patch:
+          description: The code fix to be applied.
+          type: string
+      required:
+      - patch
+      - file_path
+      - line_start
+      - line_end
+      type: object
+    v1AISastSummary:
+      description: AI SAST summary.
+      properties:
+        call_stack:
+          description: The path (call stack) of the vulnerable code.
+          items:
+            $ref: '#/components/schemas/v1LocationWithName'
+          type: array
+        cwe:
+          description: The CWE of the vulnerability.
+          type: string
+        explanation:
+          description: Free-form explanation of the vulnerability.
+          type: string
+        sanitizer_callsites:
+          description: This are the locations of the callsites that are used to mitigate the vulnerability.
+          items:
+            $ref: '#/components/schemas/v1LocationWithName'
+          type: array
+        sanitizer_definitions:
+          description: The sanitizer definitions locations that are used to mitigate the vulnerability.
+          items:
+            $ref: '#/components/schemas/v1LocationWithName'
+          type: array
+        semgrep_sink_trigger:
+          $ref: '#/components/schemas/v1SemgrepTriggerPattern'
+        semgrep_source_trigger:
+          $ref: '#/components/schemas/v1SemgrepTriggerPattern'
+      required:
+      - call_stack
+      - cwe
+      - explanation
+      type: object
+    v1SemgrepRulePatternType:
+      properties:
+        by_side_effect:
+          type: boolean
+        exact:
+          type: boolean
+        focus_metavariable:
+          items:
+            type: string
+          type: array
+        from:
+          type: string
+        label:
+          type: string
+        management:
+          $ref: '#/components/schemas/v1SemgrepManagement'
+        metavariable_analysis:
+          $ref: '#/components/schemas/v1SemgrepMetavariableAnalysis'
+        metavariable_comparison:
+          $ref: '#/components/schemas/v1SemgrepMetavariableComparison'
+        metavariable_pattern:
+          $ref: '#/components/schemas/v1SemgrepMetavariablePattern'
+        metavariable_regex:
+          $ref: '#/components/schemas/v1SemgrepMetavariableRegex'
+        metavariable_type:
+          $ref: '#/components/schemas/v1SemgrepMetavariableType'
+        not_conflicting:
+          type: boolean
+        pattern:
+          type: string
+        pattern_either_new:
+          items:
+            $ref: '#/components/schemas/v1SemgrepRulePatternType'
+          type: array
+        pattern_inside:
+          type: string
+        pattern_inside_either:
+          items:
+            $ref: '#/components/schemas/v1SemgrepRulePatternType'
+          type: array
+        pattern_not:
+          type: string
+        pattern_not_inside:
+          type: string
+        pattern_not_regex:
+          type: string
+        pattern_regex:
+          type: string
+        patterns:
+          items:
+            $ref: '#/components/schemas/v1SemgrepRulePatternType'
+          type: array
+        requires:
+          type: string
+        to:
+          type: string
+      type: object
+    v1SarifStackFrame:
+      description: A single stack frame.
+      properties:
+        location:
+          $ref: '#/components/schemas/v1SarifLocation'
+        module:
+          title: The name of the module that contains the location to which this stack frame refers
+          type: string
+        parameters:
+          items:
+            type: string
+          title: The parameters passed to the function
+          type: array
+        thread_id:
+          format: int32
+          title: The thread identifier
+          type: integer
+      type: object
+    SpecEndorFingerprint:
+      description: 'An engine independent and rule agnostic fingerprint computed based on
+
+        source location information.'
+      properties:
+        values:
+          description: The fingerprint values.
+          items:
+            type: string
+          type: array
+      type: object
+    v1SemgrepSummary:
+      description: Semgrep summary.
+      properties:
+        ai_provider:
+          type: string
+        confidence:
+          type: string
+        cwes:
+          items:
+            type: string
+          type: array
+        description:
+          type: string
+        explanation:
+          type: string
+        impact:
+          type: string
+        languages:
+          items:
+            type: string
+          type: array
+        likelihood:
+          type: string
+        references:
+          items:
+            type: string
+          type: array
+        remediation:
+          type: string
+        rule_name:
+          type: string
+        rule_uuid:
+          type: string
+        rule_version:
+          type: string
+        severity:
+          type: string
+        tags:
+          items:
+            type: string
+          type: array
+      type: object
+    SpecCVSSVersion:
+      default: CVSS_VERSION_UNSPECIFIED
+      description: The CVSS version.
+      enum:
+      - CVSS_VERSION_UNSPECIFIED
+      - CVSS_VERSION_V2
+      - CVSS_VERSION_V3
+      - CVSS_VERSION_V4
+      type: string
+    v1SemgrepManagement:
+      properties:
+        endpoints:
+          $ref: '#/components/schemas/v1SemgrepEndpoints'
+      type: object
+    v1SarifRelationship:
+      description: A relationship between two locations.
+      properties:
+        description:
+          $ref: '#/components/schemas/v1SarifText'
+        kinds:
+          description: A set of strings that describe the relationship.
+          items:
+            type: string
+          type: array
+        properties:
+          description: Key/value pairs that provide additional information about the relationship.
+          type: object
+        target:
+          description: The id of the location that is the target of the relationship.
+          format: int32
+          type: integer
+      type: object
+    v1SemgrepMetavariableType:
+      properties:
+        metavariable:
+          type: string
+        type:
+          type: string
+      type: object
+    v1LocationType:
+      default: LOCATION_TYPE_UNSPECIFIED
+      description: "Classification of the location type within a data flow path.\n\n - LOCATION_TYPE_SOURCE: The source location.\n - LOCATION_TYPE_SINK: The sink location.\n - LOCATION_TYPE_INTERMEDIATE: The intermediate location.\n - LOCATION_TYPE_LOGICAL_BUG: The logical bug location."
+      enum:
+      - LOCATION_TYPE_UNSPECIFIED
+      - LOCATION_TYPE_SOURCE
+      - LOCATION_TYPE_SINK
+      - LOCATION_TYPE_INTERMEDIATE
+      - LOCATION_TYPE_LOGICAL_BUG
+      type: string
+    LinterResultServiceCreateLinterResultBody:
+      description: The meta parent_kind can take one of two values - PackageVersion or RepositoryVersion.
+      properties:
+        context:
+          $ref: '#/components/schemas/v1Context'
+        meta:
+          $ref: '#/components/schemas/v1Meta'
+        spec:
+          $ref: '#/components/schemas/v1LinterResultSpec'
+        tenant_meta:
+          description: Linter results are associated with a tenant and namespace.
+          title: Linter results are associated with a tenant and namespace.
+          type: object
+        uuid:
+          description: The UUID of a linter result.
+          readOnly: true
+          type: string
+      required:
+      - meta
+      - spec
+      - context
+      type: object
+    SpecLinterResultOrigin:
+      default: LINTER_RESULT_ORIGIN_UNSPECIFIED
+      description: "The origin of the linter result.\n\n - LINTER_RESULT_ORIGIN_SEMGREP: The semgrep tool reported this result.\n - LINTER_RESULT_ORIGIN_SECRETS_SCANNER: The secrets scanner reported this result.\n - LINTER_RESULT_ORIGIN_SAST_SCANNER: The SAST scanner reported this result.\n - LINTER_RESULT_ORIGIN_LLM_SCANNER: The LLM scanner reported this result.\n - LINTER_RESULT_ORIGIN_AI_SAST_SCANNER: The AI SAST scanner reported this result."
+      enum:
+      - LINTER_RESULT_ORIGIN_UNSPECIFIED
+      - LINTER_RESULT_ORIGIN_SEMGREP
+      - LINTER_RESULT_ORIGIN_SECRETS_SCANNER
+      - LINTER_RESULT_ORIGIN_SAST_SCANNER
+      - LINTER_RESULT_ORIGIN_LLM_SCANNER
+      - LINTER_RESULT_ORIGIN_AI_SAST_SCANNER
+      type: string
+    AIResultSAST:
+      properties:
+        attack_vector:
+          description: Attack vector breakdown table when no exploit reproduction is emitted (the "## Attack Vector" section).
+          type: string
+        classification:
+          $ref: '#/components/schemas/v1FindingClassification'
+        context:
+          $ref: '#/components/schemas/v1AISASTContext'
+        cwes:
+          description: The CWEs of the vulnerability.
+          items:
+            type: string
+          type: array
+        dataflow:
+          description: 'Deprecated: use call_stack instead.
+
+            One or more source locations representing the data flow path from a source to a sink.
+
+            The locations are ordered and include the source, any intermediate nodes, and the sink.
+
+            If only a single location is provided, it represents the sink location only.'
+          items:
+            $ref: '#/components/schemas/v1SourceLocation'
+          type: array
+        exploit_reproduction:
+          description: Step-by-step exploit reproduction for high/critical true positives (the "## Exploit Reproduction" section).
+          type: string
+        fixed_strikes:
+          description: 'Strictly consecutive scheduled-refresh FIXED verdicts. Deletion requires
+
+            two: the first only stamps this counter and keeps the finding due. Reset
+
+            by any non-FIXED outcome (STILL_PRESENT, UNKNOWN, agent error).'
+          format: int32
+          type: integer
+        language:
+          description: Programming language of the file where this result was found.
+          type: string
+        last_scan:
+          description: 'When the scheduled AI SAST refresh last revalidated this finding. Unset
+
+            for findings created before refresh tracking; drives refresh staleness.'
+          format: date-time
+          type: string
+        location:
+          $ref: '#/components/schemas/v1SourceLocation'
+        refresh_attempts:
+          description: 'Consecutive inconclusive scheduled-refresh attempts (agent error or
+
+            UNKNOWN verdict); at the retry cap the refresh re-baselines last_scan
+
+            instead of retrying forever. Reset on a definitive verdict.'
+          format: int32
+          type: integer
+        remediation:
+          description: Recommended remediation, including any unified-diff fix (the "## Remediation Guidance" section).
+          type: string
+        security_controls:
+          description: Security controls assessment table (the "## Security Controls" section).
+          type: string
+        severity_scoring:
+          description: Severity scoring breakdown (the "## Severity Scoring" section).
+          type: string
+        summary:
+          description: Short prose summary of the vulnerability (the "## Summary" section).
+          type: string
+        validation_outcome:
+          description: Validation outcome for unknown findings (the "## Validation Outcome" section).
+          type: string
+        validation_verdict:
+          $ref: '#/components/schemas/v1ValidationVerdict'
+        verification_scorecard:
+          description: Verification scorecard with per-criterion verdicts (the "## Verification Scorecard" section).
+          type: string
+      type: object
+    v1GroupAggregationValueResponse:
+      description: 'GroupAggregationValueResponse returns the value of the aggregation if
+
+        requested.'
+      properties:
+        value:
+          format: float
+          type: number
+      type: object
+    AIResultAILevel:
+      default: AI_LEVEL_UNSPECIFIED
+      description: "AI severity level.\n\n - AI_LEVEL_CRITICAL: Critical AI SAST.\n - AI_LEVEL_HIGH: High AI SAST.\n - AI_LEVEL_MEDIUM: Medium AI SAST.\n - AI_LEVEL_LOW: Low AI SAST."
+      enum:
+      - AI_LEVEL_UNSPECIFIED
+      - AI_LEVEL_CRITICAL
+      - AI_LEVEL_HIGH
+      - AI_LEVEL_MEDIUM
+      - AI_LEVEL_LOW
+      type: string
+    v1ListLinterResultsResponseList:
+      properties:
+        objects:
+          items:
+            $ref: '#/components/schemas/v1LinterResult'
+          type: array
+        response:
+          $ref: '#/components/schemas/v1ListResponse'
+      type: object
+    v1SemgrepMetavariableAnalysis:
+      properties:
+        analyzer:
+          type: string
+        metavariable:
+          type: string
+      type: object
+    v1SourceLocation:
+      properties:
+        description:
+          description: Human-readable description of what happens at this dataflow step.
+          type: string
+        end_column:
+          format: int32
+          title: Ending column number in the file
+          type: integer
+        end_line:
+          format: int32
+          title: Ending line number in the file
+          type: integer
+        function_name:
+          description: The name of the function for this location if available.
+          type: string
+        relative_path:
+          description: The relative path to the file where the issue was found.
+          type: string
+        scm_link:
+          description: Permalink to this location in the SCM (GitHub/GitLab/Azure/Bitbucket). Displayed in the UI.
+          type: string
+        snippet:
+          description: Code snippet containing the issue.
+          type: string
+        start_column:
+          format: int32
+          title: Starting column number in the file
+          type: integer
+        start_line:
+          format: int32
+          title: Starting line number in the file
+          type: integer
+        type:
+          $ref: '#/components/schemas/v1LocationType'
+      type: object
+    v1SarifStack:
+      description: Represents a call stack.
+      properties:
+        frames:
+          items:
+            $ref: '#/components/schemas/v1SarifStackFrame'
+          title: An array of stack frames
+          type: array
+        message:
+          $ref: '#/components/schemas/v1SarifText'
+      required:
+      - frames
+      type: object
+    v1Correctness:
+      default: CORRECTNESS_UNSPECIFIED
+      description: "Correctness represents a correctness assessment.\n\n - CORRECTNESS_TRUE_POSITIVE: The AI analysis result is a true positive.\n - CORRECTNESS_FALSE_POSITIVE: The AI analysis result is a false positive.\n - CORRECTNESS_FALSE_NEGATIVE: The AI analysis result is a false negative.\n - CORRECTNESS_UNKNOWN: The AI analysis result is unknown."
+      enum:
+      - CORRECTNESS_UNSPECIFIED
+      - CORRECTNESS_TRUE_POSITIVE
+      - CORRECTNESS_FALSE_POSITIVE
+      - CORRECTNESS_FALSE_NEGATIVE
+      - CORRECTNESS_UNKNOWN
+      type: string
+    v1ValidationStatus:
+      default: VALIDATION_STATUS_UNSPECIFIED
+      description: "Status of secret validation.\n\n - VALIDATION_STATUS_UNSPECIFIED: No validator.\n - VALIDATION_STATUS_FAILURE: Failed to validate secret.\n - VALIDATION_STATUS_SECRET_IS_VALID: Secret is valid.\n - VALIDATION_STATUS_SECRET_IS_INVALID: Secret is invalid"
+      enum:
+      - VALIDATION_STATUS_UNSPECIFIED
+      - VALIDATION_STATUS_FAILURE
+      - VALIDATION_STATUS_SECRET_IS_VALID
+      - VALIDATION_STATUS_SECRET_IS_INVALID
+      type: string
+    v1AISASTContext:
+      description: 'The code context an AI SAST finding depends on, hashed at scan time, so a
+
+        scheduled refresh can detect modified context by re-hashing these regions.'
+      properties:
+        callees:
+          description: Regions of functions the scanned segment calls.
+          items:
+            $ref: '#/components/schemas/v1AISASTContextRegion'
+          type: array
+        callers:
+          description: Regions of functions that call into the scanned segment.
+          items:
+            $ref: '#/components/schemas/v1AISASTContextRegion'
+          type: array
+        dataflow:
+          description: The finding's dataflow step regions, in order.
+          items:
+            $ref: '#/components/schemas/v1AISASTContextRegion'
+          type: array
+        fp_summary_hash:
+          description: 'SHA-256 hex of the project''s false-positive context summary at scan time.
+
+            A change here can flip the agent''s verdict, so it participates in
+
+            refresh change detection alongside the code regions.'
+          type: string
+        hash:
+          description: 'Denormalized SHA-256 hex rollup over all component hashes (segment,
+
+            dataflow, callers, callees, fp_summary_hash). Stored so findings can be
+
+            grouped or queried by context fingerprint.'
+          type: string
+        segment:
+          $ref: '#/components/schemas/v1AISASTContextRegion'
+        validation_context_hash:
+          description: 'SHA-256 hex over the guidance and validator identity the finding''s verdict
+
+            was produced under: the effective project, finding and false-positive
+
+            guidance and the validation settings. A change selects the finding for
+
+            revalidation. Empty on findings written before the identity existed.'
+          type: string
+      type: object
+    googleprotobufAny:
+      additionalProperties: {}
+      description: "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(&foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n    // or ...\n    if (any.isSameTypeAs(Foo.getDefaultInstance())) {\n      foo = any.unpack(Foo.getDefaultInstance());\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := &pb.Foo{...}\n     any, err := anypb.New(foo)\n     if err != nil {\n       ...\n     }\n     ...\n     foo := &pb.Foo{}\n     if err := any.UnmarshalTo(foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": <string>,\n      \"lastName\": <string>\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }"
+      properties:
+        '@type':
+          description: "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com. As of May 2023, there are no widely used type server\nimplementations and no plans to implement one.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
+          type: string
+      type: object
+    v1SarifArtifactLocation:
+      properties:
+        uri:
+          title: URI of the artifact (file)
+          type: string
+        uri_base_id:
+          title: Base URI identifier for resolving relative paths
+          type: string
+      type: object
+    v1Meta:
+      description: Common fields for all Endor Labs resources.
+      properties:
+        annotations:
+          additionalProperties:
+            type: string
+          description: 'Annotations can be used to attach metadata to a resource message.
+
+            Annotation values can be small or large, structured or unstructured,
+
+            and may include characters not permitted by labels.
+
+            The keys may contain alphanumerics, underscores (_), dots (.) and dashes
+
+            (-). The values of an annotation must be 16384 bytes or smaller.'
+          type: object
+        create_time:
+          description: 'Time the resource was created.
+
+
+            Format: 2017-01-15T01:30:15.01Z
+
+            RFC 3339: https://www.ietf.org/rfc/rfc3339.txt.'
+          format: date-time
+          readOnly: true
+          type: string
+        created_by:
+          description: 'Name and authentication source of the user who created the object,
+
+            for example, ewok@endor.ai@google@api-key.'
+          readOnly: true
+          type: string
+        description:
+          description: Resource description. Must be less than 1024 bytes.
+          type: string
+        index_data:
+          $ref: '#/components/schemas/v1IndexData'
+        kind:
+          description: 'Resource kind, for example, HelloResponse.
+
+            Auto-generated using the protobuf message proto.MessageName().Name().'
+          readOnly: true
+          type: string
+        name:
+          description: Resource name. Must be 63 characters or less.
+          type: string
+        parent_kind:
+          description: Parent object resource kind, for example, Project.
+          type: string
+        parent_uuid:
+          description: Parent object UUID.
+          type: string
+        references:
+          additionalProperties:
+            $ref: '#/components/schemas/googleprotobufAny'
+          description: Map of objects referenced in a query API.
+          readOnly: true
+          type: object
+        tags:
+          description: 'List of tags attached to the resource.
+
+            Tags can be used to select objects and to find collections of objects that
+
+            satisfy certain conditions. A tag must be 255 characters or less.'
+          items:
+            type: string
+          type: array
+        update_time:
+          description: 'Time the resource was last updated.
+
+            Note: Updated on all create/patch/delete operations.
+
+
+            Format: 2017-01-15T01:30:15.01Z
+
+            RFC 3339: https://www.ietf.org/rfc/rfc3339.txt.'
+          format: date-time
+          readOnly: true
+          type: string
+        updated_by:
+          description: 'Name and authentication source of the last user who updated the object,
+
+            for example, vulnerabilityingestor@endor.ai@x509.'
+          readOnly: true
+          type: string
+        upsert_time:
+          description: 'Time the resource was last upserted.
+
+
+            Note:
+
+            create_time is only set the first time the resource is created.
+
+            upsert_time is set every time the resource is upseted.
+
+
+            Format: 2017-01-15T01:30:15.01Z
+
+            RFC 3339: https://www.ietf.org/rfc/rfc3339.txt.'
+          format: date-time
+          readOnly: true
+          type: string
+        version:
+          description: Message version.
+          readOnly: true
+          type: string
+      required:
+      - name
+      type: object
+    v1SarifThreadFlowLocation:
+      description: A location visited by an analysis tool in the course of simulating or tracing the execution of a program.
+      properties:
+        execution_order:
+          format: int32
+          title: An integer representing the temporal order in which execution reached this location
+          type: integer
+        execution_time_utc:
+          title: The time at which execution reached this location
+          type: string
+        importance:
+          $ref: '#/components/schemas/SarifThreadFlowLocationImportance'
+        index:
+          format: int32
+          title: The index of the thread flow location within the thread flow
+          type: integer
+        kinds:
+          items:
+            type: string
+          title: An array of strings that classify the location
+          type: array
+        location:
+          $ref: '#/components/schemas/v1SarifLocation'
+        module:
+          title: The name of the module that contains the code location
+          type: string
+        nesting_level:
+          format: int32
+          title: An integer representing the level of nesting within the thread flow
+          type: integer
+        stack:
+          $ref: '#/components/schemas/v1SarifStack'
+        state:
+          additionalProperties:
+            $ref: '#/components/schemas/v1SarifText'
+          title: Values of relevant expressions at this location
+          type: object
+        taxa:
+          description: A set of distinct strings that categorize the thread flow location.
+          items:
+            $ref: '#/components/schemas/v1SarifReportingDescriptorReference'
+          type: array
+        web_request:
+          $ref: '#/components/schemas/v1SarifWebRequest'
+        web_response:
+          $ref: '#/components/schemas/v1SarifWebResponse'
+      type: object
+    LinterCorrectnessAnalysisDataFlowNode:
+      description: DataFlowNode represents a node in the data flow trace from source to sink.
+      properties:
+        code_line_num:
+          description: Line number in the source file.
+          format: int32
+          type: integer
+        code_snippet:
+          description: Variable or expression at this point in the flow.
+          type: string
+        type:
+          description: Type of node in the data flow (source, step, or sink).
+          type: string
+      type: object
+    googlerpcStatus:
+      description: 'The `Status` type defines a logical error model that is suitable for
+
+        different programming environments, including REST APIs and RPC APIs. It is
+
+        used by [gRPC](https://github.com/grpc). Each `Status` message contains
+
+        three pieces of data: error code, error message, and error details.
+
+
+        You can find out more about this error model and how to work with it in the
+
+        [API Design Guide](https://cloud.google.com/apis/design/errors).'
+      properties:
+        code:
+          description: 'The status code, which should be an enum value of
+
+            [google.rpc.Code][google.rpc.Code].'
+          format: int32
+          type: integer
+        details:
+          description: 'A list of messages that carry the error details.  There is a common set of
+
+            message types for APIs to use.'
+          items:
+            $ref: '#/components/schemas/googleprotobufAny'
+          type: array
+        message:
+          description: 'A developer-facing error message, which should be in English. Any
+
+            user-facing error message should be localized and sent in the
+
+            [google.rpc.Status.details][google.rpc.Status.details] field, or localized
+
+            by the client.'
+          type: string
+      type: object
+    v1LinterResult:
+      description: The meta parent_kind can take one of two values - PackageVersion or RepositoryVersion.
+      properties:
+        context:
+          $ref: '#/components/schemas/v1Context'
+        meta:
+          $ref: '#/components/schemas/v1Meta'
+        spec:
+          $ref: '#/components/schemas/v1LinterResultSpec'
+        tenant_meta:
+          $ref: '#/components/schemas/v1TenantMeta'
+        uuid:
+          description: The UUID of a linter result.
+          readOnly: true
+          type: string
+      required:
+      - meta
+      - spec
+      - context
+      type: object
+    v1LocationWithName:
+      description: A code location with a name and type.
+      properties:
+        location:
+          $ref: '#/components/schemas/v1SarifLocation'
+        name:
+          description: 'The (preferably) unique name of the code location.
+
+            Could be a function ref or a module name.'
+          type: string
+        type:
+          description: The type of the code location.
+          type: string
+      required:
+      - location
+      - name
+      type: object
+    v1SarifThreadFlow:
+      description: Thread flow object representing a sequence of code locations executed by a single thread.
+      properties:
+        id:
+          title: A unique identifier for the thread flow within the code flow
+          type: string
+        immutable_state:
+          title: Values of relevant expressions at the start of the thread flow that remain constant
+          type: object
+        initial_state:
+          title: Values of relevant expressions at the start of the thread flow
+          type: object
+        locations:
+          items:
+            $ref: '#/components/schemas/v1SarifThreadFlowLocation'
+          title: The locations that were executed during this thread flow
+          type: array
+        message:
+          $ref: '#/components/schemas/v1SarifText'
+      required:
+      - locations
+      type: object
+    v1CorrectnessAnalyzer:
+      default: CORRECTNESS_ANALYZER_UNSPECIFIED
+      description: CorrectnessAnalyzer represents the analyzer used to determine the correctness of a linter result.
+      enum:
+      - CORRECTNESS_ANALYZER_UNSPECIFIED
+      - CORRECTNESS_ANALYZER_AI_GEMINI_FLASH_2_5
+      - CORRECTNESS_ANALYZER_AI_GEMINI_FLASH_2_5_LITE
+      - CORRECTNESS_ANALYZER_AI_GEMINI_FLASH_LATEST
+      - CORRECTNESS_ANALYZER_AI_GEMINI_FLASH_LITE_LATEST
+      type: string
+    v1SemgrepEndpoints:
+      properties:
+        web:
+          $ref: '#/components/schemas/v1SemgrepWeb'
+      type: object
+    v1Context:
+      description: Contexts keep objects from different scans separated.
+      properties:
+        id:
+          description: The context ID, such as a pull request ID or branch reference.
+          type: string
+        tags:
+          description: 'A list of tags applied to a context. Used primarily for CI and SBOM
+
+            contexts.'
+          items:
+            type: string
+          type: array
+        type:
+          $ref: '#/components/schemas/ContextContextType'
+        will_be_deleted_at:
+          description: 'Time that all objects in this context will be deleted.
+
+            This field is deprecated and will be removed in the future.
+
+            Please use the meta.will_be_deleted_at field instead.'
+          format: date-time
+          readOnly: true
+          type: string
+      required:
+      - type
+      - id
+      type: object
+    v1TenantMeta:
+      description: Tenant related data for the tenant containing the resource.
+      properties:
+        namespace:
+          description: 'Namespaces are a way to organize organizational units into virtual
+
+            groupings of resources. Namespaces must be a fully qualified name,
+
+            for example, the child namespace of namespace "endor.prod" called "app"
+
+            is called "endor.prod.app".'
+          type: string
+      required:
+      - namespace
+      type: object
+    v1SarifFingerprint:
+      properties:
+        author:
+          title: Name of the commit author
+          type: string
+        commit_message:
+          title: Commit message associated with the change
+          type: string
+        commit_sha:
+          title: Git commit SHA where the finding was detected
+          type: string
+        date:
+          title: Date of the commit
+          type: string
+        email:
+          title: Email of the commit author
+          type: string
+        hash:
+          title: Hash of the primary location line for deduplication
+          type: string
+        id:
+          title: Unique identifier based on matching criteria
+          type: string
+      type: object
+    v1SarifText:
+      properties:
+        markdown:
+          description: Markdown representation of the content.
+          type: string
+        text:
+          title: The actual text content
+          type: string
+      type: object
+    v1SarifLogicalLocation:
+      description: A logical location that can be used to locate an artifact.
+      properties:
+        decorated_name:
+          description: The name of the decorated logical location.
+          type: string
+        fully_qualified_name:
+          description: The fully qualified name of the logical location.
+          type: string
+        index:
+          description: The 0-based index of this logical location in an array of logical locations.
+          format: int32
+          type: integer
+        kind:
+          description: The kind of logical location.
+          type: string
+        name:
+          description: The name of the logical location.
+          type: string
+        parent_index:
+          description: The name of the parent of this logical location.
+          format: int32
+          type: integer
+        properties:
+          description: Key/value pairs that provide additional information.
+          type: object
+      type: object
+    v1SarifWebRequest:
+      description: Describes an HTTP request.
+      properties:
+        body:
+          $ref: '#/components/schemas/v1SarifArtifactContent'
+        headers:
+          title: The request headers
+          type: object
+        index:
+          format: int32
+          title: The index of the request within run.webRequests
+          type: integer
+        method:
+          title: The HTTP method
+          type: string
+        parameters:
+          title: The request parameters
+          type: object
+        protocol:
+          title: The HTTP protocol used
+          type: string
+        target:
+          title: The target of the request
+          type: string
+        version:
+          title: The HTTP version
+          type: string
+      type: object
+    v1ListResponse:
+      description: Response to a list request.
+      properties:
+        next_page_id:
+          description: The UUID of last message retrieved.
+          type: string
+        next_page_token:
+          description: Pagination token that can be used to retrieve the next page of results.
+          format: int32
+          type: integer
+      type: object
+    v1ValidationVerdict:
+      default: VALIDATION_VERDICT_UNSPECIFIED
+      description: "Verdict from AI SAST validation about whether a reported finding is real.\nDistinct from FindingClassification, which describes the kind of issue.\n\n - VALIDATION_VERDICT_UNSPECIFIED: No verdict is recorded for this finding.\n - VALIDATION_VERDICT_TRUE_POSITIVE: Validation confirmed the finding.\n - VALIDATION_VERDICT_FALSE_POSITIVE: Validation refuted the finding.\n - VALIDATION_VERDICT_UNKNOWN: Validation could not determine whether the finding is real."
+      enum:
+      - VALIDATION_VERDICT_UNSPECIFIED
+      - VALIDATION_VERDICT_TRUE_POSITIVE
+      - VALIDATION_VERDICT_FALSE_POSITIVE
+      - VALIDATION_VERDICT_UNKNOWN
+      type: string
+    SarifThreadFlowLocationImportance:
+      default: IMPORTANCE_UNSPECIFIED
+      description: Specifies the importance of this location in understanding the code flow.
+      enum:
+      - IMPORTANCE_UNSPECIFIED
+      - IMPORTANCE_IMPORTANT
+      - IMPORTANCE_ESSENTIAL
+      - IMPORTANCE_UNIMPORTANT
+      type: string
+    v1AIMetaConfidenceLevel:
+      default: CONFIDENCE_LEVEL_UNSPECIFIED
+      description: "Confidence level for the finding.\n\n - CONFIDENCE_LEVEL_CRITICAL: Critical finding.\n - CONFIDENCE_LEVEL_HIGH: Very important findings.\n - CONFIDENCE_LEVEL_MEDIUM: Important findings.\n - CONFIDENCE_LEVEL_LOW: Low priority finding."
+      enum:
+      - CONFIDENCE_LEVEL_UNSPECIFIED
+      - CONFIDENCE_LEVEL_CRITICAL
+      - CONFIDENCE_LEVEL_HIGH
+      - CONFIDENCE_LEVEL_MEDIUM
+      - CONFIDENCE_LEVEL_LOW
+      type: string
+    v1SemgrepTriggerPattern:
+      description: A pattern that triggered the vulnerability scan.
+      properties:
+        pattern:
+          $ref: '#/components/schemas/v1SemgrepMetavariablePattern'
+      type: object
+    v1SarifCodeFlow:
+      description: Code flow object representing a sequence of code locations that specify a data flow path.
+      properties:
+        message:
+          $ref: '#/components/schemas/v1SarifText'
+        thread_flows:
+          items:
+            $ref: '#/components/schemas/v1SarifThreadFlow'
+          title: An array of one or more unique threadFlow objects
+          type: array
+      type: object
+    GroupResponseGroupData:
+      description: Information about objects matching the given key.
+      properties:
+        aggregation_count:
+          $ref: '#/components/schemas/v1CountResponse'
+        aggregation_uuids:
+          description: 'List of UUIDs of the objects in the group.
+
+            Only populated if show_aggregation_uuids is set.'
+          items:
+            type: string
+          type: array
+        aggregation_value:
+          $ref: '#/components/schemas/v1GroupAggregationValueResponse'
+        unique_counts:
+          additionalProperties:
+            $ref: '#/components/schemas/v1CountResponse'
+          description: 'Map of counts for the given unique_count_paths fields.
+
+            Only populated if unique_count_paths is set.'
+          type: object
+        unique_values:
+          additionalProperties:
+            items:
+              type: object
+            type: array
+          description: 'Map of values for the given unique_value_paths fields.
+
+            Only populated if unique_value_paths is set.'
+          type: object
+      type: object
+    v1SemgrepMetavariableComparison:
+      properties:
+        base:
+          type: boolean
+        comparison:
+          type: string
+        metavariable:
+          type: string
+        strip:
+          type: boolean
+      type: object
+    v1SemgrepMetavariableRegex:
+      properties:
+        metavariable:
+          type: string
+        regex:
+          type: string
+        x:
+          type: string
+      type: object
+    v1Ecosystem:
+      default: ECOSYSTEM_UNSPECIFIED
+      description: " - ECOSYSTEM_GO: GoLang.\n - ECOSYSTEM_MAVEN: Maven.\n - ECOSYSTEM_PYPI: Python.\n - ECOSYSTEM_CARGO: Rust.\n - ECOSYSTEM_NPM: Javascript.\n - ECOSYSTEM_GEM: Ruby.\n - ECOSYSTEM_NUGET: Dotnet.\n - ECOSYSTEM_PACKAGIST: PHP.\n - ECOSYSTEM_SBOM: SBOMs.\n - ECOSYSTEM_RPM: RPM.\n - ECOSYSTEM_DEBIAN: Debian.\n - ECOSYSTEM_GITHUB_ACTION: GitHub Actions.\n - ECOSYSTEM_COCOAPOD: Cocoapods.\n - ECOSYSTEM_APK: APK (alpine et.al).\n - ECOSYSTEM_CONTAINER: Containers.\n - ECOSYSTEM_HUGGING_FACE: Hugging Face.\n - ECOSYSTEM_C: C/C++.\n - ECOSYSTEM_GIT: ecosystem GIT for GIT repository dependencies.\nThis can be used for package name of the resolved dependencies when a\ngiven repository has dependencies to other GIT repositories. Currently we\nuse this to represent vulnerabilities for the given GIT repository. ex:\ngit submodules, C/C++ dependencies.\n - ECOSYSTEM_AI_MODEL: AI models.\n - ECOSYSTEM_SWIFT: Ecosystem Swift consists of native Swift packages, which are defined\nusing the Package.swift manifest file and managed by the Swift Package\nManager. There is a separate ecosystem for Cocoapod packages called\nECOSYSTEM_COCOAPOD, which is an alternative package manager for Swift\npackages.\n - ECOSYSTEM_CONAN: Ecosystem Conan for C/C++ packages managed by the Conan 2.x package manager.\n - ECOSYSTEM_VSCODE: VS Code editor extensions, distributed via the Microsoft Visual Studio\nMarketplace."
+      enum:
+      - ECOSYSTEM_UNSPECIFIED
+      - ECOSYSTEM_GO
+      - ECOSYSTEM_MAVEN
+      - ECOSYSTEM_PYPI
+      - ECOSYSTEM_CARGO
+      - ECOSYSTEM_NPM
+      - ECOSYSTEM_GEM
+      - ECOSYSTEM_NUGET
+      - ECOSYSTEM_PACKAGIST
+      - ECOSYSTEM_SBOM
+      - ECOSYSTEM_RPM
+      - ECOSYSTEM_DEBIAN
+      - ECOSYSTEM_GITHUB_ACTION
+      - ECOSYSTEM_COCOAPOD
+      - ECOSYSTEM_APK
+      - ECOSYSTEM_CONTAINER
+      - ECOSYSTEM_HUGGING_FACE
+      - ECOSYSTEM_C
+      - ECOSYSTEM_GIT
+      - ECOSYSTEM_AI_MODEL
+      - ECOSYSTEM_SWIFT
+      - ECOSYSTEM_CONAN
+      - ECOSYSTEM_VSCODE
+      type: string
+    v1UpdateRequest:
+      description: Message used for all update requests.
+      properties:
+        force:
+          description: 'Force will force the update of the resource if any
+
+            checks fail.'
+          type: boolean
+        update_mask:
+          description: Fields to update. Defaults to all fields.
+          type: string
+      type: object
+    SpecLinterResultLevel:
+      default: LINTER_RESULT_LEVEL_UNSPECIFIED
+      description: "The severity level of the linter result. Crafted using the Semgrep specification.\n\n - LINTER_RESULT_LEVEL_ERROR: ERROR indicates that a serious problem was found.\n - LINTER_RESULT_LEVEL_WARNING: WARNING indicates that a problem that is not considered serious was found.\n - LINTER_RESULT_LEVEL_INFO: INFO indicates that the notification is purely informational.\n - LINTER_RESULT_LEVEL_DEBUG: DEBUG indicates that this is a trace notification (debug)."
+      enum:
+      - LINTER_RESULT_LEVEL_UNSPECIFIED
+      - LINTER_RESULT_LEVEL_ERROR
+      - LINTER_RESULT_LEVEL_WARNING
+      - LINTER_RESULT_LEVEL_INFO
+      - LINTER_RESULT_LEVEL_DEBUG
+      type: string
+    v1SarifWebResponse:
+      description: Describes an HTTP response.
+      properties:
+        body:
+          $ref: '#/components/schemas/v1SarifArtifactContent'
+        headers:
+          title: The response headers
+          type: object
+        index:
+          format: int32
+          title: The index of the response within run.webResponses
+          type: integer
+        no_response_received:
+          title: Set to true if the response was intercepted
+          type: boolean
+        protocol:
+          title: The HTTP protocol used
+          type: string
+        reason_phrase:
+          title: The reason phrase
+          type: string
+        status_code:
+          format: int32
+          title: The status code
+          type: integer
+        version:
+          title: The HTTP version
+          type: string
+      type: object
+    v1SemgrepExposure:
+      properties:
+        exclude:
+          items:
+            type: string
+          type: array
+        include:
+          items:
+            type: string
+          type: array
+      type: object
+    v1LinterResultSpec:
+      properties:
+        ai_result:
+          $ref: '#/components/schemas/v1AIResult'
+        aisast:
+          $ref: '#/components/schemas/v1AISastSummary'
+        distribution_format:
+          $ref: '#/components/schemas/v1DistributionFormatType'
+        ecosystem:
+          $ref: '#/components/schemas/v1Ecosystem'
+        endor_fingerprint:
+          $ref: '#/components/schemas/SpecEndorFingerprint'
+        extra_key:
+          description: 'Additional information that may result in creating a unique linter result.
+
+            In some cases we may receive multiple results for the same project and the same file and we
+
+            want to have multiple entries for the same field like parent_uuid, meta.name, and physical_location.
+
+            By setting different values in this field, we will be able to create a separate result.
+
+            Essentially, we will have a unique entry per field.'
+          type: string
+        fingerprint_count:
+          format: int64
+          type: integer
+        fingerprints:
+          description: 'The list and count of found fingerprints. The counter is maintained
+
+            to ease the retrieval of these records in the analytics phase.'
+          items:
+            type: string
+          type: array
+        level:
+          $ref: '#/components/schemas/SpecLinterResultLevel'
+        linter_correctness_analyses:
+          description: An analysis of the linter result.
+          items:
+            $ref: '#/components/schemas/v1LinterCorrectnessAnalysis'
+          type: array
+        origin:
+          $ref: '#/components/schemas/SpecLinterResultOrigin'
+        project_uuid:
+          description: The UUID of the project to which this result is related.
+          type: string
+        ref:
+          description: The Git reference of the repository version.
+          type: string
+        sarif_result:
+          $ref: '#/components/schemas/v1SarifResult'
+        secret:
+          $ref: '#/components/schemas/v1SecretSummary'
+        semgrep:
+          $ref: '#/components/schemas/v1SemgrepSummary'
+        storage_location:
+          description: The storage location of the package related to this linter result.
+          type: string
+        suppressed:
+          description: Result was suppressed by semgrep (e.g. because of a "nosemgrep" code annotation).
+          type: boolean
+        version:
+          type: string
+      required:
+      - project_uuid
+      - origin
+      - level
+      - extra_key
+      type: object
+    v1ListLinterResultsResponse:
+      description: Response to the request to list linter results.
+      properties:
+        count_response:
+          $ref: '#/components/schemas/v1CountResponse'
+        group_response:
+          $ref: '#/components/schemas/v1GroupResponse'
+        list:
+          $ref: '#/components/schemas/v1ListLinterResultsResponseList'
+      type: object
+    v1SemgrepMetavariablePattern:
+      properties:
+        language:
+          type: string
+        metavariable:
+          type: string
+        pattern:
+          type: string
+        pattern_either:
+          items:
+            $ref: '#/components/schemas/v1SemgrepRulePatternType'
+          type: array
+        pattern_regex:
+          type: string
+        patterns:
+          items:
+            $ref: '#/components/schemas/v1SemgrepRulePatternType'
+          type: array
+      type: object
+    v1SarifToolComponentReference:
+      description: A reference to a tool component.
+      properties:
+        guid:
+          description: The globally unique identifier for the tool component.
+          type: string
+        index:
+          description: The index of the tool component in the tool.extensions array.
+          format: int32
+          type: integer
+        name:
+          description: The name of the tool component.
+          type: string
+      type: object
+    v1GroupResponse:
+      description: Response to a list group request.
+      properties:
+        groups:
+          additionalProperties:
+            $ref: '#/components/schemas/GroupResponseGroupData'
+          description: 'Map indexed by values of the fields specified in aggregation_paths,
+
+            for example, {"[{"key":"meta.kind","value":"Project"}]": {
+
+            "aggregation_count": { "count": 1649 } } }.'
+          type: object
+      type: object
+    v1SecretSummary:
+      properties:
+        fs_scanned:
+          title: Set when the secret was discovered by looking into the filesystem
+          type: boolean
+        git_log_scanned:
+          description: 'Set when the secret was discovered by looking in the Git logs using the
+
+            full history option.'
+          type: boolean
+        secret_id:
+          description: 'Same value for two linter results with the same secret found in different
+
+            locations.'
+          type: string
+        validation:
+          $ref: '#/components/schemas/v1ValidationStatus'
+      title: Secret summary
+      type: object
+    SarifLocationPhysicalLocation:
+      properties:
+        artifact_location:
+          $ref: '#/components/schemas/v1SarifArtifactLocation'
+        properties:
+          description: Key-value pairs that provide additional information.
+          type: object
+        region:
+          $ref: '#/components/schemas/v1SarifRegion'
+      type: object
+    v1SarifResultProperty:
+      properties:
+        action_policies_triggered:
+          items:
+            type: string
+          title: List of action policies that were triggered by this finding
+          type: array
+        categories:
+          items:
+            type: string
+          title: List of categories the finding belongs to
+          type: array
+        cvss_score:
+          format: float
+          title: Common Vulnerability Scoring System (CVSS) score, ranging from 0.0 to 10.0
+          type: number
+        cvss_vector:
+          title: CVSS vector string describing the characteristics of the vulnerability
+          type: string
+        cvss_version:
+          $ref: '#/components/schemas/SpecCVSSVersion'
+        epss_percentile_score:
+          format: double
+          title: EPSS percentile score, showing how severe the vulnerability is compared to others
+          type: number
+        epss_probability_score:
+          format: double
+          title: Exploit Prediction Scoring System (EPSS) probability score, indicating likelihood of exploitation
+          type: number
+        explanation:
+          title: Detailed explanation of the finding and its implications
+          type: string
+        finding_url:
+          title: URL to view the finding in the Endor platform
+          type: string
+        finding_uuid:
+          title: Unique identifier for the finding
+          type: string
+        impact_score:
+          format: float
+          title: Custom impact score assigned to the finding based on business context
+          type: number
+        project_uuid:
+          title: Unique identifier for the project where the finding was discovered
+          type: string
+        remediation:
+          title: Recommended steps to fix or mitigate the finding
+          type: string
+        tags:
+          items:
+            type: string
+          title: List of tags associated with the finding, used for categorization and filtering
+          type: array
+      type: object
+    ContextContextType:
+      default: CONTEXT_TYPE_UNSPECIFIED
+      description: " - CONTEXT_TYPE_MAIN: Objects from a scan of the default branch.\nAll objects in the oss namespace are in the main context.\nThe context id is always \"default\".\n - CONTEXT_TYPE_EXTERNAL: Indicates that this object is a copy/temporary value of an object in\nanother project. Used for same-tenant dependencies. In source code\nreference this is equivalent to \"vendor\" folders. Package versions in\nthe external context are only scanned for call graphs. No other\noperations are performed on them.\n - CONTEXT_TYPE_CI_RUN: Objects from a PR scan. The context id is the PR UUID.\nObjects in this context are deleted after 30 days.\n - CONTEXT_TYPE_SBOM: Objects from an SBOM scan. The context id is the SBOM serial number or\nsome other unique identifier.\n - CONTEXT_TYPE_REF: Objects from a scan of a specific branch. The context id is the branch\nreference name."
+      enum:
+      - CONTEXT_TYPE_UNSPECIFIED
+      - CONTEXT_TYPE_MAIN
+      - CONTEXT_TYPE_EXTERNAL
+      - CONTEXT_TYPE_CI_RUN
+      - CONTEXT_TYPE_SBOM
+      - CONTEXT_TYPE_REF
+      type: string
+    v1SarifLocation:
+      properties:
+        annotations:
+          items:
+            $ref: '#/components/schemas/v1SarifRegion'
+          title: An array of regions that describe regions within the artifact specified by the location object that is relevant to the location
+          type: array
+        id:
+          description: A unique identifier for this location object.
+          format: int32
+          type: integer
+        logical_locations:
+          description: The logical locations associated with a physical location.
+          items:
+            $ref: '#/components/schemas/v1SarifLogicalLocation'
+          type: array
+        message:
+          $ref: '#/components/schemas/v1SarifText'
+        physical_location:
+          $ref: '#/components/schemas/SarifLocationPhysicalLocation'
+        relationships:
+          description: An array of relationships between this location and other locations.
+          items:
+            $ref: '#/components/schemas/v1SarifRelationship'
+          type: array
+      type: object
+    v1SarifRegion:
+      properties:
+        end_column:
+          format: int32
+          title: Ending column number in the file
+          type: integer
+        end_line:
+          format: int32
+          title: Ending line number in the file
+          type: integer
+        snippet:
+          $ref: '#/components/schemas/v1SarifText'
+        start_column:
+          format: int32
+          title: Starting column number in the file
+          type: integer
+        start_line:
+          format: int32
+          title: Starting line number in the file
+          type: integer
+      type: object
+    v1DistributionFormatType:
+      default: DISTRIBUTION_FORMAT_TYPE_UNSPECIFIED
+      description: "Distribution format type.\n\n - DISTRIBUTION_FORMAT_TYPE_PYTHON_SOURCE: Python source was used to build this package.\n - DISTRIBUTION_FORMAT_TYPE_PYTHON_EGG: Egg-info based distribution format for python.\n - DISTRIBUTION_FORMAT_TYPE_PYTHON_WHEEL: Dist-info based distribution format for python."
+      enum:
+      - DISTRIBUTION_FORMAT_TYPE_UNSPECIFIED
+      - DISTRIBUTION_FORMAT_TYPE_PYTHON_SOURCE
+      - DISTRIBUTION_FORMAT_TYPE_PYTHON_EGG
+      - DISTRIBUTION_FORMAT_TYPE_PYTHON_WHEEL
+      type: string
+    v1CountResponse:
+      description: Response to a list count request.
+      properties:
+        count:
+          description: Number of objects matching the given list parameters.
+          format: int32
+          type: integer
+      type: object
+    v1AIResult:
+      description: AI result.
+      properties:
+        explanation:
+          description: Human-readable description of the result.
+          type: string
+        extra_key:
+          description: Stable finding identity assigned by the scanner, never by the model.
+          type: string
+        level:
+          $ref: '#/components/schemas/AIResultAILevel'
+        sast:
+          $ref: '#/components/schemas/AIResultSAST'
+        title:
+          description: Human-readable title of the result.
+          type: string
+      required:
+      - explanation
+      - level
+      - title
+      type: object

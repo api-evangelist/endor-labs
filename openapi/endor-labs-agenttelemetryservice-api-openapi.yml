@@ -1,0 +1,321 @@
+openapi: 3.2.0
+info:
+  description: Integrate your application with Endor Labs using the REST API.
+  title: Endor Labs REST API Reference Agent Telemetry Service API
+  version: '1.0'
+servers:
+- description: US (default)
+  url: https://api.endorlabs.com
+- description: EU (data residency)
+  url: https://api.eu.endorlabs.com
+tags:
+- name: AgentTelemetryService
+paths:
+  /v1/namespaces/{tenant_meta.namespace}/agent-telemetry/activity:
+    get:
+      description: Returns the per-agent usage summary for a tenant.
+      operationId: AgentTelemetryService_ListAgentActivity
+      parameters:
+      - description: 'Namespaces are a way to organize organizational units into virtual
+
+          groupings of resources. Namespaces must be a fully qualified name,
+
+          for example, the child namespace of namespace "endor.prod" called "app"
+
+          is called "endor.prod.app".'
+        in: path
+        name: tenant_meta.namespace
+        required: true
+        schema:
+          type: string
+        x-endor-name: Namespace
+      - description: Look-back window in days. Defaults to 7 when zero.
+        in: query
+        name: window_days
+        schema:
+          format: int32
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1ListAgentActivityResponse'
+          description: A successful response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+          description: An unexpected error response.
+      summary: ListAgentActivity
+      tags:
+      - AgentTelemetryService
+  /v1/namespaces/{tenant_meta.namespace}/agent-telemetry/agents/{agent_id}/calls:
+    get:
+      description: Returns one agent's recent captured calls, newest first.
+      operationId: AgentTelemetryService_ListAgentCalls
+      parameters:
+      - description: 'Namespaces are a way to organize organizational units into virtual
+
+          groupings of resources. Namespaces must be a fully qualified name,
+
+          for example, the child namespace of namespace "endor.prod" called "app"
+
+          is called "endor.prod.app".'
+        in: path
+        name: tenant_meta.namespace
+        required: true
+        schema:
+          type: string
+        x-endor-name: Namespace
+      - description: The agent whose calls to return; matches EndorAgent.id in the catalog.
+        in: path
+        name: agent_id
+        required: true
+        schema:
+          type: string
+      - description: Max rows to return. Defaults to 100 when zero.
+        in: query
+        name: page_size
+        schema:
+          format: int32
+          type: integer
+      - description: Opaque continuation token from a prior response.
+        in: query
+        name: page_token
+        schema:
+          type: string
+      - description: 'Optional exact-match filter on decision. Accepted values: allowed, denied
+
+          (case-sensitive); any other value is rejected.'
+        in: query
+        name: decision
+        schema:
+          type: string
+      - description: 'Optional exact-match filter on operation. Accepted values: READ, LIST,
+
+          CREATE, UPDATE, DELETE, UPSERT, EXECUTE (case-sensitive); any other value
+
+          is rejected.'
+        in: query
+        name: operation
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1ListAgentCallsResponse'
+          description: A successful response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+          description: An unexpected error response.
+      summary: ListAgentCalls
+      tags:
+      - AgentTelemetryService
+components:
+  schemas:
+    v1ListAgentActivityResponse:
+      description: 'ListAgentActivityResponse is served at
+
+        GET /v1/namespaces/{tenant_meta.namespace}/agent-telemetry/activity.'
+      properties:
+        agents:
+          description: One entry per agent that has activity in the window. Empty is valid.
+          items:
+            $ref: '#/components/schemas/v1AgentActivity'
+          type: array
+        generated_at:
+          description: When the backend assembled this snapshot.
+          format: date-time
+          type: string
+        schema_version:
+          description: 'Schema version of this response envelope. Additive AgentActivity fields do
+
+            not bump it; protobuf unknown-field preservation handles forward-compat.'
+          type: string
+        stale:
+          description: True when served from a degraded/stale snapshot.
+          type: boolean
+        window_days:
+          description: The look-back window the counts cover.
+          format: int32
+          type: integer
+      type: object
+    googleprotobufAny:
+      additionalProperties: {}
+      description: "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(&foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n    // or ...\n    if (any.isSameTypeAs(Foo.getDefaultInstance())) {\n      foo = any.unpack(Foo.getDefaultInstance());\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := &pb.Foo{...}\n     any, err := anypb.New(foo)\n     if err != nil {\n       ...\n     }\n     ...\n     foo := &pb.Foo{}\n     if err := any.UnmarshalTo(foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": <string>,\n      \"lastName\": <string>\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }"
+      properties:
+        '@type':
+          description: "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com. As of May 2023, there are no widely used type server\nimplementations and no plans to implement one.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
+          type: string
+      type: object
+    v1AgentActivity:
+      description: 'AgentActivity is the per-agent usage summary for one agent. Keyed by
+
+        agent_id, the join key to the agent catalog (EndorAgent.id).'
+      properties:
+        active:
+          description: 'True if the agent made at least one call in the window. Always true for an
+
+            entry in this response, which lists only agents with in-window activity.'
+          type: boolean
+        agent_id:
+          description: 'The join key to the agent catalog (EndorAgent.id), recorded verbatim from
+
+            the token''s agent_id claim. It is never derived by splitting agent_identity
+
+            (id@version), so it stays stable against the catalog. An id with no catalog
+
+            entry is still returned, not dropped.'
+          type: string
+        agent_identity:
+          description: 'The {name}@{version} identity from the agent''s JWT (agent_identity claim).
+
+            Unset for an unregistered agent, distinct from a recorded empty identity.'
+          type: string
+        allowed:
+          description: Calls the authorization + mutability gates allowed.
+          format: int64
+          type: string
+        calls:
+          description: Total captured backend calls in the window.
+          format: int64
+          type: string
+        denied:
+          description: Calls denied (e.g. a read-only agent attempting a mutation).
+          format: int64
+          type: string
+        last_seen:
+          description: When the agent was last seen making a call. Unset if it never has.
+          format: date-time
+          type: string
+        sessions:
+          description: 'Distinct agent-run sessions in the window, as an approximate upper bound:
+
+            per-day distinct counts are summed, so a session spanning midnight counts in
+
+            each day it touches. Reconciliation populates it; the incremental capture path
+
+            does not. Unset whenever the summed count is zero — not yet reconciled or none
+
+            recorded — so a consumer renders it as absent rather than a definite 0.'
+          format: int64
+          type: string
+      type: object
+    v1AgentCall:
+      description: 'AgentCall is one captured call in an agent''s recent history — a tenant-safe
+
+        projection of AgentAuditLog.'
+      properties:
+        decision:
+          description: allowed | denied.
+          type: string
+        on_behalf_of:
+          description: The human principal the agent acted on behalf of; unset when none.
+          type: string
+        operation:
+          description: 'Coarse verb: READ | LIST | CREATE | UPDATE | DELETE | UPSERT | EXECUTE.
+
+            Unset when the operation could not be derived, distinct from a recorded
+
+            empty verb.'
+          type: string
+        resource_kind:
+          description: The Endor resource the call operated on (e.g. Project).
+          type: string
+        rpc_method:
+          description: Full gRPC method, for engineers who want the exact RPC.
+          type: string
+        scopes:
+          description: 'The scope the call ran under, e.g. customer-full; comma-joined when more than
+
+            one. Unset when none were recorded.'
+          type: string
+        session:
+          description: The agent-run session this call belongs to; unset for a call with no session.
+          type: string
+        status_code:
+          description: gRPC status code name (e.g. OK, PermissionDenied).
+          type: string
+        timestamp:
+          description: When the edge observed the call.
+          format: date-time
+          type: string
+      type: object
+    v1ListAgentCallsResponse:
+      description: 'ListAgentCallsResponse is served at
+
+        GET /v1/namespaces/{tenant_meta.namespace}/agent-telemetry/agents/{agent_id}/calls.
+
+
+        Cursor-only pagination: there is intentionally NO exact `total`. An exact
+
+        COUNT over a filtered event scan is a per-open cost trap with no product
+
+        value; this surface returns recent calls, not a precise count. The
+
+        pre-aggregated per-agent count is AgentActivity.calls. More pages remain when
+
+        next_page_token is non-empty; it is an opaque keyset cursor, never an offset.'
+      properties:
+        agent_id:
+          description: Echo of the requested agent id.
+          type: string
+        agent_identity:
+          description: The agent's {name}@{version} identity; unset for an unregistered agent.
+          type: string
+        calls:
+          description: The calls, newest first.
+          items:
+            $ref: '#/components/schemas/v1AgentCall'
+          type: array
+        next_page_token:
+          description: Opaque keyset cursor; empty when there are no more pages.
+          type: string
+        schema_version:
+          description: Schema version of this response envelope.
+          type: string
+      type: object
+    googlerpcStatus:
+      description: 'The `Status` type defines a logical error model that is suitable for
+
+        different programming environments, including REST APIs and RPC APIs. It is
+
+        used by [gRPC](https://github.com/grpc). Each `Status` message contains
+
+        three pieces of data: error code, error message, and error details.
+
+
+        You can find out more about this error model and how to work with it in the
+
+        [API Design Guide](https://cloud.google.com/apis/design/errors).'
+      properties:
+        code:
+          description: 'The status code, which should be an enum value of
+
+            [google.rpc.Code][google.rpc.Code].'
+          format: int32
+          type: integer
+        details:
+          description: 'A list of messages that carry the error details.  There is a common set of
+
+            message types for APIs to use.'
+          items:
+            $ref: '#/components/schemas/googleprotobufAny'
+          type: array
+        message:
+          description: 'A developer-facing error message, which should be in English. Any
+
+            user-facing error message should be localized and sent in the
+
+            [google.rpc.Status.details][google.rpc.Status.details] field, or localized
+
+            by the client.'
+          type: string
+      type: object
