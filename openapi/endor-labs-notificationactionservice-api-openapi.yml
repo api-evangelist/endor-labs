@@ -673,3 +673,9 @@ components:
         result:
           $ref: '#/components/schemas/v1NotificationActionDataMetadata'
       type: object
+x-provenance:
+  method: harvested
+  publisher: Endor Labs
+  source: https://docs.endorlabs.com/api-reference/openapi.full.v3.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)

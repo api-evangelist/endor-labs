@@ -1015,3 +1015,9 @@ components:
       - AVAILABLE_LLM_FIREWORKS_MINIMAX_M27
       - AVAILABLE_LLM_FIREWORKS_QWEN_3_6_PLUS
       type: string
+x-provenance:
+  method: harvested
+  publisher: Endor Labs
+  source: https://docs.endorlabs.com/api-reference/openapi.full.v3.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
