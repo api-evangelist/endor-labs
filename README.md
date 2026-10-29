@@ -1,4 +1,4 @@
-# Endor Labs (endor-labs)
+# Endor Labs
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,161 +66,128 @@
 
 Endor Labs is a software supply chain security and application security platform built around reachability-based Software Composition Analysis (SCA), SBOM/VEX, secrets and SAST scanning, CI/CD discovery, and AI security. Its public REST API at https://api.endorlabs.com/v1 is a uniform resource API over namespaces, exposing projects, packages, findings, policies, scan results, and more, driven by the endorctl CLI.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/endor-labs/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/endor-labs/refs/heads/main/apis.yml)
+**Areas:** Security · Software Supply Chain · Software Composition Analysis · Reachability · AppSec · AI Security
 
-## Tags
+## Endor Labs on APIs.io
 
-- Security
-- Software Supply Chain
-- SCA
-- Reachability
-- AppSec
-- AI Security
+Everything profiled for Endor Labs is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/endor-labs/](https://apis.io/providers/endor-labs/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (7)
 
-- **Created:** 2026-06-20
-- **Modified:** 2026-06-20
+- [Endor Labs Authentication API](https://apis.io/apis/endor-labs/endor-labs-authentication-api/) — Exchange API key and secret for a bearer access token.
+- [Endor Labs Findings API](https://apis.io/apis/endor-labs/endor-labs-findings-api/) — Detected problems requiring remediation.
+- [Endor Labs Namespaces API](https://apis.io/apis/endor-labs/endor-labs-namespaces-api/) — Tenants and child namespaces a token may access.
+- [Endor Labs Packages API](https://apis.io/apis/endor-labs/endor-labs-packages-api/) — PackageVersion and dependency resources.
+- [Endor Labs Policies API](https://apis.io/apis/endor-labs/endor-labs-policies-api/) — Governance rules over resources.
+- [Endor Labs Projects API](https://apis.io/apis/endor-labs/endor-labs-projects-api/) — Project resources - the root of scanned source code.
+- [Endor Labs Scan Results API](https://apis.io/apis/endor-labs/endor-labs-scan-results-api/) — Scan execution results and metrics.
 
-## APIs
+### Published properties
 
-### Endor Labs Projects API
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-List, get, and create Project resources - the logical root of all scanned source code, repositories, and package manager references - under a namespace via /v1/namespaces/{namespace}/projects.
+#### Agentic access (1)
 
-- **Human URL:** [https://docs.endorlabs.com/rest-api/](https://docs.endorlabs.com/rest-api/)
-- **Base URL:** `https://api.endorlabs.com/v1`
+Which operations an agent can call, which act, and which need a human in the loop.
 
-#### Tags
+- [Endor Labs Agentic Access](https://apis.io/agentic-access/endor-labs/endor-labs-agentic-access/)
 
-- Projects
-- Repositories
-- Inventory
+#### Collections (8)
 
-#### Properties
+Postman and Open Collection request collections.
 
-- [Documentation](https://docs.endorlabs.com/rest-api/using-the-rest-api/getting-started/)
-- [API Reference](https://docs.endorlabs.com/api/)
-- [OpenAPI](openapi/endor-labs-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/endor-labs.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/endor-labs.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Endor Labs REST API](https://apis.io/collections/endor-labs/open-endor-labs/)
+- [Endor Labs REST Authentication API](https://apis.io/collections/endor-labs/open-endor-labs-authentication-api/)
+- [Endor Labs REST Authentication Findings API](https://apis.io/collections/endor-labs/open-endor-labs-findings-api/)
+- [Endor Labs REST Authentication Namespaces API](https://apis.io/collections/endor-labs/open-endor-labs-namespaces-api/)
+- [Endor Labs REST Authentication Packages API](https://apis.io/collections/endor-labs/open-endor-labs-packages-api/)
+- [Endor Labs REST Authentication Policies API](https://apis.io/collections/endor-labs/open-endor-labs-policies-api/)
+- [Endor Labs REST Authentication Projects API](https://apis.io/collections/endor-labs/open-endor-labs-projects-api/)
+- [Endor Labs REST Authentication Scan Results API](https://apis.io/collections/endor-labs/open-endor-labs-scan-results-api/)
 
-### Endor Labs Dependencies & Packages API
+#### Security (2)
 
-Query PackageVersion and DependencyMetadata resources - ecosystem, package name, version, and importer/dependency relationships - powering reachability-based Software Composition Analysis.
+Authentication, trust centre, and vulnerability disclosure.
 
-- **Human URL:** [https://docs.endorlabs.com/rest-api/using-the-rest-api/data-model/resource-kinds/](https://docs.endorlabs.com/rest-api/using-the-rest-api/data-model/resource-kinds/)
-- **Base URL:** `https://api.endorlabs.com/v1`
+- [Endor Labs Authentication](https://apis.io/security/endor-labs/endor-labs-authentication/)
+- [Endor Labs Domain Security](https://apis.io/security/endor-labs/endor-labs-domain-security/)
 
-#### Tags
+#### Plans and pricing (1)
 
-- Packages
-- Dependencies
-- SCA
+Published plans, tiers and prices.
 
-#### Properties
+- [Endor Labs Plans Pricing](https://apis.io/plans/endor-labs/endor-labs-plans-pricing/)
 
-- [Documentation](https://docs.endorlabs.com/rest-api/using-the-rest-api/data-model/resource-kinds/)
-- [API Reference](https://docs.endorlabs.com/api/)
-- [OpenAPI](openapi/endor-labs-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/endor-labs.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/endor-labs.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### Rate limits (1)
 
-### Endor Labs Findings API
+Published request limits.
 
-List and get Finding resources - detected problems requiring remediation including reachable vulnerabilities, license risks, malware, secrets, and SAST results - filtered and field-masked under a namespace.
+- [Endor Labs Rate Limits](https://apis.io/rate-limits/endor-labs/endor-labs-rate-limits/)
 
-- **Human URL:** [https://docs.endorlabs.com/rest-api/using-the-rest-api/use-cases/](https://docs.endorlabs.com/rest-api/using-the-rest-api/use-cases/)
-- **Base URL:** `https://api.endorlabs.com/v1`
+#### FinOps (1)
 
-#### Tags
+What the API costs to run, by operation.
 
-- Findings
-- Vulnerabilities
-- Reachability
+- [Endor Labs Finops](https://apis.io/finops/endor-labs/endor-labs-finops/)
 
-#### Properties
+## Where to find this API
 
-- [Documentation](https://docs.endorlabs.com/rest-api/using-the-rest-api/use-cases/)
-- [API Reference](https://docs.endorlabs.com/api/)
-- [OpenAPI](openapi/endor-labs-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/endor-labs.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/endor-labs.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-### Endor Labs Policies API
-
-Create, list, get, update, and delete Policy resources that define rules, queries, and target resource kinds for governing findings, releases, and remediation across namespaces.
-
-- **Human URL:** [https://docs.endorlabs.com/rest-api/](https://docs.endorlabs.com/rest-api/)
-- **Base URL:** `https://api.endorlabs.com/v1`
-
-#### Tags
-
-- Policies
-- Governance
-- Guardrails
-
-#### Properties
-
-- [Documentation](https://docs.endorlabs.com/rest-api/)
-- [API Reference](https://docs.endorlabs.com/api/)
-- [OpenAPI](openapi/endor-labs-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/endor-labs.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/endor-labs.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Endor Labs Scan Results API
-
-Retrieve ScanResult and Metric resources capturing scan execution configuration, findings produced, triggered policies, and diagnostics for a project under a namespace.
-
-- **Human URL:** [https://docs.endorlabs.com/rest-api/using-the-rest-api/data-model/resource-kinds/](https://docs.endorlabs.com/rest-api/using-the-rest-api/data-model/resource-kinds/)
-- **Base URL:** `https://api.endorlabs.com/v1`
-
-#### Tags
-
-- Scan Results
-- Metrics
-- Diagnostics
-
-#### Properties
-
-- [Documentation](https://docs.endorlabs.com/rest-api/using-the-rest-api/data-model/resource-kinds/)
-- [API Reference](https://docs.endorlabs.com/api/)
-- [OpenAPI](openapi/endor-labs-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/endor-labs.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/endor-labs.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Endor Labs Auth & Namespaces API
-
-Exchange an API key and secret for a bearer access token via POST /v1/auth/api-key, and list the namespaces (tenants and child namespaces) a token is authorized to access.
-
-- **Human URL:** [https://docs.endorlabs.com/rest-api/authentication/](https://docs.endorlabs.com/rest-api/authentication/)
-- **Base URL:** `https://api.endorlabs.com/v1`
-
-#### Tags
-
-- Authentication
-- Namespaces
-- Tenancy
-
-#### Properties
-
-- [Documentation](https://docs.endorlabs.com/rest-api/authentication/)
-- [API Reference](https://docs.endorlabs.com/api/)
-- [OpenAPI](openapi/endor-labs-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/endor-labs.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/endor-labs.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-## Common Properties
-
-- [GitHub Organization](https://github.com/endorlabs)
-- [LinkedIn](https://www.linkedin.com/company/endor-labs)
 - [Website](https://www.endorlabs.com)
 - [Documentation](https://docs.endorlabs.com/rest-api/)
-- [Plans](plans/endor-labs-plans-pricing.yml)
-- [Rate Limits](rate-limits/endor-labs-rate-limits.yml)
-- [Fin Ops](finops/endor-labs-finops.yml)
+- [Blog](https://www.endorlabs.com/learn/rss.xml)
+- [GitHub](https://github.com/endorlabs)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 24.5** — emerging · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 48.1 |
+| Contract governance | 0.0 |
+| Operational transparency | 7.9 |
+| Developer ergonomics | 25.0 |
+| Access clarity | 5.3 |
+
+**Agent readiness 17.9** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 11.8** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/endor-labs/](https://apis.io/providers/endor-labs/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Endor Labs: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/endor-labs/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
